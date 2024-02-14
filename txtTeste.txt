@@ -1,2 +1,6 @@
 shjgkjsngjksngljn
+<<<<<<< Updated upstream
 sadas
+=======
+tttttttttt
+>>>>>>> Stashed changes
