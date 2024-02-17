@@ -6,4 +6,5 @@
  *
  */
 module ProjetoProgramacaoAplicada {
+	requires java.sql;
 }
