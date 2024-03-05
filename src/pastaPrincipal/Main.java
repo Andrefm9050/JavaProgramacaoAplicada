@@ -1,6 +1,15 @@
 package pastaPrincipal;
 
+import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 import java.util.Scanner;
+
+
+//import ProjetoProgramacao.Gestor;
+import users.EstadoConta;
+import users.Utilizador;
 
 public class Main {
 	
@@ -41,6 +50,39 @@ public class Main {
 	}
 	
 	private static void registo() {
+		
+		Connection conn = null;
+		
+		try {
+			
+			Class.forName("org.postgresql.Driver");
+			conn = DriverManager.getConnection("jdbc:postgresql://aid.estgoh.ipc.pt:5432/db2021159661", "a2021159661", "a2021159661");
+			
+			Statement st = conn.createStatement();
+			//st.executeQuery("INSERT INTO Teste (texto) VALORES ('teste')");
+			System.out.println("Connection OK");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		String login1 = lerDados("Insira o seu username: ");
+		
+		String password1 = lerDados("Insira a sua password: ");
+		
+		String nome1 = lerDados("Insira o seu nome: ");
+		
+		String email1 = lerDados("Insira o seu email(axzc@exmail.com): ");
+		
+		String tipo1 = lerDados("Insira o tipo de conta(Gestor, autor ou revisor): ");
+		
+		Utilizador u1 = new Utilizador(login1, password1, nome1, null, email1, tipo1);
+		
+		if(tipo1.equalsIgnoreCase("Gestor")) {
+			
+		}
 		
 	}
 	
