@@ -6,7 +6,7 @@ import java.sql.DriverManager;
 import java.sql.Statement;
 import java.util.Scanner;
 
-
+import sistema.BDDriver;
 //import ProjetoProgramacao.Gestor;
 import users.EstadoConta;
 import users.Utilizador;
@@ -80,9 +80,9 @@ public class Main {
 		
 		Utilizador u1 = new Utilizador(login1, password1, nome1, null, email1, tipo1);
 		
-		if(tipo1.equalsIgnoreCase("Gestor")) {
-			
-		}
+		
+		BDDriver.adicionarUtilizador(u1);
+		
 		
 	}
 	
