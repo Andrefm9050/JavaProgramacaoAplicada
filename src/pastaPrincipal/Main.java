@@ -51,21 +51,6 @@ public class Main {
 	
 	private static void registo() {
 		
-		Connection conn = null;
-		
-		try {
-			
-			Class.forName("org.postgresql.Driver");
-			conn = DriverManager.getConnection("jdbc:postgresql://aid.estgoh.ipc.pt:5432/db2021159661", "a2021159661", "a2021159661");
-			
-			Statement st = conn.createStatement();
-			//st.executeQuery("INSERT INTO Teste (texto) VALORES ('teste')");
-			System.out.println("Connection OK");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
 		
 		
 		String login1 = lerDados("Insira o seu username: ");
@@ -87,6 +72,15 @@ public class Main {
 	}
 	
 	private static void login() {
+		String login1 = lerDados("Insira o seu username: ");
+		String password1 = lerDados("Insira a sua password: ");
+		
+		
+		if(BDDriver.listarUtilizadores2(BDDriver.listarUtilizador(login1, password1), "gestores")!=null) {
+			
+		}
+		//BDDriver.listarUtilizadores2(BDDriver.listarUtilizador(login1, password1), "gestores");
+		//BDDriver.listarUtilizador(login1, password1);
 		
 	}
 	
