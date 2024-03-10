@@ -77,7 +77,7 @@ public class Main {
 		
 		
 		if(BDDriver.listarUtilizadores2(BDDriver.listarUtilizador(login1, password1), "gestores")!=null) {
-			
+			Gestor.
 		}
 		//BDDriver.listarUtilizadores2(BDDriver.listarUtilizador(login1, password1), "gestores");
 		//BDDriver.listarUtilizador(login1, password1);
