@@ -23,18 +23,21 @@ public class BDDriver {
          String email1 = u1.getEmail();
          String password1 = u1.getPassword();
          String login1 = u1.getLogin();
+         String nome1 = u1.getNome();
          int idUser;
          if (tipo1.equalsIgnoreCase("Gestor")) {
-            sqlQuery.append("SELECT * FROM criar_gestor(?, ? ,0 , ?)");
+            sqlQuery.append("SELECT * FROM criar_gestor(?, ? , ?, 0 , ?)");
             PreparedStatement ps = conn.prepareStatement(sqlQuery.toString());
             ps.clearParameters();
-            ps.setString(1, email1);
-            ps.setString(2, password1);
-            ps.setString(3, login1);
+            ps.setString(1, nome1);
+            ps.setString(2, email1);
+            ps.setString(3, password1);
+            ps.setString(4, login1);
             ResultSet rs = ps.executeQuery();
             rs.next();
             idUser = rs.getInt(1);
-            System.out.println(idUser);
+            //System.out.println(idUser);
+            ps.close();
             return idUser;
          }
 
@@ -51,21 +54,23 @@ public class BDDriver {
             LocalDate date = LocalDate.parse(formacao, formatter);
             Date completedDate = Date.valueOf(date);
             String estiloLiterario = lerDados("Insira o seu estilo literário(ex: drama, ficção, thriller): ");
-            sqlQuery.append("SELECT * FROM criar_autor(?, ? ,0 , ?, ?, ?, ?, ?, ?)");
+            sqlQuery.append("SELECT * FROM criar_autor(?, ?, ? , 0 , ?, ?, ?, ?, ?, ?)");
             PreparedStatement ps = conn.prepareStatement(sqlQuery.toString());
             ps.clearParameters();
-            ps.setString(1, email1);
-            ps.setString(2, password1);
-            ps.setString(3, login1);
-            ps.setString(4, morada1);
-            ps.setString(5, nif1);
-            ps.setString(6, telefone1);
-            ps.setDate(7, completedDate);
-            ps.setString(8, estiloLiterario);
+            ps.setString(1, nome1);
+            ps.setString(2, email1);
+            ps.setString(3, password1);
+            ps.setString(4, login1);
+            ps.setString(5, morada1);
+            ps.setString(6, nif1);
+            ps.setString(7, telefone1);
+            ps.setDate(8, completedDate);
+            ps.setString(9, estiloLiterario);
             ResultSet rs = ps.executeQuery();
             rs.next();
             idUser = rs.getInt(1);
-            System.out.println(idUser);
+            //System.out.println(idUser);
+            ps.close();
             return idUser;
          }
 
@@ -75,23 +80,26 @@ public class BDDriver {
             telefone1 = lerDados("Insira o seu número contacto telefónico: ");
             formacao = lerDados("Insira a sua formacao academica: ");
             String area = lerDados("Insira a sua area de especializacao: ");
-            sqlQuery.append("SELECT * FROM criar_revisor(?, ? ,0 , ?, ?, ?, ?, ?, ?)");
+            sqlQuery.append("SELECT * FROM criar_revisor(?, ? , ?, 0 , ?, ?, ?, ?, ?, ?)");
             PreparedStatement ps = conn.prepareStatement(sqlQuery.toString());
             ps.clearParameters();
-            ps.setString(1, email1);
-            ps.setString(2, password1);
-            ps.setString(3, login1);
-            ps.setString(4, morada1);
-            ps.setString(5, nif1);
-            ps.setString(6, telefone1);
-            ps.setString(7, formacao);
-            ps.setString(8, area);
+            ps.setString(1, nome1);
+            ps.setString(2, email1);
+            ps.setString(3, password1);
+            ps.setString(4, login1);
+            ps.setString(5, morada1);
+            ps.setString(6, nif1);
+            ps.setString(7, telefone1);
+            ps.setString(8, formacao);
+            ps.setString(9, area);
             ResultSet rs = ps.executeQuery();
             rs.next();
             idUser = rs.getInt(1);
-            System.out.println(idUser);
+            //System.out.println(idUser);
+            ps.close();
             return idUser;
          }
+         
 
          System.out.println("Connection OK");
       } catch (Exception var18) {
@@ -124,7 +132,8 @@ public class BDDriver {
       
         	
         	if(user.equals(login1) && pass.equals(password1)) {
-        		System.out.println("Bem-vindo " + login1);
+        		//System.out.println("Bem-vindo " + login1);
+        		ps.close();
         		return login1;
         	}
         	//System.out.println(pass);
@@ -168,12 +177,14 @@ public class BDDriver {
         //String user[] = null;
         while(rs.next()) {
         	//user[contador] = rs.getString(5);
-        	String user = rs.getString(5);
+        	String user = rs.getString(6);
         	String pass = rs.getString(3);
       
-        	
+        	//System.out.println(user);
+        	//System.out.println("Bem-vindo " + login1);
         	if(user.equals(login1)) {
-        		System.out.println("Bem-vindo " + login1);
+        		//System.out.println("Bem-vindo " + login1);
+        		ps.close();
         		return login1;
         	}
         	//System.out.println(pass);

@@ -7,8 +7,11 @@ import java.sql.Statement;
 import java.util.Scanner;
 
 import sistema.BDDriver;
+import users.Autor;
 //import ProjetoProgramacao.Gestor;
 import users.EstadoConta;
+import users.Gestor;
+import users.Revisor;
 import users.Utilizador;
 
 public class Main {
@@ -77,7 +80,21 @@ public class Main {
 		
 		
 		if(BDDriver.listarUtilizadores2(BDDriver.listarUtilizador(login1, password1), "gestores")!=null) {
-			Gestor.
+			System.out.println("Bem-vindo " + login1);
+			Gestor.menuGestor();
+			
+			
+		}
+		else if(BDDriver.listarUtilizadores2(BDDriver.listarUtilizador(login1, password1), "autores")!=null) {
+			System.out.println("Bem-vindo " + login1);
+			Autor.menuAutor();
+			
+		}
+		else if(BDDriver.listarUtilizadores2(BDDriver.listarUtilizador(login1, password1), "revisores")!=null) {
+			System.out.println("Bem-vindo " + login1);
+			Revisor.menuRevisor();
+		} else {
+			System.out.println("Credenciais inválidas!");
 		}
 		//BDDriver.listarUtilizadores2(BDDriver.listarUtilizador(login1, password1), "gestores");
 		//BDDriver.listarUtilizador(login1, password1);
