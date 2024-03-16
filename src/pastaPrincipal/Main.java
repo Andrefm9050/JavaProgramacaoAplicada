@@ -103,25 +103,33 @@ public class Main {
 	private static void login() {
 		String login1 = lerDados("Insira o seu username: ");
 		String password1 = lerDados("Insira a sua password: ");
+		Utilizador userLoginSEstado = BDDriver.encontrarUtilizador(login1, password1);
+		Utilizador userGestor = BDDriver.encontrarUtilizadores2(login1, "gestores");
+		Utilizador userAutor = BDDriver.encontrarUtilizadores2(login1, "autores");
+		Utilizador userRevisor = BDDriver.encontrarUtilizadores2(login1, "revisores");
 		
-		
-		if(BDDriver.listarUtilizadores2(BDDriver.listarUtilizador(login1, password1), "gestores")!=null) {
+		if(userLoginSEstado != null) {
+			if(BDDriver.encontrarUtilizadores2(userLoginSEstado.getLogin(), "gestores")!=null) {
 			System.out.println("Bem-vindo " + login1);
 			Gestor.menuGestor();
 			
 			
 		}
-		else if(BDDriver.listarUtilizadores2(BDDriver.listarUtilizador(login1, password1), "autores")!=null) {
+		else if(BDDriver.encontrarUtilizadores2(userLoginSEstado.getLogin(), "autores")!=null) {
 			System.out.println("Bem-vindo " + login1);
 			Autor.menuAutor();
 			
 		}
-		else if(BDDriver.listarUtilizadores2(BDDriver.listarUtilizador(login1, password1), "revisores")!=null) {
+		else if(BDDriver.encontrarUtilizadores2(userLoginSEstado.getLogin(), "revisores")!=null) {
 			System.out.println("Bem-vindo " + login1);
 			Revisor.menuRevisor();
 		} else {
 			System.out.println("Credenciais inválidas!");
 		}
+		} else {
+			System.out.println("Credenciais inválidas!");
+		}
+		
 		//BDDriver.listarUtilizadores2(BDDriver.listarUtilizador(login1, password1), "gestores");
 		//BDDriver.listarUtilizador(login1, password1);
 		

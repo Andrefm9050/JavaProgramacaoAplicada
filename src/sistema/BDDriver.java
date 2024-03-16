@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
+
+import users.EstadoConta;
 import users.Utilizador;
 
 public class BDDriver {
@@ -16,26 +18,26 @@ public class BDDriver {
       Connection conn = null;
 
       try {
-         Class.forName("org.postgresql.Driver");
-         conn = DriverManager.getConnection("jdbc:postgresql://aid.estgoh.ipc.pt:5432/db2021159661", "a2021159661", "a2021159661");
-         StringBuffer sqlQuery = new StringBuffer();
-         String tipo1 = u1.getTipo();
+         Class.forName("org.postgresql.Driver"); 																					///
+         conn = DriverManager.getConnection("jdbc:postgresql://aid.estgoh.ipc.pt:5432/db2021159661", "a2021159661", "a2021159661"); /// conexão base de dados
+         StringBuffer sqlQuery = new StringBuffer();																				///
+         String tipo1 = u1.getTipo();												
          String email1 = u1.getEmail();
-         String password1 = u1.getPassword();
+         String password1 = u1.getPassword();   /// variaveis do Objeto Utilizador u1
          String login1 = u1.getLogin();
          String nome1 = u1.getNome();
          int idUser;
          if (tipo1.equalsIgnoreCase("Gestor")) {
-            sqlQuery.append("SELECT * FROM criar_gestor(?, ? , ?, 0 , ?)");
-            PreparedStatement ps = conn.prepareStatement(sqlQuery.toString());
-            ps.clearParameters();
-            ps.setString(1, nome1);
-            ps.setString(2, email1);
-            ps.setString(3, password1);
+            sqlQuery.append("SELECT * FROM criar_gestor(?, ? , ?, 0 , ?)");  		//
+            PreparedStatement ps = conn.prepareStatement(sqlQuery.toString());		//
+            ps.clearParameters();													//
+            ps.setString(1, nome1);			 								 		//funcao para criar gestor base de dados com inserção de variaveis do u1
+            ps.setString(2, email1);         								 		//
+            ps.setString(3, password1);    										    //
             ps.setString(4, login1);
             ResultSet rs = ps.executeQuery();
             rs.next();
-            idUser = rs.getInt(1);
+            idUser = rs.getInt(1);      //recebe o id do utilizador proveniente da base de dados
             //System.out.println(idUser);
             ps.close();
             return idUser;
@@ -109,7 +111,7 @@ public class BDDriver {
       return 0;
    }
    
-   public static String listarUtilizador(String login1, String password1) {
+   public static Utilizador encontrarUtilizador(String login1, String password1) { //verifica se existe esse utilizador na base de dados em geral
 	   Connection conn = null;
 	   
 	   try {
@@ -129,12 +131,17 @@ public class BDDriver {
         	//user[contador] = rs.getString(5);
         	String user = rs.getString(5);
         	String pass = rs.getString(3);
-      
+        	String maill = rs.getString(2);
+        	String estado = rs.getString(4);
+        	String nome = rs.getString(6);
+        	
         	
         	if(user.equals(login1) && pass.equals(password1)) {
         		//System.out.println("Bem-vindo " + login1);
+        		
+        		Utilizador utilizadorNovo = new Utilizador(login1, password1, nome, EstadoConta.ativos, maill, null);
         		ps.close();
-        		return login1;
+        		return utilizadorNovo;
         	}
         	//System.out.println(pass);
         	//contador++;
@@ -155,9 +162,9 @@ public class BDDriver {
 	   return null;
    }
    
-   public static String listarUtilizadores2(String login1, String tipo1) {
-	   Connection conn = null;
-	   
+   public static Utilizador encontrarUtilizadores2(String login1, String tipo1) {    // verifica se existe um utilizador na base de dados, porém verifica
+	   Connection conn = null;														 // também se o mesmo encontra-se numa tabela com um cargo (Gestor, autor, revisor)
+	   																				 // e qual o cargo.
 	   try {
 		Class.forName("org.postgresql.Driver");
 		conn = DriverManager.getConnection("jdbc:postgresql://aid.estgoh.ipc.pt:5432/db2021159661", "a2021159661", "a2021159661");
@@ -178,14 +185,20 @@ public class BDDriver {
         while(rs.next()) {
         	//user[contador] = rs.getString(5);
         	String user = rs.getString(6);
-        	String pass = rs.getString(3);
-      
+        	String pass = rs.getString(4);
+        	String mail = rs.getString(3);
+        	String estado = rs.getString(5);
+        	String nome = rs.getString(7);
+        	
+        	
         	//System.out.println(user);
-        	//System.out.println("Bem-vindo " + login1);
+        	//System.out.println("Bem-vindo " + teste);
         	if(user.equals(login1)) {
         		//System.out.println("Bem-vindo " + login1);
+        		
+        		Utilizador utilizadorNovo = new Utilizador(login1, pass, nome, EstadoConta.ativos, mail, tipo1);
         		ps.close();
-        		return login1;
+        		return utilizadorNovo;
         	}
         	//System.out.println(pass);
         	//contador++;
