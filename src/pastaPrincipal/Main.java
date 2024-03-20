@@ -138,12 +138,9 @@ public class Main {
 	private static void login() {
 		String login1 = lerDados("Insira o seu username: ");
 		String password1 = lerDados("Insira a sua password: ");
-		//Isto está bastante extenso e vai trazer bastante problemas no futuro,
-		//deveriamos só ter 1 Objeto do tipo utilizador aqui...
+		
 		Utilizador userLoginSEstado = BDDriver.encontrarUtilizador(login1, password1);
-		Utilizador userGestor = BDDriver.encontrarUtilizadores2(login1, "gestores");
-		Utilizador userAutor = BDDriver.encontrarUtilizadores2(login1, "autores");
-		Utilizador userRevisor = BDDriver.encontrarUtilizadores2(login1, "revisores");
+		
 		
 		if(userLoginSEstado != null) {
 				

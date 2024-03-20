@@ -103,7 +103,17 @@ public class BDDriver {
             	}
             }
             
-            telefone1 = lerDados("Insira o seu número contacto telefónico: ");
+            while(true) {
+            	telefone1 = lerDados("Insira o seu número contacto telefónico (Deverá começar por 9,2 ou 3): ");
+            	if(GestorContas.validacaoTelefone(telefone1)!=true) {
+            		System.out.println("O seu número não é válido! Insira novamente.");
+            	}else {
+            		break;
+            	}
+            	
+            }
+            
+            
             formacao = lerDados("Insira a data de inicio de atividade no seguinte formato yyyy-mm-dd: ");
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate date = LocalDate.parse(formacao, formatter);
@@ -144,7 +154,15 @@ public class BDDriver {
             	}
             }
             
-            telefone1 = lerDados("Insira o seu número contacto telefónico: ");
+            while(true) {
+            	telefone1 = lerDados("Insira o seu número contacto telefónico (Deverá começar por 9,2 ou 3): ");
+            	if(GestorContas.validacaoTelefone(telefone1)!=true) {
+            		System.out.println("O seu número não é válido! Insira novamente.");
+            	}else {
+            		break;
+            	}
+            	
+            }
             formacao = lerDados("Insira a sua formacao academica: ");
             String area = lerDados("Insira a sua area de especializacao: ");
             sqlQuery.append("SELECT * FROM criar_revisor(?, ? , ?, 0 , ?, ?, ?, ?, ?, ?)");

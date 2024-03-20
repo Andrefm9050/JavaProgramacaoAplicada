@@ -19,6 +19,9 @@ public class GestorContas {
 	
 	private static final String NIF_REGEX = "^\\d{9}$";  										//Expressão regular para o NIF
     private static final Pattern NIF_PATTERN = Pattern.compile(NIF_REGEX);
+    
+    private static final String TELEFONE_REGEX = "^[923]\\d{8}$";
+    private static final Pattern TELEFONE_PATTERN = Pattern.compile(TELEFONE_REGEX);
 	
 	
 	public static boolean validacaoEmail(String email2) {
@@ -29,6 +32,11 @@ public class GestorContas {
 	
 	public static boolean validacaoNIF(String nif1) {
 		Matcher matcher = NIF_PATTERN.matcher(nif1);
+        return matcher.matches();
+	}
+	
+	public static boolean validacaoTelefone(String telefone1) {
+		Matcher matcher = TELEFONE_PATTERN.matcher(telefone1);
         return matcher.matches();
 	}
 	
