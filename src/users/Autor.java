@@ -10,8 +10,8 @@ public class Autor extends UniqueUtilizador{
 	private String estilo;
 	private Date dataInicioAtividade;
 	
-	public Autor(String login, String password, String nome, EstadoConta estado, String email, String tipo) {
-		super(login, password, nome, estado, email, tipo);
+	public Autor(int idUser,String login, String password, String nome, EstadoConta estado, String email, String tipo) {
+		super(idUser,login, password, nome, estado, email, tipo);
 		// TODO Auto-generated constructor stub
 	}
 	

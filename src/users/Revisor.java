@@ -8,8 +8,8 @@ public class Revisor extends UniqueUtilizador {
 	private EspecializacaoArea areaEspecializado;
 	private String formacaoAcademica;
 	
-	public Revisor(String login, String password, String nome, EstadoConta estado, String email, String tipo) {
-		super(login, password, nome, estado, email, tipo);
+	public Revisor(int idUser,String login, String password, String nome, EstadoConta estado, String email, String tipo) {
+		super(idUser,login, password, nome, estado, email, tipo);
 		// TODO Auto-generated constructor stub
 	}
 	

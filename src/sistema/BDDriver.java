@@ -8,18 +8,59 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Scanner;
 
+import gestao.Log;
 import users.EstadoConta;
 import users.Utilizador;
 
+//Por favor converte isto para um objeto (Não uses static)
 public class BDDriver {
+   static Connection conn = null;
+   public static boolean configurarDriver(String link,String username,String password,String bd) {
+	   try {
+		Class.forName("org.postgresql.Driver");
+	} catch (ClassNotFoundException e) {
+		return false;
+	}
+	   try {
+		conn = DriverManager.getConnection(link + bd, username, password);
+	} catch (SQLException e) {
+		return false;
+	}
+	   return true;
+   }
+   public static void adicionarLog(Utilizador u, String mensagem) {
+	   try {
+		PreparedStatement ps = conn.prepareStatement("CALL criar_log(?, ?)");
+		ps.setInt(1, u.getIdUser());
+		ps.setString(2, mensagem);
+		ps.execute();
+		ps.close();
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
+   }
+   public static Log[] listarLogs() {
+	   ArrayList<Log> logslist = new ArrayList<Log>();
+	   try {
+		   PreparedStatement ps = conn.prepareStatement("SELECT * FROM listar_logs()");
+		   ResultSet rs = ps.executeQuery();
+		   while(rs.next()) {
+		   logslist.add(new Log(rs.getInt(1),rs.getString(2),rs.getDate(3)));
+		   }
+	   } catch (SQLException e) {
+			e.printStackTrace();
+	   }
+	   
+	   return logslist.toArray(new Log[0]);
+   }
    public static int adicionarUtilizador(Utilizador u1) {
-      Connection conn = null;
+      
 
       try {
-         Class.forName("org.postgresql.Driver"); 																					///
-         conn = DriverManager.getConnection("jdbc:postgresql://aid.estgoh.ipc.pt:5432/db2021159661", "a2021159661", "a2021159661"); /// conexão base de dados
+	     
          StringBuffer sqlQuery = new StringBuffer();																				///
          String tipo1 = u1.getTipo();												
          String email1 = u1.getEmail();
@@ -134,13 +175,11 @@ public class BDDriver {
 
       return 0;
    }
-   
+   //encontrarUtilizador deveria estar no gestorContas e não aqui, adicionalmente na listagem de utilizadores usa as 3 funções para listar as diferentes contas assim sabes que construtor deves usar, sempre devolvendo Utilizador[] pois podes usar o "instanceof" para identificar o tipo
    public static Utilizador encontrarUtilizador(String login1, String password1) { //verifica se existe esse utilizador na base de dados em geral
-	   Connection conn = null;
 	   
 	   try {
-		Class.forName("org.postgresql.Driver");
-		conn = DriverManager.getConnection("jdbc:postgresql://aid.estgoh.ipc.pt:5432/db2021159661", "a2021159661", "a2021159661");
+		
 		StringBuffer sqlQuery = new StringBuffer();
 		sqlQuery.append("SELECT * FROM listar_utilizadores()");
         PreparedStatement ps = conn.prepareStatement(sqlQuery.toString());
@@ -153,6 +192,7 @@ public class BDDriver {
         //String user[] = null;
         while(rs.next()) {
         	//user[contador] = rs.getString(5);
+        	int idUser = rs.getInt(1);
         	String user = rs.getString(5);
         	String pass = rs.getString(3);
         	String maill = rs.getString(2);
@@ -163,7 +203,7 @@ public class BDDriver {
         	if(user.equals(login1) && pass.equals(password1)) {
         		//System.out.println("Bem-vindo " + login1);
         		
-        		Utilizador utilizadorNovo = new Utilizador(login1, password1, nome, EstadoConta.ativos, maill, null);
+        		Utilizador utilizadorNovo = new Utilizador(idUser,login1, password1, nome, EstadoConta.ativos, maill, null);
         		ps.close();
         		return utilizadorNovo;
         	}
@@ -175,8 +215,6 @@ public class BDDriver {
         
         
         
-	} catch (ClassNotFoundException e) {
-		e.printStackTrace();
 	} catch (SQLException e) {
 		e.printStackTrace();
 	}
@@ -185,13 +223,12 @@ public class BDDriver {
 	   
 	   return null;
    }
-   
+   //Usar esta função na forma publica pode ser prevenida e simplificada com a sugestão em cima
    public static Utilizador encontrarUtilizadores2(String login1, String tipo1) {    // verifica se existe um utilizador na base de dados, porém verifica
-	   Connection conn = null;														 // também se o mesmo encontra-se numa tabela com um cargo (Gestor, autor, revisor)
+												 								     // também se o mesmo encontra-se numa tabela com um cargo (Gestor, autor, revisor)
 	   																				 // e qual o cargo.
 	   try {
-		Class.forName("org.postgresql.Driver");
-		conn = DriverManager.getConnection("jdbc:postgresql://aid.estgoh.ipc.pt:5432/db2021159661", "a2021159661", "a2021159661");
+		
 		String queryAppend = "SELECT * FROM listar_";
 		String tipo2 = tipo1;
 		String queryAppend1 = "()";
@@ -208,6 +245,7 @@ public class BDDriver {
         //String user[] = null;
         while(rs.next()) {
         	//user[contador] = rs.getString(5);
+        	int idUser = rs.getInt(1);
         	String user = rs.getString(6);
         	String pass = rs.getString(4);
         	String mail = rs.getString(3);
@@ -220,7 +258,7 @@ public class BDDriver {
         	if(user.equals(login1)) {
         		//System.out.println("Bem-vindo " + login1);
         		
-        		Utilizador utilizadorNovo = new Utilizador(login1, pass, nome, EstadoConta.ativos, mail, tipo1);
+        		Utilizador utilizadorNovo = new Utilizador(idUser,login1, pass, nome, EstadoConta.ativos, mail, tipo1);
         		ps.close();
         		return utilizadorNovo;
         	}
@@ -232,8 +270,6 @@ public class BDDriver {
         
         
         
-	} catch (ClassNotFoundException e) {
-		e.printStackTrace();
 	} catch (SQLException e) {
 		e.printStackTrace();
 	}
@@ -245,11 +281,10 @@ public class BDDriver {
    
    
    public static boolean encontrarUtilizadores3(String nif1, String tipo1) {    // verifica se existe um utilizador na base de dados, porém verifica
-	   Connection conn = null;														 // também se o mesmo encontra-se numa tabela com um cargo (Gestor, autor, revisor)
+	   																			// também se o mesmo encontra-se numa tabela com um cargo (Gestor, autor, revisor)
 	   																				 // e qual o cargo.
 	   try {
-		Class.forName("org.postgresql.Driver");
-		conn = DriverManager.getConnection("jdbc:postgresql://aid.estgoh.ipc.pt:5432/db2021159661", "a2021159661", "a2021159661");
+	
 		String queryAppend = "SELECT * FROM listar_";
 		String tipo2 = tipo1;
 		String queryAppend1 = "()";
@@ -290,8 +325,6 @@ public class BDDriver {
         
         
         
-	} catch (ClassNotFoundException e) {
-		e.printStackTrace();
 	} catch (SQLException e) {
 		e.printStackTrace();
 	}

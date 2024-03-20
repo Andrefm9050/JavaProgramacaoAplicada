@@ -10,8 +10,8 @@ public class UniqueUtilizador extends Utilizador{
 	 * Estes dados nao estao no Gestor
 	 */
 	
-	public UniqueUtilizador(String login, String password, String nome, EstadoConta estado, String email, String tipo) {
-		super(login, password, nome, estado, email, tipo);
+	public UniqueUtilizador(int idUser,String login, String password, String nome, EstadoConta estado, String email, String tipo) {
+		super(idUser,login, password, nome, estado, email, tipo);
 		// TODO Auto-generated constructor stub
 	}
 }

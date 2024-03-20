@@ -33,7 +33,7 @@ public class GestorContas {
 	}
 	
 	
-	
+	//Nao deviamos estar a fazer uma query aqui... por favor lista os utilizadores a partir do BDDriver e faz os ifs aqui dentro
 	public static Utilizador pesquisarUtilizadoresUserName(String login1) { 
 		Connection conn = null;
 		   
@@ -52,6 +52,7 @@ public class GestorContas {
 	        //String user[] = null;
 	        while(rs.next()) {
 	        	//user[contador] = rs.getString(5);
+	        	int idUser = rs.getInt(1);
 	        	String user = rs.getString(5);
 	        	String pass = rs.getString(3);
 	        	String maill = rs.getString(2);
@@ -62,7 +63,7 @@ public class GestorContas {
 	        	if(user.equals(login1)) {
 	        		//System.out.println("Bem-vindo " + login1);
 	        		
-	        		Utilizador utilizadorNovo = new Utilizador(login1, pass, nome, EstadoConta.ativos, maill, null);
+	        		Utilizador utilizadorNovo = new Utilizador(idUser,login1, pass, nome, EstadoConta.ativos, maill, null);
 	        		ps.close();
 	        		return utilizadorNovo;
 	        	}
@@ -85,6 +86,7 @@ public class GestorContas {
 		
 	}
 	
+	//Lê o comentário em cima, estamos a repetir codigo desnecessáriamente
 	public static Utilizador pesquisarUtilizadoresEmail(String mail1) { 
 		Connection conn = null;
 		   
@@ -103,6 +105,7 @@ public class GestorContas {
 	        //String user[] = null;
 	        while(rs.next()) {
 	        	//user[contador] = rs.getString(5);
+	        	int idUser = rs.getInt(1);
 	        	String user = rs.getString(5);
 	        	String pass = rs.getString(3);
 	        	String maill = rs.getString(2);
@@ -113,7 +116,7 @@ public class GestorContas {
 	        	if(maill.equals(mail1)) {
 	        		//System.out.println("Bem-vindo " + login1);
 	        		
-	        		Utilizador utilizadorNovo = new Utilizador(user, pass, nome, EstadoConta.ativos, maill, null);
+	        		Utilizador utilizadorNovo = new Utilizador(idUser,user, pass, nome, EstadoConta.ativos, maill, null);
 	        		ps.close();
 	        		return utilizadorNovo;
 	        	}

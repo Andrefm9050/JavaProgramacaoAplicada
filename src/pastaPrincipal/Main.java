@@ -8,6 +8,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.Scanner;
+
+import gestao.GestorLogs;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.sql.Timestamp;
@@ -27,10 +30,20 @@ public class Main {
 	//Mas nao funciona de outra forma já que o programa termina fora da função main
 	static long startmillis;
 	static long endmillis;
+	static GestorLogs gestorLogs = new GestorLogs();
+
 	
 	public static void main(String [] args)  {
 		startmillis = System.currentTimeMillis();
-		
+
+		while(!BDDriver.configurarDriver("jdbc:postgresql://aid.estgoh.ipc.pt:5432/", "a2021159661", "a2021159661", "db2021159661")) {
+			System.out.println("Erro ao connectar á base de dados... a tentar de novo");
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+			}
+		}
+
 		while(true) {
 			System.out.println("1-Registar \n2-Login \n3-Sair");
 			
@@ -118,37 +131,40 @@ public class Main {
 		
 		String tipo1 = lerDados("Insira o tipo de conta(Gestor, autor ou revisor): ");
 		
-		Utilizador u1 = new Utilizador(login2, password1, nome1, null, email2, tipo1);
+		Utilizador u1 = new Utilizador(0,login2, password1, nome1, null, email2, tipo1); //<- Aqui nao ha problema o id=0 pois estamos a inserir
 		BDDriver.adicionarUtilizador(u1);
 	}
 	
 	private static void login() {
 		String login1 = lerDados("Insira o seu username: ");
 		String password1 = lerDados("Insira a sua password: ");
+		//Isto está bastante extenso e vai trazer bastante problemas no futuro,
+		//deveriamos só ter 1 Objeto do tipo utilizador aqui...
 		Utilizador userLoginSEstado = BDDriver.encontrarUtilizador(login1, password1);
 		Utilizador userGestor = BDDriver.encontrarUtilizadores2(login1, "gestores");
 		Utilizador userAutor = BDDriver.encontrarUtilizadores2(login1, "autores");
 		Utilizador userRevisor = BDDriver.encontrarUtilizadores2(login1, "revisores");
 		
 		if(userLoginSEstado != null) {
+				
+			//Usa instanceof em vez disto, assim vais poupar futuras queries só para buscar os detalhes especificos de cada tipo de utilizador (Lê a sugestão no BDDriver)
 			if(BDDriver.encontrarUtilizadores2(userLoginSEstado.getLogin(), "gestores")!=null) {
-			System.out.println("Bem-vindo " + login1);
-			Gestor.menuGestor();
-			
-			
-		}
-		else if(BDDriver.encontrarUtilizadores2(userLoginSEstado.getLogin(), "autores")!=null) {
-			System.out.println("Bem-vindo " + login1);
-			Autor.menuAutor();
-			
-		}
-		else if(BDDriver.encontrarUtilizadores2(userLoginSEstado.getLogin(), "revisores")!=null) {
-			System.out.println("Bem-vindo " + login1);
-			Revisor.menuRevisor();
-		} else {
-			System.out.println("Credenciais inválidas!");
-		}
-		} else {
+				System.out.println("Bem-vindo " + login1);
+				Gestor.menuGestor();
+			}
+			else if(BDDriver.encontrarUtilizadores2(userLoginSEstado.getLogin(), "autores")!=null) {
+				System.out.println("Bem-vindo " + login1);
+				Autor.menuAutor();
+			}
+			else if(BDDriver.encontrarUtilizadores2(userLoginSEstado.getLogin(), "revisores")!=null) {
+				System.out.println("Bem-vindo " + login1);
+				Revisor.menuRevisor();
+			}
+			else {
+				System.out.println("Credenciais inválidas!");
+			}
+		} 
+		else {
 			System.out.println("Credenciais inválidas!");
 		}
 		
