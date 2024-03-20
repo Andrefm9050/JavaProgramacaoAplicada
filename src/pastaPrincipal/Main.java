@@ -13,6 +13,7 @@ import java.util.Date;
 import java.sql.Timestamp;
 
 import sistema.BDDriver;
+import sistema.GestorContas;
 import users.Autor;
 //import ProjetoProgramacao.Gestor;
 import users.EstadoConta;
@@ -46,8 +47,12 @@ public class Main {
 		case 1: registo(); break;
 		case 2: login(); break;
 		case 3: sair(); break;
+		case 4: teste(); break;
 		default: erro();
 		}
+	}
+	public static void teste() {
+		
 	}
 	
 	
@@ -80,24 +85,41 @@ public class Main {
 	
 	private static void registo() {
 		
+		String login2;
+		while(true) {
+			String login1 = lerDados("Insira o seu username: ");
+			if(GestorContas.pesquisarUtilizadoresUserName(login1)!=null) {
+				System.out.println("Username já existe! Insira outro username.");		//verifica se o username é único
+			}else {
+				login2 = login1;
+				break;
+			}
+		}
 		
-		
-		String login1 = lerDados("Insira o seu username: ");
 		
 		String password1 = lerDados("Insira a sua password: ");
 		
 		String nome1 = lerDados("Insira o seu nome: ");
 		
+		
+		String email2;
+		while(true) {
 		String email1 = lerDados("Insira o seu email(axzc@exmail.com): ");
+		if(GestorContas.validacaoEmail(email1)!=true) {
+			System.out.println("Email com formato inválido! Insira no seguinte formato [designação]@[entidade].[dominio]");  //verifica se o email é unico e se está no formato pretendido
+			
+		} else if(GestorContas.pesquisarUtilizadoresEmail(email1)!=null) {
+			System.out.println("O Email inserido já existe! Insira outro email.");
+		}else {
+			email2 = email1;
+			break;
+		}
+		}
 		
 		String tipo1 = lerDados("Insira o tipo de conta(Gestor, autor ou revisor): ");
 		
-		Utilizador u1 = new Utilizador(login1, password1, nome1, null, email1, tipo1);
-		
-		
+		Utilizador u1 = new Utilizador(login2, password1, nome1, null, email2, tipo1);
 		BDDriver.adicionarUtilizador(u1);
-		
-		
 	}
 	
 	private static void login() {

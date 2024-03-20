@@ -49,7 +49,19 @@ public class BDDriver {
          String formacao;
          if (tipo1.equalsIgnoreCase("Autor")) {
             morada1 = lerDados("Insira a sua morada: ");
-            nif1 = lerDados("Insira o seu nif: ");
+           
+            while(true) {
+            	nif1 = lerDados("Insira o seu nif (9 números): ");
+            	if(BDDriver.encontrarUtilizadores3(nif1, "revisores") == false || BDDriver.encontrarUtilizadores3(nif1, "autores") == false) {
+            		System.out.println("NIF já existe! Insira outro NIF.");
+            	} else if(GestorContas.validacaoNIF(nif1)!=true) {
+            		System.out.println("O seu número não tem 9 digitos! Insira novamente.");
+            	}
+            	else {
+            		break;
+            	}
+            }
+            
             telefone1 = lerDados("Insira o seu número contacto telefónico: ");
             formacao = lerDados("Insira a data de inicio de atividade no seguinte formato yyyy-mm-dd: ");
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -78,7 +90,19 @@ public class BDDriver {
 
          if (tipo1.equalsIgnoreCase("Revisor")) {
             morada1 = lerDados("Insira a sua morada: ");
-            nif1 = lerDados("Insira o seu nif: ");
+            
+            while(true) {
+            	nif1 = lerDados("Insira o seu nif (9 números): ");
+            	if((BDDriver.encontrarUtilizadores3(nif1, "revisores")==false) || (BDDriver.encontrarUtilizadores3(nif1, "autores")==false)) {
+            		System.out.println("NIF já existe! Insira outro NIF.");
+            	} else if(GestorContas.validacaoNIF(nif1)!=true) {
+            		System.out.println("O seu número não tem 9 digitos! Insira novamente.");
+            	}
+            	else {
+            		break;
+            	}
+            }
+            
             telefone1 = lerDados("Insira o seu número contacto telefónico: ");
             formacao = lerDados("Insira a sua formacao academica: ");
             String area = lerDados("Insira a sua area de especializacao: ");
@@ -218,6 +242,69 @@ public class BDDriver {
 	   
 	return null;
    }
+   
+   
+   public static boolean encontrarUtilizadores3(String nif1, String tipo1) {    // verifica se existe um utilizador na base de dados, porém verifica
+	   Connection conn = null;														 // também se o mesmo encontra-se numa tabela com um cargo (Gestor, autor, revisor)
+	   																				 // e qual o cargo.
+	   try {
+		Class.forName("org.postgresql.Driver");
+		conn = DriverManager.getConnection("jdbc:postgresql://aid.estgoh.ipc.pt:5432/db2021159661", "a2021159661", "a2021159661");
+		String queryAppend = "SELECT * FROM listar_";
+		String tipo2 = tipo1;
+		String queryAppend1 = "()";
+		
+		StringBuffer sqlQuery = new StringBuffer();
+		sqlQuery.append(queryAppend+tipo2+queryAppend1);
+        PreparedStatement ps = conn.prepareStatement(sqlQuery.toString());
+        ps.clearParameters();
+        
+        
+        
+        ResultSet rs = ps.executeQuery();
+        //int contador=0;
+        //String user[] = null;
+        while(rs.next()) {
+        	//user[contador] = rs.getString(5);
+        	String user = rs.getString(6);
+        	String pass = rs.getString(4);
+        	String mail = rs.getString(3);
+        	String estado = rs.getString(5);
+        	String nome = rs.getString(7);
+        	String nifOutro = rs.getString(9);
+        	
+        	
+        	//System.out.println(nifOutro);
+        	//System.out.println("Bem-vindo " + teste);
+        	if(nifOutro.equals(nif1)) {
+        		//System.out.println(teste);
+        		ps.close();
+        		return false;
+        		
+        	}
+        	//System.out.println(pass);
+        	//contador++;
+        	
+        }
+        
+        
+        
+        
+	} catch (ClassNotFoundException e) {
+		e.printStackTrace();
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
+	   
+	   return true;
+	   
+	   
+	 
+   }
+   
+   
+   
+   
 
    private static int lerDadosInt(String aMensagem) {
       System.out.println(aMensagem);
