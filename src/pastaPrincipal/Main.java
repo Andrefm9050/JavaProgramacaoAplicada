@@ -26,6 +26,7 @@ import users.Utilizador;
 
 public class Main {
 	
+	//
 	//Eu nao queria estar a meter isto aqui
 	//Mas nao funciona de outra forma já que o programa termina fora da função main
 	static long startmillis;
@@ -36,7 +37,7 @@ public class Main {
 	public static void main(String [] args)  {
 		startmillis = System.currentTimeMillis();
 
-		while(!BDDriver.configurarDriver("jdbc:postgresql://aid.estgoh.ipc.pt:5432/", "a2021159661", "a2021159661", "db2021159661")) {
+		while(!BDDriver.configurarDriver("jdbc:postgresql://aid.estgoh.ipc.pt:5432/", "a2021159661", "a2021159661", "db2021159661") || !GestorContas.configurarDriver("jdbc:postgresql://aid.estgoh.ipc.pt:5432/", "a2021159661", "a2021159661", "db2021159661")) {
 			System.out.println("Erro ao connectar á base de dados... a tentar de novo");
 			try {
 				Thread.sleep(2000);
@@ -74,7 +75,7 @@ public class Main {
 	}
 	
 	private static void sair() {
-		//System.out.println("Adeus " + userLoginName);
+		
 		System.out.println("A encerrar aplicação!"); 
 		endmillis = System.currentTimeMillis();
 		
@@ -139,21 +140,21 @@ public class Main {
 		String login1 = lerDados("Insira o seu username: ");
 		String password1 = lerDados("Insira a sua password: ");
 		
-		Utilizador userLoginSEstado = BDDriver.encontrarUtilizador(login1, password1);
+		Utilizador userLoginSEstado = GestorContas.encontrarUtilizador(login1, password1);
 		
 		
 		if(userLoginSEstado != null) {
 				
-			//Usa instanceof em vez disto, assim vais poupar futuras queries só para buscar os detalhes especificos de cada tipo de utilizador (Lê a sugestão no BDDriver)
-			if(BDDriver.encontrarUtilizadores2(userLoginSEstado.getLogin(), "gestores")!=null) {
+			
+			if(userLoginSEstado instanceof Gestor) {
 				System.out.println("Bem-vindo " + login1);
 				Gestor.menuGestor();
 			}
-			else if(BDDriver.encontrarUtilizadores2(userLoginSEstado.getLogin(), "autores")!=null) {
+			else if(userLoginSEstado instanceof Autor) {
 				System.out.println("Bem-vindo " + login1);
 				Autor.menuAutor();
 			}
-			else if(BDDriver.encontrarUtilizadores2(userLoginSEstado.getLogin(), "revisores")!=null) {
+			else if(userLoginSEstado instanceof Revisor) {
 				System.out.println("Bem-vindo " + login1);
 				Revisor.menuRevisor();
 			}

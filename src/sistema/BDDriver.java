@@ -57,8 +57,7 @@ public class BDDriver {
 	   return logslist.toArray(new Log[0]);
    }
    public static int adicionarUtilizador(Utilizador u1) {
-      
-
+     
       try {
 	     
          StringBuffer sqlQuery = new StringBuffer();																				///
@@ -112,7 +111,6 @@ public class BDDriver {
             	}
             	
             }
-            
             
             formacao = lerDados("Insira a data de inicio de atividade no seguinte formato yyyy-mm-dd: ");
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -193,114 +191,14 @@ public class BDDriver {
 
       return 0;
    }
-   //encontrarUtilizador deveria estar no gestorContas e não aqui, adicionalmente na listagem de utilizadores usa as 3 funções para listar as diferentes contas assim sabes que construtor deves usar, sempre devolvendo Utilizador[] pois podes usar o "instanceof" para identificar o tipo
-   public static Utilizador encontrarUtilizador(String login1, String password1) { //verifica se existe esse utilizador na base de dados em geral
-	   
-	   try {
-		
-		StringBuffer sqlQuery = new StringBuffer();
-		sqlQuery.append("SELECT * FROM listar_utilizadores()");
-        PreparedStatement ps = conn.prepareStatement(sqlQuery.toString());
-        ps.clearParameters();
-        
-        
-        
-        ResultSet rs = ps.executeQuery();
-        //int contador=0;
-        //String user[] = null;
-        while(rs.next()) {
-        	//user[contador] = rs.getString(5);
-        	int idUser = rs.getInt(1);
-        	String user = rs.getString(5);
-        	String pass = rs.getString(3);
-        	String maill = rs.getString(2);
-        	String estado = rs.getString(4);
-        	String nome = rs.getString(6);
-        	
-        	
-        	if(user.equals(login1) && pass.equals(password1)) {
-        		//System.out.println("Bem-vindo " + login1);
-        		
-        		Utilizador utilizadorNovo = new Utilizador(idUser,login1, password1, nome, EstadoConta.ativos, maill, null);
-        		ps.close();
-        		return utilizadorNovo;
-        	}
-        	//System.out.println(pass);
-        	//contador++;
-        	
-        }
-        
-        
-        
-        
-	} catch (SQLException e) {
-		e.printStackTrace();
-	}
-       
-	   
-	   
-	   return null;
-   }
-   //Usar esta função na forma publica pode ser prevenida e simplificada com a sugestão em cima
-   public static Utilizador encontrarUtilizadores2(String login1, String tipo1) {    // verifica se existe um utilizador na base de dados, porém verifica
-												 								     // também se o mesmo encontra-se numa tabela com um cargo (Gestor, autor, revisor)
-	   																				 // e qual o cargo.
-	   try {
-		
-		String queryAppend = "SELECT * FROM listar_";
-		String tipo2 = tipo1;
-		String queryAppend1 = "()";
-		
-		StringBuffer sqlQuery = new StringBuffer();
-		sqlQuery.append(queryAppend+tipo2+queryAppend1);
-        PreparedStatement ps = conn.prepareStatement(sqlQuery.toString());
-        ps.clearParameters();
-        
-        
-        
-        ResultSet rs = ps.executeQuery();
-        //int contador=0;
-        //String user[] = null;
-        while(rs.next()) {
-        	//user[contador] = rs.getString(5);
-        	int idUser = rs.getInt(1);
-        	String user = rs.getString(6);
-        	String pass = rs.getString(4);
-        	String mail = rs.getString(3);
-        	String estado = rs.getString(5);
-        	String nome = rs.getString(7);
-        	
-        	
-        	//System.out.println(user);
-        	//System.out.println("Bem-vindo " + teste);
-        	if(user.equals(login1)) {
-        		//System.out.println("Bem-vindo " + login1);
-        		
-        		Utilizador utilizadorNovo = new Utilizador(idUser,login1, pass, nome, EstadoConta.ativos, mail, tipo1);
-        		ps.close();
-        		return utilizadorNovo;
-        	}
-        	//System.out.println(pass);
-        	//contador++;
-        	
-        }
-        
-        
-        
-        
-	} catch (SQLException e) {
-		e.printStackTrace();
-	}
-	   
-	   
-	   
-	return null;
-   }
+   
+   
+  
    
    
    public static boolean encontrarUtilizadores3(String nif1, String tipo1) {    // verifica se existe um utilizador na base de dados, porém verifica
 	   																			// também se o mesmo encontra-se numa tabela com um cargo (Gestor, autor, revisor)
-	   																				 // e qual o cargo.
+	    																		 // e qual o cargo.
 	   try {
 	
 		String queryAppend = "SELECT * FROM listar_";
@@ -347,11 +245,63 @@ public class BDDriver {
 		e.printStackTrace();
 	}
 	   
-	   return true;
-	   
-	   
-	 
+	   return true; 
    }
+   
+   
+
+ 	
+ 	public static Utilizador[] listarUtilizadores() {
+		Connection conn = null;
+		try {
+			Class.forName("org.postgresql.Driver");
+			conn = DriverManager.getConnection("jdbc:postgresql://aid.estgoh.ipc.pt:5432/db2021159661", "a2021159661", "a2021159661");
+			StringBuffer sqlQuery = new StringBuffer();
+			sqlQuery.append("SELECT * FROM listar_utilizadores()");
+	        PreparedStatement ps = conn.prepareStatement(sqlQuery.toString());
+	        ps.clearParameters();
+	        
+	        
+	        
+	        ResultSet rs = ps.executeQuery();
+	        int contador=0;
+	        //String user[] = null;
+	        Utilizador[] utilizadorBuffer = new Utilizador[10];
+	        while(rs.next()) {
+	        	//user[contador] = rs.getString(5);
+	        	int idUser = rs.getInt(1);
+	        	String user = rs.getString(5);
+	        	String pass = rs.getString(3);
+	        	String maill = rs.getString(2);
+	        	String estado = rs.getString(4);
+	        	String nome = rs.getString(6);
+	        	
+	        	
+	        	//System.out.println("Bem-vindo " + login1);
+	        	utilizadorBuffer[contador] = new Utilizador(idUser,user, pass, nome, EstadoConta.ativos, maill, null);
+	        	//Utilizador utilizadorNovo = new Utilizador(idUser,user, pass, nome, EstadoConta.ativos, maill, null);
+	        	ps.close();
+	        	contador++;
+	        	
+	        	
+	        	//System.out.println(pass);
+	        	
+	        }
+	        return utilizadorBuffer;
+	        
+	        
+	        
+	        
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+		
+		return null;
+	}
    
    
    
