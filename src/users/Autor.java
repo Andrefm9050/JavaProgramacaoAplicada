@@ -10,8 +10,8 @@ public class Autor extends UniqueUtilizador{
 	private String estilo;
 	private Date dataInicioAtividade;
 	
-	public Autor(int idUser,String login, String password, String nome, EstadoConta estado, String email, String tipo) {
-		super(idUser,login, password, nome, estado, email, tipo);
+	public Autor(int idUser,String login, String password, String nome, EstadoConta estado, String email, String tipo, String nif, String telefone, String morada) {
+		super(idUser,login, password, nome, estado, email, tipo, nif, telefone, morada);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -70,5 +70,7 @@ private static int lerDadosInt(String aMensagem){
 	return(new Scanner(System.in)).nextInt();
 	
 }
+
+
 	
 }

@@ -12,7 +12,11 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import gestao.Log;
+import users.Autor;
 import users.EstadoConta;
+import users.Gestor;
+import users.Revisor;
+import users.UniqueUtilizador;
 import users.Utilizador;
 
 //Por favor converte isto para um objeto (Não uses static)
@@ -91,8 +95,9 @@ public class BDDriver {
             morada1 = lerDados("Insira a sua morada: ");
            
             while(true) {
+            	
             	nif1 = lerDados("Insira o seu nif (9 números): ");
-            	if(BDDriver.encontrarUtilizadores3(nif1, "revisores") == false || BDDriver.encontrarUtilizadores3(nif1, "autores") == false) {
+            	if(GestorContas.nifVal(nif1) == false) {
             		System.out.println("NIF já existe! Insira outro NIF.");
             	} else if(GestorContas.validacaoNIF(nif1)!=true) {
             		System.out.println("O seu número não tem 9 digitos! Insira novamente.");
@@ -142,7 +147,7 @@ public class BDDriver {
             
             while(true) {
             	nif1 = lerDados("Insira o seu nif (9 números): ");
-            	if((BDDriver.encontrarUtilizadores3(nif1, "revisores")==false) || (BDDriver.encontrarUtilizadores3(nif1, "autores")==false)) {
+            	if(GestorContas.nifVal(nif1) == false) {
             		System.out.println("NIF já existe! Insira outro NIF.");
             	} else if(GestorContas.validacaoNIF(nif1)!=true) {
             		System.out.println("O seu número não tem 9 digitos! Insira novamente.");
@@ -196,97 +201,116 @@ public class BDDriver {
   
    
    
-   public static boolean encontrarUtilizadores3(String nif1, String tipo1) {    // verifica se existe um utilizador na base de dados, porém verifica
-	   																			// também se o mesmo encontra-se numa tabela com um cargo (Gestor, autor, revisor)
-	    																		 // e qual o cargo.
-	   try {
-	
-		String queryAppend = "SELECT * FROM listar_";
-		String tipo2 = tipo1;
-		String queryAppend1 = "()";
-		
-		StringBuffer sqlQuery = new StringBuffer();
-		sqlQuery.append(queryAppend+tipo2+queryAppend1);
-        PreparedStatement ps = conn.prepareStatement(sqlQuery.toString());
-        ps.clearParameters();
-        
-        
-        
-        ResultSet rs = ps.executeQuery();
-        //int contador=0;
-        //String user[] = null;
-        while(rs.next()) {
-        	//user[contador] = rs.getString(5);
-        	String user = rs.getString(6);
-        	String pass = rs.getString(4);
-        	String mail = rs.getString(3);
-        	String estado = rs.getString(5);
-        	String nome = rs.getString(7);
-        	String nifOutro = rs.getString(9);
-        	
-        	
-        	//System.out.println(nifOutro);
-        	//System.out.println("Bem-vindo " + teste);
-        	if(nifOutro.equals(nif1)) {
-        		//System.out.println(teste);
-        		ps.close();
-        		return false;
-        		
-        	}
-        	//System.out.println(pass);
-        	//contador++;
-        	
-        }
-        
-        
-        
-        
-	} catch (SQLException e) {
-		e.printStackTrace();
-	}
-	   
-	   return true; 
-   }
    
    
 
- 	
+ 	//retificar
  	public static Utilizador[] listarUtilizadores() {
 		Connection conn = null;
 		try {
 			Class.forName("org.postgresql.Driver");
 			conn = DriverManager.getConnection("jdbc:postgresql://aid.estgoh.ipc.pt:5432/db2021159661", "a2021159661", "a2021159661");
 			StringBuffer sqlQuery = new StringBuffer();
-			sqlQuery.append("SELECT * FROM listar_utilizadores()");
-	        PreparedStatement ps = conn.prepareStatement(sqlQuery.toString());
-	        ps.clearParameters();
+			sqlQuery.append("SELECT * FROM listar_gestores()");
+	        PreparedStatement ps1 = conn.prepareStatement(sqlQuery.toString());
+	        ps1.clearParameters();
 	        
 	        
 	        
-	        ResultSet rs = ps.executeQuery();
+	        ResultSet rs = ps1.executeQuery();
 	        int contador=0;
 	        //String user[] = null;
-	        Utilizador[] utilizadorBuffer = new Utilizador[10];
+	        Utilizador[] utilizadorBuffer = new Utilizador[30];
 	        while(rs.next()) {
 	        	//user[contador] = rs.getString(5);
 	        	int idUser = rs.getInt(1);
-	        	String user = rs.getString(5);
-	        	String pass = rs.getString(3);
-	        	String maill = rs.getString(2);
-	        	String estado = rs.getString(4);
-	        	String nome = rs.getString(6);
+	        	String maill = rs.getString(3);
+	        	String pass = rs.getString(4);
+	        	String user = rs.getString(6);
+	        	String nome = rs.getString(7);
 	        	
+	        	//String teste = rs.getString(7);
 	        	
-	        	//System.out.println("Bem-vindo " + login1);
+	        	//System.out.println(teste);
 	        	utilizadorBuffer[contador] = new Utilizador(idUser,user, pass, nome, EstadoConta.ativos, maill, null);
 	        	//Utilizador utilizadorNovo = new Utilizador(idUser,user, pass, nome, EstadoConta.ativos, maill, null);
-	        	ps.close();
+	        	
 	        	contador++;
 	        	
 	        	
 	        	//System.out.println(pass);
 	        	
 	        }
+	        ps1.close();
+	        
+	        StringBuffer sqlQuery1 = new StringBuffer();
+			sqlQuery1.append("SELECT * FROM listar_autores()");
+	        PreparedStatement ps2 = conn.prepareStatement(sqlQuery1.toString());
+	        ps2.clearParameters();
+	        
+	        ResultSet rs2 = ps2.executeQuery();
+	        
+	        while(rs2.next()) {
+	        	//user[contador] = rs.getString(5);
+	        	//int idUser = rs2.getInt(1);
+	        	String user = rs2.getString(6);
+	        	String pass = rs2.getString(4);
+	        	String maill = rs2.getString(3);
+	        	String estado = rs2.getString(5);
+	        	String nome = rs2.getString(7);
+	        	
+	        	String nif = rs2.getString(9);
+	        	String telefone = rs2.getString(10);
+	        	String data = rs2.getString(12);
+	        	
+	        	//System.out.println(nif);
+	        	//if(user.equals(login1) && pass.equals(password1)) {
+	        		//System.out.println("Bem-vindo " + login1);
+	        		
+	        	utilizadorBuffer[contador] = new Autor(0,user, pass, nome, EstadoConta.ativos, maill, null, nif, null, null);
+	        		//ps1.close();
+	        		//return utilizadorNovo;
+	        	//}
+	        	
+	        	contador++;
+	        }
+	        ps2.close();
+	        
+	        StringBuffer sqlQuery2 = new StringBuffer();
+			sqlQuery2.append("SELECT * FROM listar_revisores()");
+	        PreparedStatement ps3 = conn.prepareStatement(sqlQuery2.toString());
+	        ps3.clearParameters();
+	        
+	        ResultSet rs3 = ps3.executeQuery();
+	        
+	        while(rs3.next()) {
+	        	//user[contador] = rs.getString(5);
+	        	//int idUser = rs2.getInt(1);
+	        	String user = rs3.getString(6);
+	        	String pass = rs3.getString(4);
+	        	String maill = rs3.getString(3);
+	        	String estado = rs3.getString(5);
+	        	String nome = rs3.getString(7);
+	        	
+	        	String nif = rs3.getString(9);
+	        	String telefone = rs3.getString(10);
+	        	
+	        	//System.out.println(nif);
+	        	
+	        	utilizadorBuffer[contador] = new Revisor(0,user, pass, nome, EstadoConta.ativos, maill, null, nif, null, null);
+	        	//if(user.equals(login1) && pass.equals(password1)) {
+	        		
+	        		
+	        		//Autor utilizadorNovo = new Autor(0,login1, password1, nome, EstadoConta.ativos, maill, null);
+	        		//ps1.close();
+	        		//return utilizadorNovo;
+	        	//}
+	        	
+	        	
+	        }
+	        
+	        
+	        ps3.close();
 	        return utilizadorBuffer;
 	        
 	        
@@ -297,11 +321,27 @@ public class BDDriver {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-		
-		
 		return null;
+		
+		
 	}
+ 	
+ 	
+ 	//GestorContas e recebe de listarUtilizadores
+ 	public static Utilizador encontrarUtilizador(String login1, String password1) { //verifica se existe esse utilizador na base de dados em geral
+		   BDDriver.listarUtilizadores();
+		   
+		   for(int i = 0; i<BDDriver.listarUtilizadores().length; i++) {
+			   if(BDDriver.listarUtilizadores()[i].getLogin() == login1 && BDDriver.listarUtilizadores()[i].getPassword() == password1) {
+				   return BDDriver.listarUtilizadores()[i];
+				   //System.out.println(BDDriver.listarUtilizadores()[i].getLogin());
+			   } 
+			   
+			
+		   }
+	        	   
+		   return null;
+	   }
    
    
    

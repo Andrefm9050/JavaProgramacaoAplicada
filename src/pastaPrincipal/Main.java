@@ -37,7 +37,7 @@ public class Main {
 	public static void main(String [] args)  {
 		startmillis = System.currentTimeMillis();
 
-		while(!BDDriver.configurarDriver("jdbc:postgresql://aid.estgoh.ipc.pt:5432/", "a2021159661", "a2021159661", "db2021159661") || !GestorContas.configurarDriver("jdbc:postgresql://aid.estgoh.ipc.pt:5432/", "a2021159661", "a2021159661", "db2021159661")) {
+		while(!BDDriver.configurarDriver("jdbc:postgresql://aid.estgoh.ipc.pt:5432/", "a2021159661", "a2021159661", "db2021159661")) {
 			System.out.println("Erro ao connectar á base de dados... a tentar de novo");
 			try {
 				Thread.sleep(2000);
@@ -66,6 +66,8 @@ public class Main {
 		}
 	}
 	public static void teste() {
+		
+		BDDriver.listarUtilizadores()[1].getLogin();
 		
 	}
 	
@@ -102,7 +104,7 @@ public class Main {
 		String login2;
 		while(true) {
 			String login1 = lerDados("Insira o seu username: ");
-			if(GestorContas.pesquisarUtilizadoresUserName(login1)!=null) {
+			if(GestorContas.pesquisarUtilizadoresUserName(login1).getLogin()!=null) {
 				System.out.println("Username já existe! Insira outro username.");		//verifica se o username é único
 			}else {
 				login2 = login1;
@@ -110,11 +112,8 @@ public class Main {
 			}
 		}
 		
-		
 		String password1 = lerDados("Insira a sua password: ");
-		
 		String nome1 = lerDados("Insira o seu nome: ");
-		
 		
 		String email2;
 		while(true) {
@@ -140,7 +139,7 @@ public class Main {
 		String login1 = lerDados("Insira o seu username: ");
 		String password1 = lerDados("Insira a sua password: ");
 		
-		Utilizador userLoginSEstado = GestorContas.encontrarUtilizador(login1, password1);
+		Utilizador userLoginSEstado = BDDriver.encontrarUtilizador(login1, password1);
 		
 		
 		if(userLoginSEstado != null) {
