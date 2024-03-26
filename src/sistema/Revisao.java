@@ -1,24 +1,48 @@
 package sistema;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.sql.Timestamp;
+import java.sql.Date;
 
 import users.Gestor;
 import users.Revisor;
 
 public class Revisao {
-	private Obra obra;
+	private int revisaoID;
+	private int obraID;
 	//private Autor autor; <- Ja temos um autor a partir da obra
-	private Gestor gestor;
-	private Revisor revisorResponsavel;
+	private int gestorID;
+	private int revisorResponsavel;
 	private String numeroSerie; // SEQAAAAMMDDHHMMSS (SEQ = Nrevisoes + 1, AAAAMMDDHHMMSS = Instante)
 	private Date dataRealizacao;
-	private Timestamp tempoDecorrido;
-	private ArrayList<Anotacao> anotacoes; //ou getAnotacoes() seria melhor
-	private ArrayList<String> observacoes; //ou getObservacoes() seria melhor
+	private Date tempoDecorrido;
+	private Anotacao[] anotacoes; //ou getAnotacoes() seria melhor
+	private String[] observacoes; //ou getObservacoes() seria melhor
 	private double custo;
-	private ArrayList<Revisor> revisoresRecusados; //ou getRevisorRecusados() seria melhor
+	private Integer[] revisoresRecusados; //ou getRevisorRecusados() seria melhor
 	private EstadoRevisao estado;
 	
+	public Revisao(int revID, int obraID, int gestorID, int revisorResponsavel, String numeroSerie, Date dataRealizacao,
+			Date tempoDecorrido, Anotacao[] anotacoes, String[] observacoes, double custo,
+			Integer[] revisoresRecusados, EstadoRevisao estado) {
+		this.obraID = obraID;
+		this.gestorID = gestorID;
+		this.revisorResponsavel = revisorResponsavel;
+		this.numeroSerie = numeroSerie;
+		this.dataRealizacao = dataRealizacao;
+		this.tempoDecorrido = tempoDecorrido;
+		this.anotacoes = anotacoes;
+		this.observacoes = observacoes;
+		this.custo = custo;
+		this.revisoresRecusados = revisoresRecusados;
+		this.estado = estado;
+	}
+	public void setAnotacoes(Anotacao[] an) {
+		anotacoes = an;
+	}
+	public void setObservacoes(String[] obs) {
+		observacoes = obs;
+	}
+	public void setRevisoresRec(Integer[] rev) {
+		revisoresRecusados = rev;
+	}
 }

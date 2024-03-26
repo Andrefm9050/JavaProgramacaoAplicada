@@ -36,7 +36,6 @@ public class Main {
 	
 	public static void main(String [] args)  {
 		startmillis = System.currentTimeMillis();
-
 		while(!BDDriver.configurarDriver("jdbc:postgresql://aid.estgoh.ipc.pt:5432/", "a2021159661", "a2021159661", "db2021159661")) {
 			System.out.println("Erro ao connectar á base de dados... a tentar de novo");
 			try {
@@ -82,6 +81,7 @@ public class Main {
 		endmillis = System.currentTimeMillis();
 		
 		PrintTimeStats(startmillis,endmillis);
+		BDDriver.fecharConexao();
 		System.exit(0);								
 	}
 	

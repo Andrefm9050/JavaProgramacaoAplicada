@@ -1,5 +1,10 @@
 package sistema;
 
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -17,11 +22,15 @@ import users.EstadoConta;
 import users.Gestor;
 import users.Revisor;
 import users.UniqueUtilizador;
+
+import users.Revisor;
+
 import users.Utilizador;
 
 //Por favor converte isto para um objeto (Não uses static)
 public class BDDriver {
    static Connection conn = null;
+   
    public static boolean configurarDriver(String link,String username,String password,String bd) {
 	   try {
 		Class.forName("org.postgresql.Driver");
@@ -29,6 +38,7 @@ public class BDDriver {
 		return false;
 	}
 	   try {
+		   if(conn != null && !conn.isClosed()) conn.close();
 		conn = DriverManager.getConnection(link + bd, username, password);
 	} catch (SQLException e) {
 		return false;
@@ -198,9 +208,58 @@ public class BDDriver {
    }
    
    
-  
-   
-   
+
+   public static boolean encontrarUtilizadores3(String nif1, String tipo1) {    // verifica se existe um utilizador na base de dados, porém verifica
+	   																			// também se o mesmo encontra-se numa tabela com um cargo (Gestor, autor, revisor)
+	    																		 // e qual o cargo.
+	   try {
+	
+		String queryAppend = "SELECT * FROM listar_";
+		String tipo2 = tipo1;
+		String queryAppend1 = "()";
+		
+		StringBuffer sqlQuery = new StringBuffer();
+		sqlQuery.append(queryAppend+tipo2+queryAppend1);
+        PreparedStatement ps = conn.prepareStatement(sqlQuery.toString());
+        ps.clearParameters();
+        
+        
+        
+        ResultSet rs = ps.executeQuery();
+        //int contador=0;
+        //String user[] = null;
+        while(rs.next()) {
+        	//user[contador] = rs.getString(5);
+        	String user = rs.getString(6);
+        	String pass = rs.getString(4);
+        	String mail = rs.getString(3);
+        	String estado = rs.getString(5);
+        	String nome = rs.getString(7);
+        	String nifOutro = rs.getString(9);
+        	
+        	
+        	//System.out.println(nifOutro);
+        	//System.out.println("Bem-vindo " + teste);
+        	if(nifOutro.equals(nif1)) {
+        		//System.out.println(teste);
+        		ps.close();
+        		return false;
+        		
+        	}
+        	//System.out.println(pass);
+        	//contador++;
+        	
+        }
+        
+        
+        
+        
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
+	   
+	   return true; 
+   }
    
    
 
@@ -326,6 +385,7 @@ public class BDDriver {
 		
 	}
  	
+
  	
  	//GestorContas e recebe de listarUtilizadores
  	public static Utilizador encontrarUtilizador(String login1, String password1) { //verifica se existe esse utilizador na base de dados em geral
@@ -342,10 +402,86 @@ public class BDDriver {
 	        	   
 		   return null;
 	   }
+
+ 	public static Revisao[] listarRevisoes() {
+ 		ArrayList<Revisao> revisoes = new ArrayList<Revisao>();
+ 		try {
+ 		PreparedStatement ps = conn.prepareStatement("SELECT * FROM listar_revisoes()");
+	    ResultSet rs = ps.executeQuery();
+	    int revisaoID = rs.getInt(5);
+	    int revisorResID = rs.getInt(6);
+	    int obraID = rs.getInt(7);
+	    int gestorID = rs.getInt(9);
+	    
+	    Revisao rev = new Revisao(
+	    		revisaoID,
+	    		obraID,
+	    		gestorID,
+	    		revisorResID,
+	    		rs.getString(3),
+	    		rs.getDate(2),
+	    		rs.getDate(4),
+	    		null,
+	    		null,
+	    		rs.getDouble(1),
+	    		null,
+	    		EstadoRevisao.intToEstado(rs.getInt(8)));
+	    ps.close();
+	    
+	    
+	    //Revisores Recusados
+	    ps = conn.prepareStatement("SELECT * FROM listar_revisor_recusado_revisao(?)");
+	    ps.setInt(1, revisaoID);
+	    rs = ps.executeQuery();
+	    ArrayList<Integer> revisores = new ArrayList<Integer>();
+	    while(rs.next()) {
+	    revisores.add(rs.getInt(1));
+	    }
+	    rev.setRevisoresRec(revisores.toArray(new Integer[0]));
+	    ps.close();
+	    
+	    //Observacoes
+	    ps = conn.prepareStatement("SELECT * FROM listar_observacao_de_revisao(?)");
+	    ps.setInt(1, revisaoID);
+	    rs = ps.executeQuery();
+	    
+	    ArrayList<String> anotacoes = new ArrayList<String>();
+	    while(rs.next()) {
+	    	anotacoes.add(rs.getString(3));
+	    }
+	    rev.setObservacoes(anotacoes.toArray(new String[0]));
+	    ps.close();
+	    
+	    //Anotacoes
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+ 		}
+ 		catch(Exception e) {
+ 			e.printStackTrace();
+ 		}
+ 		
+ 		return revisoes.toArray(new Revisao[0]);
+ 	}
    
    
-   
-   
+   public static void fecharConexao() {
+	   try {
+		if(conn != null && !conn.isClosed()) {
+			   try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		   }
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
+   }
 
    private static int lerDadosInt(String aMensagem) {
       System.out.println(aMensagem);
