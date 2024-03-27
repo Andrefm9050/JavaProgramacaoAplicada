@@ -66,7 +66,7 @@ public class Main {
 	}
 	public static void teste() {
 		
-		BDDriver.listarUtilizadores()[1].getLogin();
+		System.out.println(BDDriver.listarUtilizadores().length);
 		
 	}
 	

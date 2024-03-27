@@ -209,61 +209,11 @@ public class BDDriver {
    
    
 
-   public static boolean encontrarUtilizadores3(String nif1, String tipo1) {    // verifica se existe um utilizador na base de dados, porém verifica
-	   																			// também se o mesmo encontra-se numa tabela com um cargo (Gestor, autor, revisor)
-	    																		 // e qual o cargo.
-	   try {
-	
-		String queryAppend = "SELECT * FROM listar_";
-		String tipo2 = tipo1;
-		String queryAppend1 = "()";
-		
-		StringBuffer sqlQuery = new StringBuffer();
-		sqlQuery.append(queryAppend+tipo2+queryAppend1);
-        PreparedStatement ps = conn.prepareStatement(sqlQuery.toString());
-        ps.clearParameters();
-        
-        
-        
-        ResultSet rs = ps.executeQuery();
-        //int contador=0;
-        //String user[] = null;
-        while(rs.next()) {
-        	//user[contador] = rs.getString(5);
-        	String user = rs.getString(6);
-        	String pass = rs.getString(4);
-        	String mail = rs.getString(3);
-        	String estado = rs.getString(5);
-        	String nome = rs.getString(7);
-        	String nifOutro = rs.getString(9);
-        	
-        	
-        	//System.out.println(nifOutro);
-        	//System.out.println("Bem-vindo " + teste);
-        	if(nifOutro.equals(nif1)) {
-        		//System.out.println(teste);
-        		ps.close();
-        		return false;
-        		
-        	}
-        	//System.out.println(pass);
-        	//contador++;
-        	
-        }
-        
-        
-        
-        
-	} catch (SQLException e) {
-		e.printStackTrace();
-	}
-	   
-	   return true; 
-   }
+   
    
    
 
- 	//retificar
+ 	
  	public static Utilizador[] listarUtilizadores() {
 		Connection conn = null;
 		try {
@@ -279,7 +229,7 @@ public class BDDriver {
 	        ResultSet rs = ps1.executeQuery();
 	        int contador=0;
 	        //String user[] = null;
-	        Utilizador[] utilizadorBuffer = new Utilizador[30];
+	        Utilizador[] utilizadorBuffer = new Utilizador[20];
 	        while(rs.next()) {
 	        	//user[contador] = rs.getString(5);
 	        	int idUser = rs.getInt(1);

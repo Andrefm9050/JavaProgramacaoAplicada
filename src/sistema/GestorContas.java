@@ -90,7 +90,9 @@ public class GestorContas {
 	
 	public static Utilizador pesquisarUtilizadoresUserName(String login1) { 
  		int tamanhoArray;
- 		
+ 		if(BDDriver.listarUtilizadores().length != 0) {
+ 			
+ 		}
  		tamanhoArray = BDDriver.listarUtilizadores().length;
  		Utilizador[] utilizadorBuffer = new Utilizador[tamanhoArray];
  		//utilizadorBuffer = BDDriver.listarUtilizadores();
