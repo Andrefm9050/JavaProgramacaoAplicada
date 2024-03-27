@@ -215,10 +215,8 @@ public class BDDriver {
 
  	
  	public static Utilizador[] listarUtilizadores() {
-		Connection conn = null;
 		try {
-			Class.forName("org.postgresql.Driver");
-			conn = DriverManager.getConnection("jdbc:postgresql://aid.estgoh.ipc.pt:5432/db2021159661", "a2021159661", "a2021159661");
+			
 			StringBuffer sqlQuery = new StringBuffer();
 			sqlQuery.append("SELECT * FROM listar_gestores()");
 	        PreparedStatement ps1 = conn.prepareStatement(sqlQuery.toString());
@@ -325,8 +323,6 @@ public class BDDriver {
 	        
 	        
 	        
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -339,11 +335,11 @@ public class BDDriver {
  	
  	//GestorContas e recebe de listarUtilizadores
  	public static Utilizador encontrarUtilizador(String login1, String password1) { //verifica se existe esse utilizador na base de dados em geral
-		   BDDriver.listarUtilizadores();
+		   Utilizador[] utilizadores = listarUtilizadores();
 		   
-		   for(int i = 0; i<BDDriver.listarUtilizadores().length; i++) {
-			   if(BDDriver.listarUtilizadores()[i].getLogin() == login1 && BDDriver.listarUtilizadores()[i].getPassword() == password1) {
-				   return BDDriver.listarUtilizadores()[i];
+		   for(int i = 0; i<utilizadores.length; i++) {
+			   if(utilizadores[i].getLogin() == login1 && utilizadores[i].getPassword() == password1) {
+				   return utilizadores[i];
 				   //System.out.println(BDDriver.listarUtilizadores()[i].getLogin());
 			   } 
 			   
@@ -375,6 +371,7 @@ public class BDDriver {
 	    		null,
 	    		rs.getDouble(1),
 	    		null,
+	    		null,
 	    		EstadoRevisao.intToEstado(rs.getInt(8)));
 	    ps.close();
 	    
@@ -395,19 +392,48 @@ public class BDDriver {
 	    ps.setInt(1, revisaoID);
 	    rs = ps.executeQuery();
 	    
-	    ArrayList<String> anotacoes = new ArrayList<String>();
+	    ArrayList<String> observacoes = new ArrayList<String>();
 	    while(rs.next()) {
-	    	anotacoes.add(rs.getString(3));
+	    	observacoes.add(rs.getString(3));
 	    }
-	    rev.setObservacoes(anotacoes.toArray(new String[0]));
+	    rev.setObservacoes(observacoes.toArray(new String[0]));
 	    ps.close();
 	    
 	    //Anotacoes
+	    ps = conn.prepareStatement("SELECT * FROM listar_anotacao_de_revisao(?)");
+	    ps.setInt(1, revisaoID);
+	    rs = ps.executeQuery();
 	    
+	    ArrayList<Anotacao> anotacoes = new ArrayList<Anotacao>();
+	    while(rs.next()) {
+	    	anotacoes.add(new Anotacao(
+	    			rs.getInt(1),
+	    			rs.getString(4),
+	    			rs.getInt(5),
+	    			rs.getInt(6),
+	    			rs.getDate(3)
+	    			));
+	    }
+	    rev.setAnotacoes(anotacoes.toArray(new Anotacao[0]));
+	    ps.close();
 	    
+	    //Licensas
+	    ps = conn.prepareStatement("SELECT * FROM listar_licensas_de_revisao(?);");
+	    ps.setInt(1, revisaoID);
+	    rs = ps.executeQuery();
+	    ArrayList<Licensa> licensas = new ArrayList<Licensa>();
+	    while(rs.next()) {
+	    	licensas.add(new Licensa(
+	    			rs.getInt(1),
+	    			rs.getInt(2),
+	    			rs.getString(3),
+	    			rs.getInt(4),
+	    			rs.getDate(5)
+	    			));
+	    }
+	    rev.setLicensas(licensas.toArray(new Licensa[0]));
 	    
-	    
-	    
+	    revisoes.add(rev);
 	    
 	    
  		}

@@ -20,10 +20,11 @@ public class Revisao {
 	private double custo;
 	private Integer[] revisoresRecusados; //ou getRevisorRecusados() seria melhor
 	private EstadoRevisao estado;
+	private Licensa[] licensas;
 	
 	public Revisao(int revID, int obraID, int gestorID, int revisorResponsavel, String numeroSerie, Date dataRealizacao,
 			Date tempoDecorrido, Anotacao[] anotacoes, String[] observacoes, double custo,
-			Integer[] revisoresRecusados, EstadoRevisao estado) {
+			Integer[] revisoresRecusados,Licensa[] licensas, EstadoRevisao estado) {
 		this.obraID = obraID;
 		this.gestorID = gestorID;
 		this.revisorResponsavel = revisorResponsavel;
@@ -35,6 +36,7 @@ public class Revisao {
 		this.custo = custo;
 		this.revisoresRecusados = revisoresRecusados;
 		this.estado = estado;
+		this.licensas = licensas;
 	}
 	public void setAnotacoes(Anotacao[] an) {
 		anotacoes = an;
@@ -44,5 +46,8 @@ public class Revisao {
 	}
 	public void setRevisoresRec(Integer[] rev) {
 		revisoresRecusados = rev;
+	}
+	public void setLicensas(Licensa[] lic) {
+		licensas = lic;
 	}
 }
