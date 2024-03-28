@@ -10,6 +10,7 @@ public class Utilizador {
 	private String tipo;
 	
 	
+	
 	public Utilizador(int idUser,String login, String password, String nome, EstadoConta estado, String email, String tipo) {
 		super();
 		this.idUser = idUser;

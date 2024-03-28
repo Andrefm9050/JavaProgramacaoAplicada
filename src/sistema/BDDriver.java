@@ -215,6 +215,8 @@ public class BDDriver {
 
  	
  	public static Utilizador[] listarUtilizadores() {
+ 		ArrayList<Utilizador> utilizadorNovo = new ArrayList<Utilizador>();
+ 		
 		try {
 			
 			StringBuffer sqlQuery = new StringBuffer();
@@ -236,10 +238,10 @@ public class BDDriver {
 	        	String user = rs.getString(6);
 	        	String nome = rs.getString(7);
 	        	
-	        	//String teste = rs.getString(7);
-	        	
+	        	//String teste = rs.getString(7);w
+	        	utilizadorNovo.add(new Utilizador(idUser,user, pass, nome, EstadoConta.ativos, maill, null));
 	        	//System.out.println(teste);
-	        	utilizadorBuffer[contador] = new Utilizador(idUser,user, pass, nome, EstadoConta.ativos, maill, null);
+	        	//utilizadorBuffer[contador] = new Utilizador(idUser,user, pass, nome, EstadoConta.ativos, maill, null);
 	        	//Utilizador utilizadorNovo = new Utilizador(idUser,user, pass, nome, EstadoConta.ativos, maill, null);
 	        	
 	        	contador++;
@@ -248,6 +250,7 @@ public class BDDriver {
 	        	//System.out.println(pass);
 	        	
 	        }
+	        
 	        ps1.close();
 	        
 	        StringBuffer sqlQuery1 = new StringBuffer();
@@ -273,8 +276,8 @@ public class BDDriver {
 	        	//System.out.println(nif);
 	        	//if(user.equals(login1) && pass.equals(password1)) {
 	        		//System.out.println("Bem-vindo " + login1);
-	        		
-	        	utilizadorBuffer[contador] = new Autor(0,user, pass, nome, EstadoConta.ativos, maill, null, nif, null, null);
+	        	utilizadorNovo.add(new Autor(0,user, pass, nome, EstadoConta.ativos, maill, null, nif, null, null));
+	        	//utilizadorBuffer[contador] = new Autor(0,user, pass, nome, EstadoConta.ativos, maill, null, nif, null, null);
 	        		//ps1.close();
 	        		//return utilizadorNovo;
 	        	//}
@@ -303,8 +306,8 @@ public class BDDriver {
 	        	String telefone = rs3.getString(10);
 	        	
 	        	//System.out.println(nif);
-	        	
-	        	utilizadorBuffer[contador] = new Revisor(0,user, pass, nome, EstadoConta.ativos, maill, null, nif, null, null);
+	        	utilizadorNovo.add(new Revisor(0,user, pass, nome, EstadoConta.ativos, maill, null, nif, null, null));
+	        	//utilizadorBuffer[contador] = new Revisor(0,user, pass, nome, EstadoConta.ativos, maill, null, nif, null, null);
 	        	//if(user.equals(login1) && pass.equals(password1)) {
 	        		
 	        		
@@ -318,7 +321,7 @@ public class BDDriver {
 	        
 	        
 	        ps3.close();
-	        return utilizadorBuffer;
+	        //return utilizadorBuffer;
 	        
 	        
 	        
@@ -326,7 +329,7 @@ public class BDDriver {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return null;
+		return utilizadorNovo.toArray(new Utilizador[0]);
 		
 		
 	}
