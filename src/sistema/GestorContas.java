@@ -12,6 +12,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 
 public class GestorContas {
@@ -89,16 +90,14 @@ public class GestorContas {
 	}
 	
 	public static Utilizador pesquisarUtilizadoresUserName(String login1) { 
- 		int tamanhoArray;
  		if(BDDriver.listarUtilizadores().length != 0) {
  			
  		}
- 		tamanhoArray = BDDriver.listarUtilizadores().length;
- 		Utilizador[] utilizadorBuffer = new Utilizador[tamanhoArray];
+ 		Utilizador[] utilizadorBuffer = BDDriver.listarUtilizadores();
  		//utilizadorBuffer = BDDriver.listarUtilizadores();
  		   
- 	    for(int i=0; i<tamanhoArray; i++) {
- 	    	if(BDDriver.listarUtilizadores()[i].getLogin() == login1) {
+ 	    for(int i=0; i<utilizadorBuffer.length; i++) {
+ 	    	if(utilizadorBuffer[i].getLogin() == login1) {
  	    		return BDDriver.listarUtilizadores()[i];
  	    	}
  	    }
@@ -107,7 +106,7 @@ public class GestorContas {
  	}
 	
 	public static Utilizador encontrarUtilizador(String login1, String password1) { //verifica se existe esse utilizador na base de dados em geral
-		   BDDriver.listarUtilizadores();
+		   //BDDriver.listarUtilizadores();
 		   
 		   for(int i = 0; i<BDDriver.listarUtilizadores().length; i++) {
 			   if(BDDriver.listarUtilizadores()[i].getLogin() == login1 && BDDriver.listarUtilizadores()[i].getPassword() == password1) {
@@ -120,6 +119,16 @@ public class GestorContas {
 	        	   
 		   return null;
 	   }
+	public static Gestor[] listarGestores() {
+		ArrayList<Gestor> utilizadores = new ArrayList<Gestor>();
+		
+		for(var user : BDDriver.listarUtilizadores()) {
+			if(user instanceof Gestor) {
+				utilizadores.add((Gestor)user);
+			}
+		}
+		return utilizadores.toArray(new Gestor[0]);
+	}
 	
 	
 	

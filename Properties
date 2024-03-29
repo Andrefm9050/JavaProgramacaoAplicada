@@ -1,5 +1,5 @@
-ip=estgoh.ipc.pt
+ip=188.80.3.21
 port=5432
-bd=db2021159661
-login=a2021159661
-password=a2021159661
+bd=PA
+login=postgres
+password=postgres_estgoh

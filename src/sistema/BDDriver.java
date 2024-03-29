@@ -198,19 +198,20 @@ public class BDDriver {
          String nome1 = u1.getNome();
          int idUser;
          if (tipo1.equalsIgnoreCase("Gestor")) {
-            sqlQuery.append("SELECT * FROM criar_gestor(?, ? , ?, 0 , ?)");  		// 4 era o 0
+            sqlQuery.append("SELECT * FROM criar_gestor(?, ? , ?, ? , ?)");  		// 4 era o 0
             PreparedStatement ps = conn.prepareStatement(sqlQuery.toString());		//
             //EstadoConta estado = EstadoConta.por_registar;
             ps.clearParameters();													//
             ps.setString(1, nome1);			 								 		//funcao para criar gestor base de dados com inserção de variaveis do u1
             ps.setString(2, email1);         								 		//
             ps.setString(3, password1);  										    //
-            //ps.setObject(4, estado);
-            ps.setString(4, login1);
+            ps.setInt(4, EstadoConta.estadoToInt(u1.getEstado()));
+            ps.setString(5, login1);
             ResultSet rs = ps.executeQuery();
             rs.next();
             idUser = rs.getInt(1);      //recebe o id do utilizador proveniente da base de dados
             //System.out.println(idUser);
+            
             ps.close();
             return idUser;
          }
@@ -250,18 +251,19 @@ public class BDDriver {
             LocalDate date = LocalDate.parse(formacao, formatter);
             Date completedDate = Date.valueOf(date);
             String estiloLiterario = lerDados("Insira o seu estilo literário(ex: drama, ficção, thriller): ");
-            sqlQuery.append("SELECT * FROM criar_autor(?, ?, ? , 0 , ?, ?, ?, ?, ?, ?)");
+            sqlQuery.append("SELECT * FROM criar_autor(?, ?, ? , ? , ?, ?, ?, ?, ?, ?)");
             PreparedStatement ps = conn.prepareStatement(sqlQuery.toString());
             ps.clearParameters();
             ps.setString(1, nome1);
             ps.setString(2, email1);
             ps.setString(3, password1);
-            ps.setString(4, login1);
-            ps.setString(5, morada1);
-            ps.setString(6, nif1);
-            ps.setString(7, telefone1);
-            ps.setDate(8, completedDate);
-            ps.setString(9, estiloLiterario);
+            ps.setInt(4, EstadoConta.estadoToInt(u1.getEstado()));
+            ps.setString(5, login1);
+            ps.setString(6, morada1);
+            ps.setString(7, nif1);
+            ps.setString(8, telefone1);
+            ps.setDate(9, completedDate);
+            ps.setString(10, estiloLiterario);
             ResultSet rs = ps.executeQuery();
             rs.next();
             idUser = rs.getInt(1);
@@ -296,18 +298,19 @@ public class BDDriver {
             }
             formacao = lerDados("Insira a sua formacao academica: ");
             String area = lerDados("Insira a sua area de especializacao: ");
-            sqlQuery.append("SELECT * FROM criar_revisor(?, ? , ?, 0 , ?, ?, ?, ?, ?, ?)");
+            sqlQuery.append("SELECT * FROM criar_revisor(?, ? , ?, ? , ?, ?, ?, ?, ?, ?)");
             PreparedStatement ps = conn.prepareStatement(sqlQuery.toString());
             ps.clearParameters();
             ps.setString(1, nome1);
             ps.setString(2, email1);
             ps.setString(3, password1);
-            ps.setString(4, login1);
-            ps.setString(5, morada1);
-            ps.setString(6, nif1);
-            ps.setString(7, telefone1);
-            ps.setString(8, formacao);
-            ps.setString(9, area);
+            ps.setInt(4, EstadoConta.estadoToInt(u1.getEstado()));
+            ps.setString(5, login1);
+            ps.setString(6, morada1);
+            ps.setString(7, nif1);
+            ps.setString(8, telefone1);
+            ps.setString(9, formacao);
+            ps.setString(10, area);
             ResultSet rs = ps.executeQuery();
             rs.next();
             idUser = rs.getInt(1);
@@ -359,7 +362,7 @@ public class BDDriver {
 	        	
 	        	
 	        	//String teste = rs.getString(7);w
-	        	utilizadorNovo.add(new Utilizador(idUser,user, pass, nome, EstadoConta.intToEstado(estado), maill, null));
+	        	utilizadorNovo.add(new Gestor(idUser,user, pass, nome, EstadoConta.intToEstado(estado), maill, null));
 	        	//System.out.println(teste);
 	        	//utilizadorBuffer[contador] = new Utilizador(idUser,user, pass, nome, EstadoConta.ativos, maill, null);
 	        	//Utilizador utilizadorNovo = new Utilizador(idUser,user, pass, nome, EstadoConta.ativos, maill, null);

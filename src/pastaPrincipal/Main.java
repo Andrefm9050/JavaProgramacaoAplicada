@@ -42,10 +42,22 @@ public class Main {
 		if(choice == 's' || choice == 'S')
 			BDDriver.menuConfiguracao();
 		
+		
 		while(!BDDriver.configurarDriverPorFicheiro("Properties")) {
 			System.out.println("Erro ao connectar á base de dados... a tentar de novo");
 			try {
 				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+			}
+		}
+		
+		
+		while(GestorContas.listarGestores().length == 0) {
+			System.out.println("Nao existe nenhuma conta de administrador, por favor insira uma nova");
+			registo("Gestor",true);
+			System.out.println("Obrigado! Agora pode se registar com uma conta diferente ou fazer login com a mesma conta");
+			try {
+				Thread.sleep(500);
 			} catch (InterruptedException e) {
 			}
 		}
@@ -63,7 +75,7 @@ public class Main {
 	
 	private static void executaOpcao(int aOpcao){
 		switch(aOpcao) {
-		case 1: registo(); break;
+		case 1: registo(lerDados("Insira o tipo de conta(Gestor, autor ou revisor): "),false); break;
 		case 2: login(); break;
 		case 3: sair(); break;
 		case 4: teste(); break;
@@ -105,12 +117,15 @@ public class Main {
 		"("+segundos+ " Segundos; "+minutos+" Minutos; "+horas+ " Horas)");
 	}
 	
-	private static void registo() {
+	private static void registo(String tipo1,boolean primeiraconta) {
 		
+
 		String login2;
+		
 		while(true) {
 			String login1 = lerDados("Insira o seu username: ");
-			if(GestorContas.pesquisarUtilizadoresUserName(login1).getLogin()!=null) {
+			
+			if(GestorContas.pesquisarUtilizadoresUserName(login1)!=null) {
 				System.out.println("Username já existe! Insira outro username.");		//verifica se o username é único
 			}else {
 				login2 = login1;
@@ -127,7 +142,9 @@ public class Main {
 		if(GestorContas.validacaoEmail(email1)!=true) {
 			System.out.println("Email com formato inválido! Insira no seguinte formato [designação]@[entidade].[dominio]");  //verifica se o email é unico e se está no formato pretendido
 			
-		} else if(GestorContas.pesquisarUtilizadoresEmail(email1)!=null) {
+		}
+		else {continue;}
+		if(GestorContas.pesquisarUtilizadoresEmail(email1)!=null) {
 			System.out.println("O Email inserido já existe! Insira outro email.");
 		}else {
 			email2 = email1;
@@ -135,9 +152,9 @@ public class Main {
 		}
 		}
 		
-		String tipo1 = lerDados("Insira o tipo de conta(Gestor, autor ou revisor): ");
 		
-		Utilizador u1 = new Utilizador(0,login2, password1, nome1, null, email2, tipo1); //<- Aqui nao ha problema o id=0 pois estamos a inserir
+		
+		Utilizador u1 = new Utilizador(0,login2, password1, nome1, primeiraconta ? EstadoConta.ativos : EstadoConta.por_registar, email2, tipo1); //<- Aqui nao ha problema o id=0 pois estamos a inserir
 		BDDriver.adicionarUtilizador(u1);
 		
 	}
