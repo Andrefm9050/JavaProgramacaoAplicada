@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import gestao.Log;
+import pastaPrincipal.Main;
 import users.Autor;
 import users.EstadoConta;
 import users.Gestor;
@@ -27,11 +28,126 @@ import users.Revisor;
 
 import users.Utilizador;
 
-//Por favor converte isto para um objeto (Não uses static)
 public class BDDriver {
    static Connection conn = null;
    
-   public static boolean configurarDriver(String link,String username,String password,String bd) {
+   public static void menuConfiguracao() {
+	   ManipulaFicheirosTexto fich = new ManipulaFicheirosTexto();
+	   
+	   System.out.println("Menu de configuracao BD");
+	   int index = 0;
+	   int input = 0;
+	   
+	   do {
+		   index = 0;
+		   if(!fich.abrirFicheiroLeitura("Properties")) {
+			   
+			   fich.abrirFicheiroEscrita("Properties",false);
+			   fich.escreverFicheiro(new String[]{"ip=","port=","bd=","login=","password="});
+			   fich.fecharFicheiroEscrita();
+			   index = -1;
+			   continue;
+		   }
+		   System.out.println("Selectione uma propriedade com o seu numero:");
+		   String[] linhas = fich.lerFicheiro();
+		   for(var linha : linhas) {
+			   String[] conts = linha.split("=");
+			   System.out.println(index + "- " + conts[0] + "=" + (conts.length == 2 ? conts[1] : ""));
+			   index++;
+		   }
+		   System.out.println(index + "- Sair");
+		   input = Main.lerDadosInt(":");
+		   try {
+			   linhas[input] = linhas[input].split("=")[0] + "=" + Main.lerDados("Novo Valor: ");
+		   }
+		   catch(Exception e) {
+			   input = index;
+		   }
+		   finally {
+			   fich.fecharFicheiroLeitura();
+		   }
+		   if(input != index) {
+			   fich.abrirFicheiroEscrita("Properties", false);
+			   fich.escreverFicheiro(linhas);
+			   fich.fecharFicheiroEscrita();
+		   }
+		   
+	   }while(input != index);
+	   
+	   
+   }
+
+   public static boolean configurarDriverPorFicheiro(String caminho) {
+	   ManipulaFicheirosTexto fich = new ManipulaFicheirosTexto();
+	   if(!fich.abrirFicheiroLeitura(caminho)) return false;
+	   
+	   String ip = "";
+	   String port = "";
+	   String bd = "";
+	   String login = "";
+	   String password = "";
+	   
+	   for(var linha : fich.lerFicheiro()) {
+		   String property=linha.split("=")[0];
+		   switch(property) {
+		   case "ip":
+			   try {
+			   ip = linha.split("=")[1];
+			   }
+			   catch (Exception e){
+				   ip = "";
+			   }
+			   break;
+		   case "port":
+			   try {
+				   port = linha.split("=")[1];
+				   }
+				   catch (Exception e){
+					   port = "";
+				   }
+				   break;
+		   case "bd":
+			   try {
+				   bd = linha.split("=")[1];
+			   }
+			   catch (Exception e){
+				   bd = "";
+			   }
+			   break;
+		   case "login":
+			   try {
+				   login = linha.split("=")[1];
+				   }
+				   catch (Exception e){
+					   login = "";
+				   }
+				   break;
+		   case "password":
+			   try {
+				   password = linha.split("=")[1];
+				   }
+				   catch (Exception e){
+					   password = "";
+				   }
+				   break;
+			
+		   }
+	   }
+	   
+	   return configurarDriver(ip,port,login,password,bd);
+   }
+   
+   static String link;
+   static String port;
+   static String username;
+   static String password;
+   static String bd;
+   public static boolean configurarDriver(String link,String port,String username,String password,String bd) {
+	   BDDriver.link = link;
+	   BDDriver.port = port;
+	   BDDriver.username = username;
+	   BDDriver.password = password;
+	   BDDriver.bd = bd;
 	   try {
 		Class.forName("org.postgresql.Driver");
 	} catch (ClassNotFoundException e) {
@@ -39,7 +155,7 @@ public class BDDriver {
 	}
 	   try {
 		   if(conn != null && !conn.isClosed()) conn.close();
-		conn = DriverManager.getConnection(link + bd, username, password);
+		conn = DriverManager.getConnection("jdbc:postgresql://"+BDDriver.link+":"+BDDriver.port+"/" + BDDriver.bd, BDDriver.username, BDDriver.password);
 	} catch (SQLException e) {
 		return false;
 	}

@@ -36,7 +36,13 @@ public class Main {
 	
 	public static void main(String [] args)  {
 		startmillis = System.currentTimeMillis();
-		while(!BDDriver.configurarDriver("jdbc:postgresql://aid.estgoh.ipc.pt:5432/", "a2021159661", "a2021159661", "db2021159661")) {
+		char choice = 'n';
+		System.out.println("Deseja configurar a configuração de base de dados? (s/n)");
+		choice = lerDados("").charAt(0);
+		if(choice == 's' || choice == 'S')
+			BDDriver.menuConfiguracao();
+		
+		while(!BDDriver.configurarDriverPorFicheiro("Properties")) {
 			System.out.println("Erro ao connectar á base de dados... a tentar de novo");
 			try {
 				Thread.sleep(2000);
@@ -174,13 +180,13 @@ public class Main {
 	
 	
 	
-	private static int lerDadosInt(String aMensagem){
-		System.out.println(aMensagem);
+	public static int lerDadosInt(String aMensagem){
+		System.out.print(aMensagem);
 		return(new Scanner(System.in)).nextInt();
 		
 	}
-	private static String lerDados(String aMensagem){
-		System.out.println(aMensagem);
+	public static String lerDados(String aMensagem){
+		System.out.print(aMensagem);
 		return(new Scanner(System.in)).nextLine();
 	}
 	

@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Vector;
 
 public class ManipulaFicheirosTexto {
@@ -25,14 +27,11 @@ public class ManipulaFicheirosTexto {
 
 	    if(aCaminho != null && aCaminho.length() >0) {
 	      ficheiroLeitura = new File(aCaminho);
-
-	      if(!ficheiroLeitura.exists()) {
-	    	  try {
-				ficheiroLeitura.createNewFile();
-			} catch (IOException e) {
-				System.out.println("Houve um erro ao criar o ficheiro " + aCaminho);
-				return false;
-			}
+	      Path path = Path.of(aCaminho);
+	      //System.out.println(path);
+	      if(!Files.exists(path)) {
+	    	  
+	    	  return false;
 	      }
 	        try {
 	          fr = new FileReader(ficheiroLeitura);
@@ -99,7 +98,7 @@ public class ManipulaFicheirosTexto {
 	    return false;
 	  }  
 
-	  public Vector<String> lerFicheiro() {
+	  public String[] lerFicheiro() {
 
 	    if(br != null) {
 
@@ -108,24 +107,28 @@ public class ManipulaFicheirosTexto {
 	      do {
 	        try{
 	          linha = br.readLine();
+	          
+	          if(linha != null)
 	          conteudo.addElement(linha);
+	          
 	        } catch(IOException ioe) {
 	          ioe.printStackTrace();
 	          return null;
 	        }
 
 	      } while (linha != null);   
-	      return conteudo;
+	      return conteudo.toArray(new String[0]);
 	      
 	    }
 	    return null;
 	  }
 
-	  public boolean escreverFicheiro(String aConteudo) {
+	  public boolean escreverFicheiro(String[] aConteudo) {
 
 	    if(fw != null) {
 	          try {
-	            fw.write( aConteudo );
+	        	  for(var linha : aConteudo)
+	        		  fw.write( linha + "\n");
 	            return true;
 	          } catch(IOException ioe) {
 	            ioe.printStackTrace();
