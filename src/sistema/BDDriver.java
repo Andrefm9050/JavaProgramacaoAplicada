@@ -82,12 +82,14 @@ public class BDDriver {
          String nome1 = u1.getNome();
          int idUser;
          if (tipo1.equalsIgnoreCase("Gestor")) {
-            sqlQuery.append("SELECT * FROM criar_gestor(?, ? , ?, 0 , ?)");  		//
+            sqlQuery.append("SELECT * FROM criar_gestor(?, ? , ?, 0 , ?)");  		// 4 era o 0
             PreparedStatement ps = conn.prepareStatement(sqlQuery.toString());		//
+            //EstadoConta estado = EstadoConta.por_registar;
             ps.clearParameters();													//
             ps.setString(1, nome1);			 								 		//funcao para criar gestor base de dados com inserção de variaveis do u1
             ps.setString(2, email1);         								 		//
-            ps.setString(3, password1);    										    //
+            ps.setString(3, password1);  										    //
+            //ps.setObject(4, estado);
             ps.setString(4, login1);
             ResultSet rs = ps.executeQuery();
             rs.next();
@@ -227,24 +229,26 @@ public class BDDriver {
 	        
 	        
 	        ResultSet rs = ps1.executeQuery();
-	        int contador=0;
+	        //int contador=0;
 	        //String user[] = null;
-	        Utilizador[] utilizadorBuffer = new Utilizador[20];
+	        //Utilizador[] utilizadorBuffer = new Utilizador[20];
 	        while(rs.next()) {
 	        	//user[contador] = rs.getString(5);
 	        	int idUser = rs.getInt(1);
 	        	String maill = rs.getString(3);
 	        	String pass = rs.getString(4);
+	        	int estado = rs.getInt(5);
 	        	String user = rs.getString(6);
 	        	String nome = rs.getString(7);
 	        	
+	        	
 	        	//String teste = rs.getString(7);w
-	        	utilizadorNovo.add(new Utilizador(idUser,user, pass, nome, EstadoConta.ativos, maill, null));
+	        	utilizadorNovo.add(new Utilizador(idUser,user, pass, nome, EstadoConta.intToEstado(estado), maill, null));
 	        	//System.out.println(teste);
 	        	//utilizadorBuffer[contador] = new Utilizador(idUser,user, pass, nome, EstadoConta.ativos, maill, null);
 	        	//Utilizador utilizadorNovo = new Utilizador(idUser,user, pass, nome, EstadoConta.ativos, maill, null);
 	        	
-	        	contador++;
+	        	//contador++;
 	        	
 	        	
 	        	//System.out.println(pass);
@@ -282,7 +286,7 @@ public class BDDriver {
 	        		//return utilizadorNovo;
 	        	//}
 	        	
-	        	contador++;
+	        	//contador++;
 	        }
 	        ps2.close();
 	        

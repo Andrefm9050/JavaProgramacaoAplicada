@@ -15,20 +15,20 @@ public class Autor extends UniqueUtilizador{
 		// TODO Auto-generated constructor stub
 	}
 	
-public static void menuAutor() {
+public static void menuAutor(String login1) {
 		
 		while(true) {
 		System.out.println("1-Submeter obra para Revisão \n2-Estado da Revisão \n3-Inserir Obra \n4-Sair");
 		
 		int opcao = lerDadosInt("Escolha uma das seguintes opções: ");
 		
-		executaOpcao(opcao);
+		executaOpcao(opcao, login1);
 		
 	}
 	
 }
 
-public static void executaOpcao(int aOpcao){
+public static void executaOpcao(int aOpcao, String login1){
 	
 	
 	switch(aOpcao) {
@@ -36,7 +36,7 @@ public static void executaOpcao(int aOpcao){
 	case 2: estadoRevisao(); break;
 	case 3: inserirObra(); break;
 	//case 4: pedidoRemoverConta(); break;
-	case 4: sair(); break;
+	case 4: sair(login1); break;
 	default: erro();
 	}
 }
@@ -56,7 +56,8 @@ private static void submeterObraRevisao() {
 }
 
 
-private static void sair() {
+private static void sair(String login1) {
+	System.out.println("Adeus " + login1);
 	Main.main(null);							
 }
 

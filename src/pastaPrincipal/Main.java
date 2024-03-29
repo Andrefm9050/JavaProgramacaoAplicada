@@ -133,6 +133,7 @@ public class Main {
 		
 		Utilizador u1 = new Utilizador(0,login2, password1, nome1, null, email2, tipo1); //<- Aqui nao ha problema o id=0 pois estamos a inserir
 		BDDriver.adicionarUtilizador(u1);
+		
 	}
 	
 	private static void login() {
@@ -147,15 +148,15 @@ public class Main {
 			
 			if(userLoginSEstado instanceof Gestor) {
 				System.out.println("Bem-vindo " + login1);
-				Gestor.menuGestor();
+				Gestor.menuGestor(login1);
 			}
 			else if(userLoginSEstado instanceof Autor) {
 				System.out.println("Bem-vindo " + login1);
-				Autor.menuAutor();
+				Autor.menuAutor(login1);
 			}
 			else if(userLoginSEstado instanceof Revisor) {
 				System.out.println("Bem-vindo " + login1);
-				Revisor.menuRevisor();
+				Revisor.menuRevisor(login1);
 			}
 			else {
 				System.out.println("Credenciais inválidas!");

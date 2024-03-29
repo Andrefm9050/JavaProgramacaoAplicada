@@ -13,26 +13,26 @@ public class Revisor extends UniqueUtilizador {
 		// TODO Auto-generated constructor stub
 	}
 	
-public static void menuRevisor() {
+public static void menuRevisor(String login1) {
 		
 		while(true) {
 		System.out.println("1-Notificações de Revisão \n2-Revisões \n3-Sair");
 		
 		int opcao = lerDadosInt("Escolha uma das seguintes opções: ");
 		
-		executaOpcao(opcao);
+		executaOpcao(opcao, login1);
 		
 	}
 	
 }
 
-public static void executaOpcao(int aOpcao){
+public static void executaOpcao(int aOpcao, String login1){
 	
 	
 	switch(aOpcao) {
 	case 1: notificacaoRevisao(); break;
 	case 2: revisoes(); break;
-	case 4: sair(); break;
+	case 4: sair(login1); break;
 	default: erro();
 	}
 }
@@ -55,7 +55,8 @@ private static void revisoes() {
 
 
 
-private static void sair() {
+private static void sair(String login1) {
+	System.out.println("Adeus " + login1);
 	Main.main(null);							
 }
 

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import pastaPrincipal.Main;
+import sistema.BDDriver;
 
 public class Gestor extends Utilizador{
 
@@ -16,14 +17,14 @@ public class Gestor extends Utilizador{
 	
 	
 	
-	public static void menuGestor() {
+	public static void menuGestor(String login1) {
 		
 		while(true) {
 		System.out.println("1-Aprovar/Rejeitar Pedidos de Registo \n2-Criar conta Gestor \n3-Ativar/Inativar Conta \n4-Pedido Remover Conta \n5-Sair");
 		
 		int opcao = lerDadosInt("Escolha uma das seguintes opções: ");
 		
-		executaOpcao(opcao);
+		executaOpcao(opcao, login1);
 		
 	}
 
@@ -31,7 +32,7 @@ public class Gestor extends Utilizador{
 	
 }
 	
-	public static void executaOpcao(int aOpcao){
+	public static void executaOpcao(int aOpcao, String login1){
 		
 		
 		switch(aOpcao) {
@@ -39,7 +40,7 @@ public class Gestor extends Utilizador{
 		case 2: criarGestor(); break;
 		case 3: ativarInativarConta(); break;
 		case 4: pedidoRemoverConta(); break;
-		case 5: sair(); break;
+		case 5: sair(login1); break;
 		default: erro();
 		}
 	}
@@ -47,7 +48,18 @@ public class Gestor extends Utilizador{
 	
 	
 	private static void aprovarRejeitarPedidosRegisto() {
-		
+		int tamanhoArray;
+ 		
+ 		tamanhoArray = BDDriver.listarUtilizadores().length;
+ 		Utilizador[] utilizadorBuffer = new Utilizador[tamanhoArray];
+ 		utilizadorBuffer = BDDriver.listarUtilizadores();
+ 		
+ 		for(int i=0; i<tamanhoArray; i++) {
+ 	    	if(utilizadorBuffer[i].getEstado() == EstadoConta.por_registar) {
+ 	    		System.out.println("ID:" + utilizadorBuffer[i].getIdUser() + " Username:" + utilizadorBuffer[i].getLogin() 
+ 	    				+ " Nome:" + utilizadorBuffer[i].getNome() + " Tipo Conta:" + utilizadorBuffer[i].getTipo());
+ 	    	}	
+ 		}
 	}
 	
 	
@@ -68,7 +80,8 @@ public class Gestor extends Utilizador{
 		System.out.println("Opção inválida!");
 	}
 	
-	private static void sair() {
+	private static void sair(String login1) {
+		System.out.println("Adeus " + login1);
 		Main.main(null);								
 	}
 	
