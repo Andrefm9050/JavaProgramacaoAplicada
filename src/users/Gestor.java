@@ -8,15 +8,20 @@ import pastaPrincipal.Main;
 import sistema.BDDriver;
 
 public class Gestor extends Utilizador{
+	
+	private int idGestor;
 
-	public Gestor(int idUser,String login, String password, String nome, EstadoConta estado, String email, String tipo) {
+	public Gestor(int idGestor,int idUser,String login, String password, String nome, EstadoConta estado, String email, String tipo) {
 		super(idUser,login, password, nome, estado, email, tipo);
+		this.idGestor = idGestor;
 		// TODO Auto-generated constructor stub
 	}
 	
 	
 	
-	
+	public int getGestorID() {
+		return idGestor;
+	}
 	public static void menuGestor(String login1) {
 		
 		while(true) {

@@ -354,6 +354,7 @@ public class BDDriver {
 	        while(rs.next()) {
 	        	//user[contador] = rs.getString(5);
 	        	int idUser = rs.getInt(1);
+	        	int idGestor = rs.getInt(2);
 	        	String maill = rs.getString(3);
 	        	String pass = rs.getString(4);
 	        	int estado = rs.getInt(5);
@@ -362,7 +363,7 @@ public class BDDriver {
 	        	
 	        	
 	        	//String teste = rs.getString(7);w
-	        	utilizadorNovo.add(new Gestor(idUser,user, pass, nome, EstadoConta.intToEstado(estado), maill, null));
+	        	utilizadorNovo.add(new Gestor(idGestor,idUser,user, pass, nome, EstadoConta.intToEstado(estado), maill, null));
 	        	//System.out.println(teste);
 	        	//utilizadorBuffer[contador] = new Utilizador(idUser,user, pass, nome, EstadoConta.ativos, maill, null);
 	        	//Utilizador utilizadorNovo = new Utilizador(idUser,user, pass, nome, EstadoConta.ativos, maill, null);
