@@ -65,6 +65,23 @@ public class Gestor extends Utilizador{
  	    				+ " Nome:" + utilizadorBuffer[i].getNome() + " Tipo Conta:" + utilizadorBuffer[i].getTipo());
  	    	}	
  		}
+ 		int aprovaRejeitaN;
+ 		int idEscolha = lerDadosInt("Insira o ID do utilizador que pretende aprovar/rejeitar:  ");
+ 		while(true) {
+ 			String aprovaRejeita = lerDados("Pretende aprovar ou rejeitar o pedido de registo(s/n): ");
+ 			if(aprovaRejeita.contentEquals("s")) {
+ 				aprovaRejeitaN = 4;
+ 				break;
+ 			}else if(aprovaRejeita.contentEquals("n")) {
+ 				aprovaRejeitaN = 1;
+ 				break;
+ 			}else {
+ 				System.out.println("Resposta inválida! Insira s ou n como resposta. (s-sim, n-não)");
+ 			}
+ 		}
+ 		
+ 		BDDriver.updateEstado(idEscolha, aprovaRejeitaN);
+ 		System.out.println("Tarefa terminada com sucesso.");
 	}
 	
 	
@@ -94,6 +111,11 @@ public class Gestor extends Utilizador{
 		System.out.println(aMensagem);
 		return(new Scanner(System.in)).nextInt();
 		
+	}
+	
+	public static String lerDados(String aMensagem){
+		System.out.print(aMensagem);
+		return(new Scanner(System.in)).nextLine();
 	}
 	
 }

@@ -205,7 +205,7 @@ public class BDDriver {
             ps.setString(1, nome1);			 								 		//funcao para criar gestor base de dados com inserção de variaveis do u1
             ps.setString(2, email1);         								 		//
             ps.setString(3, password1);  										    //
-            ps.setInt(4, EstadoConta.estadoToInt(u1.getEstado()));
+            ps.setInt(4, 0);
             ps.setString(5, login1);
             ResultSet rs = ps.executeQuery();
             rs.next();
@@ -257,13 +257,13 @@ public class BDDriver {
             ps.setString(1, nome1);
             ps.setString(2, email1);
             ps.setString(3, password1);
-            ps.setInt(4, EstadoConta.estadoToInt(u1.getEstado()));
+            ps.setInt(4, 0);
             ps.setString(5, login1);
             ps.setString(6, morada1);
             ps.setString(7, nif1);
             ps.setString(8, telefone1);
             ps.setDate(9, completedDate);
-            ps.setString(10, estiloLiterario);
+            ps.setInt(10, EstiloLiterario.estiloToInt(estiloLiterario));
             ResultSet rs = ps.executeQuery();
             rs.next();
             idUser = rs.getInt(1);
@@ -304,7 +304,7 @@ public class BDDriver {
             ps.setString(1, nome1);
             ps.setString(2, email1);
             ps.setString(3, password1);
-            ps.setInt(4, EstadoConta.estadoToInt(u1.getEstado()));
+            ps.setInt(4, 0);
             ps.setString(5, login1);
             ps.setString(6, morada1);
             ps.setString(7, nif1);
@@ -386,21 +386,21 @@ public class BDDriver {
 	        
 	        while(rs2.next()) {
 	        	//user[contador] = rs.getString(5);
-	        	//int idUser = rs2.getInt(1);
+	        	int idUser = rs2.getInt(1);
 	        	String user = rs2.getString(6);
 	        	String pass = rs2.getString(4);
 	        	String maill = rs2.getString(3);
-	        	String estado = rs2.getString(5);
+	        	int estado = rs2.getInt(5);
 	        	String nome = rs2.getString(7);
 	        	
 	        	String nif = rs2.getString(9);
 	        	String telefone = rs2.getString(10);
 	        	String data = rs2.getString(12);
 	        	
-	        	//System.out.println(nif);
+	        	//System.out.println(idUser);
 	        	//if(user.equals(login1) && pass.equals(password1)) {
 	        		//System.out.println("Bem-vindo " + login1);
-	        	utilizadorNovo.add(new Autor(0,user, pass, nome, EstadoConta.ativos, maill, null, nif, null, null));
+	        	utilizadorNovo.add(new Autor(0,user, pass, nome, EstadoConta.intToEstado(estado), maill, null, nif, null, null));
 	        	//utilizadorBuffer[contador] = new Autor(0,user, pass, nome, EstadoConta.ativos, maill, null, nif, null, null);
 	        		//ps1.close();
 	        		//return utilizadorNovo;
@@ -419,18 +419,18 @@ public class BDDriver {
 	        
 	        while(rs3.next()) {
 	        	//user[contador] = rs.getString(5);
-	        	//int idUser = rs2.getInt(1);
+	        	int idUserN = rs3.getInt(1);
 	        	String user = rs3.getString(6);
 	        	String pass = rs3.getString(4);
 	        	String maill = rs3.getString(3);
-	        	String estado = rs3.getString(5);
+	        	int estado = rs3.getInt(5);
 	        	String nome = rs3.getString(7);
 	        	
 	        	String nif = rs3.getString(9);
 	        	String telefone = rs3.getString(10);
 	        	
 	        	//System.out.println(nif);
-	        	utilizadorNovo.add(new Revisor(0,user, pass, nome, EstadoConta.ativos, maill, null, nif, null, null));
+	        	utilizadorNovo.add(new Revisor(idUserN,user, pass, nome, EstadoConta.intToEstado(estado), maill, null, nif, null, null));
 	        	//utilizadorBuffer[contador] = new Revisor(0,user, pass, nome, EstadoConta.ativos, maill, null, nif, null, null);
 	        	//if(user.equals(login1) && pass.equals(password1)) {
 	        		
@@ -461,13 +461,16 @@ public class BDDriver {
 
  	
  	//GestorContas e recebe de listarUtilizadores
- 	public static Utilizador encontrarUtilizador(String login1, String password1) { //verifica se existe esse utilizador na base de dados em geral
-		   Utilizador[] utilizadores = listarUtilizadores();
+ 	public static  Utilizador encontrarUtilizador(String login1, String password1) { //verifica se existe esse utilizador na base de dados em geral
+		
+		Utilizador[] utilizadores = listarUtilizadores();
+		
 		   
 		   for(int i = 0; i<utilizadores.length; i++) {
-			   if(utilizadores[i].getLogin() == login1 && utilizadores[i].getPassword() == password1) {
+			   
+			   if(utilizadores[i].getLogin().contentEquals(login1) && utilizadores[i].getPassword().contentEquals(password1)) {
 				   return utilizadores[i];
-				   //System.out.println(BDDriver.listarUtilizadores()[i].getLogin());
+				   
 			   } 
 			   
 			
@@ -569,6 +572,26 @@ public class BDDriver {
  		}
  		
  		return revisoes.toArray(new Revisao[0]);
+ 	}
+ 	
+ 	public static boolean updateEstado(int id, int estado) {
+ 		try {
+ 	 		PreparedStatement ps = conn.prepareStatement("SELECT * FROM set_estado_utilizador(?, ?)");
+ 		    
+ 		    ps.setInt(1, id);
+ 		    ps.setInt(2, estado);
+ 		    
+ 		    ResultSet rs = ps.executeQuery();
+ 		    rs.next();
+ 		    ps.close();
+ 		    
+ 		    return true;
+////////////////////////////////
+ 	 		}
+ 	 		catch(Exception e) {
+ 	 			e.printStackTrace();
+ 	 		}
+		return false;
  	}
    
    

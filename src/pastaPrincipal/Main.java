@@ -83,9 +83,15 @@ public class Main {
 		}
 	}
 	public static void teste() {
-		
-		System.out.println(BDDriver.listarUtilizadores().length);
-		
+		//Gestor.menuGestor(null);
+		//System.out.println(BDDriver.listarUtilizadores().length);
+		Utilizador[] utilizadorBuffer = BDDriver.listarUtilizadores();
+ 		//utilizadorBuffer = BDDriver.listarUtilizadores();
+ 		   
+ 	    for(int i=0; i<utilizadorBuffer.length; i++) {
+ 	    	System.out.println(utilizadorBuffer[i].getIdUser());
+ 	    	
+ 	    }
 	}
 	
 	
@@ -139,11 +145,11 @@ public class Main {
 		String email2;
 		while(true) {
 		String email1 = lerDados("Insira o seu email(axzc@exmail.com): ");
-		if(GestorContas.validacaoEmail(email1)!=true) {
+		if(GestorContas.validacaoEmail(email1)==false) {
 			System.out.println("Email com formato inválido! Insira no seguinte formato [designação]@[entidade].[dominio]");  //verifica se o email é unico e se está no formato pretendido
 			
 		}
-		else {continue;}
+		//else {continue;}
 		if(GestorContas.pesquisarUtilizadoresEmail(email1)!=null) {
 			System.out.println("O Email inserido já existe! Insira outro email.");
 		}else {
@@ -164,9 +170,9 @@ public class Main {
 		String password1 = lerDados("Insira a sua password: ");
 		
 		Utilizador userLoginSEstado = BDDriver.encontrarUtilizador(login1, password1);
+		//BDDriver.listarUtilizadores()[1].ge
 		
-		
-		if(userLoginSEstado != null) {
+		if(userLoginSEstado != null && userLoginSEstado.getEstado() == EstadoConta.ativos) {
 				
 			
 			if(userLoginSEstado instanceof Gestor) {

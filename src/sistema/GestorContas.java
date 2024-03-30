@@ -61,12 +61,18 @@ public class GestorContas {
 	
 	
 	public static boolean nifVal(String nif1) {
+		int tamanhoArray;
+		tamanhoArray = BDDriver.listarUtilizadores().length;
+		Utilizador[] utilizadorBuffer = new Utilizador[tamanhoArray];
+		utilizadorBuffer = BDDriver.listarUtilizadores();
 		
-		for(int i = 0; i<BDDriver.listarUtilizadores().length; i++) {
-			if(((UniqueUtilizador) BDDriver.listarUtilizadores()[i]).getNif() == nif1) {
-				return false;
+			for(int i = 0; i<tamanhoArray; i++) {
+				if(utilizadorBuffer[i] instanceof UniqueUtilizador && ( (UniqueUtilizador) BDDriver.listarUtilizadores()[i]).getNif() == nif1 ) {
+					return false;
+				}
 			}
-		}
+		
+		
 		return true;
 		
 	}
