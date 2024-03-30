@@ -6,7 +6,7 @@ import java.sql.Date;
 import users.Gestor;
 import users.Revisor;
 
-public class Revisao {
+public class Revisao implements Comparable<Revisao>{
 	private int revisaoID;
 	private int obraID;
 	//private Autor autor; <- Ja temos um autor a partir da obra
@@ -25,6 +25,7 @@ public class Revisao {
 	public Revisao(int revID, int obraID, int gestorID, int revisorResponsavel, String numeroSerie, Date dataRealizacao,
 			Date tempoDecorrido, Anotacao[] anotacoes, String[] observacoes, double custo,
 			Integer[] revisoresRecusados,Licensa[] licensas, EstadoRevisao estado) {
+		this.revisaoID = revID;
 		this.obraID = obraID;
 		this.gestorID = gestorID;
 		this.revisorResponsavel = revisorResponsavel;
@@ -49,5 +50,14 @@ public class Revisao {
 	}
 	public void setLicensas(Licensa[] lic) {
 		licensas = lic;
+	}
+	@Override
+	public int compareTo(Revisao o) {
+		if(revisaoID > o.revisaoID)
+			return 1;
+		if(revisaoID < o.revisaoID)
+			return -1;
+		
+		return 0;
 	}
 }

@@ -2,7 +2,7 @@ package sistema;
 
 import java.util.Date;
 
-public class Anotacao {
+public class Anotacao implements Comparable<Anotacao> {
 	private int anotID;
 	private String descricao;
 	private int pagina;
@@ -15,5 +15,10 @@ public class Anotacao {
 		this.pagina = pagina;
 		this.paragrafo = paragrafo;
 		this.data = data;
+	}
+
+	@Override
+	public int compareTo(Anotacao o) {
+		return this.data.compareTo(o.data);
 	}
 }

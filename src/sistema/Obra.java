@@ -4,7 +4,7 @@ import java.util.Date;
 
 import users.Autor;
 
-public class Obra {
+public class Obra implements Comparable<Obra>{
 	private Autor autor;
 	private String titulo; //Unico
 	private String subTitulo; //opcional
@@ -16,4 +16,8 @@ public class Obra {
 	private int numeroEdicao;
 	private Date dataSubmissao;
 	private Date dataAprovacao;
+	@Override
+	public int compareTo(Obra o) {
+		return dataSubmissao.compareTo(o.dataSubmissao);
+	}
 }

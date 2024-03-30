@@ -8,12 +8,16 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.Scanner;
+import java.util.Vector;
 
 import gestao.GestorLogs;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 import java.sql.Timestamp;
 
 import sistema.BDDriver;
@@ -51,7 +55,7 @@ public class Main {
 			} catch (InterruptedException e) {
 			}
 		}
-		//Utilizador u = SelectionarObjetoMenu(BDDriver.listarUtilizadores());<- Exemplo de uso
+		//Utilizador u = SelectionarObjetoMenu(BDDriver.listarUtilizadores());
 		
 		while(GestorContas.listarGestores().length == 0) {
 			System.out.println("Nao existe nenhuma conta de administrador, por favor insira uma nova");
@@ -205,25 +209,37 @@ public class Main {
 	
 	
 	//https://stackoverflow.com/questions/68532023/java-can-a-function-return-the-same-type-as-one-of-the-input-arguments
-	public static <T> T SelectionarObjetoMenu(T[] fromlist) {
+	public static <T extends Comparable<T>> T SelectionarObjetoMenu(T[] objlist) {
 		
 		String termoPesquisa = "";
+		String ord = "Ascendente";
 		String escolha = "c";
 		T choice = null;
 		int indexdiff = 0;
+		List<T> fromlist = new ArrayList<T>();
+		for(var obj : objlist)
+			fromlist.add(obj);
+		
 		while(!escolha.contentEquals("s") || choice != null) {
+			
+			if(ord.equals("Ascendente")) {
+			Collections.sort(fromlist);
+			}
+			else {
+				Collections.sort(fromlist,Collections.reverseOrder());
+			}
 			if(termoPesquisa != null && !termoPesquisa.equals(""))
 			System.out.println("Termo de pesquisa atual: " + termoPesquisa);
 			
-			System.out.println("Sair (s); Mudar termo Pesquisa (p); A seguir(n); Anterior (r);");
+			System.out.println("Sair (s); Mudar termo Pesquisa (p); A seguir(n); Anterior (r); Mudar ordenação (o): " + ord + ";");
 			int starterindexdiff = indexdiff;
 			boolean finished = true;
-			ArrayList<T> list = new ArrayList<T>();
+			List<T> list = new ArrayList<T>();
 			int elementsfound = 0;
 			for(int p = 0;elementsfound < 10; p++) {
 				try {
-				if(fromlist[p + indexdiff].toString().contains(termoPesquisa)) {
-						list.add(fromlist[p + indexdiff]);
+				if(fromlist.get(p + indexdiff).toString().contains(termoPesquisa)) {
+						list.add(fromlist.get(p + indexdiff));
 						elementsfound++;
 					}
 				}
@@ -232,7 +248,8 @@ public class Main {
 					break;
 				}
 			}
-			
+
+
 			for(int i = 0; i< list.size(); i++) {
 				if(i == 0 || indexdiff % 10 != 0) {
 					System.out.println(i + ": " + list.get(i).toString());
@@ -277,7 +294,14 @@ public class Main {
 						termoPesquisa = lerDados("Pesquisa:");
 						indexdiff = 0;
 						continue;
+					case "o":
+						if(ord.equals("Ascendente"))
+							ord = "Descendente";
+						else
+							ord = "Ascendente";
+						break;
 					}
+
 				}
 				indexdiff = starterindexdiff;
 		}

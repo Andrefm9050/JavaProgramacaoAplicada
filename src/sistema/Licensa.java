@@ -2,7 +2,7 @@ package sistema;
 
 import java.sql.Date;
 
-public class Licensa {
+public class Licensa implements Comparable<Licensa>{
 	private int idLicensa;
 	private int idRevisao;
 	private String nomeLicensa;
@@ -15,4 +15,9 @@ public class Licensa {
 		this.numeroSerie = numeroSerie;
 		this.expiracao = expiracao;
 	}
+	@Override
+	public int compareTo(Licensa o) {
+		return expiracao.compareTo(o.expiracao);
+	}
+	
 }
