@@ -85,7 +85,7 @@ public class GestorContas {
  		utilizadorBuffer = BDDriver.listarUtilizadores();
 		
  		for(int i=0; i<tamanhoArray; i++) {
- 	    	if(utilizadorBuffer[i].getEmail() == mail1) {
+ 	    	if(utilizadorBuffer[i].getEmail().contentEquals(mail1)) {
  	    		
  	    		return utilizadorBuffer[i];
  	    	}

@@ -11,6 +11,7 @@ import java.util.Scanner;
 
 import gestao.GestorLogs;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.sql.Timestamp;
@@ -50,7 +51,7 @@ public class Main {
 			} catch (InterruptedException e) {
 			}
 		}
-		
+		//Utilizador u = SelectionarObjetoMenu(BDDriver.listarUtilizadores());<- Exemplo de uso
 		
 		while(GestorContas.listarGestores().length == 0) {
 			System.out.println("Nao existe nenhuma conta de administrador, por favor insira uma nova");
@@ -147,11 +148,11 @@ public class Main {
 		String email1 = lerDados("Insira o seu email(axzc@exmail.com): ");
 		if(GestorContas.validacaoEmail(email1)==false) {
 			System.out.println("Email com formato inválido! Insira no seguinte formato [designação]@[entidade].[dominio]");  //verifica se o email é unico e se está no formato pretendido
-			
+			continue; //Este email está com o formato inválido... nao podemos avançar!
 		}
-		//else {continue;}
 		if(GestorContas.pesquisarUtilizadoresEmail(email1)!=null) {
 			System.out.println("O Email inserido já existe! Insira outro email.");
+			continue; //Este email já existe... nao podemos avançar!
 		}else {
 			email2 = email1;
 			break;
@@ -203,7 +204,95 @@ public class Main {
 	}
 	
 	
+	//https://stackoverflow.com/questions/68532023/java-can-a-function-return-the-same-type-as-one-of-the-input-arguments
+	public static <T> T SelectionarObjetoMenu(T[] fromlist) {
+		
+		String termoPesquisa = "";
+		String escolha = "c";
+		T choice = null;
+		int indexdiff = 0;
+		while(!escolha.contentEquals("s") || choice != null) {
+			if(termoPesquisa != null && !termoPesquisa.equals(""))
+			System.out.println("Termo de pesquisa atual: " + termoPesquisa);
+			
+			System.out.println("Sair (s); Mudar termo Pesquisa (p); A seguir(n); Anterior (r);");
+			int starterindexdiff = indexdiff;
+			boolean finished = true;
+			ArrayList<T> list = new ArrayList<T>();
+			int elementsfound = 0;
+			for(int p = 0;elementsfound < 10; p++) {
+				try {
+				if(fromlist[p + indexdiff].toString().contains(termoPesquisa)) {
+						list.add(fromlist[p + indexdiff]);
+						elementsfound++;
+					}
+				}
+				catch(Exception e){
+					finished = false;
+					break;
+				}
+			}
+			
+			for(int i = 0; i< list.size(); i++) {
+				if(i == 0 || indexdiff % 10 != 0) {
+					System.out.println(i + ": " + list.get(i).toString());
+					indexdiff++;
+				}
+			}
+				
+				escolha = lerDados(":");
+				
+				if(isInt(escolha) && !escolha.equals("")) {
+					int index = Integer.parseInt(escolha);
+					try {
+						choice = list.get(index);
+						return choice;
+					}
+					catch(Exception e) {
+						choice = null;
+						System.out.println("Escolha inválida");
+						indexdiff = starterindexdiff;
+					}
+				}
+				else {
+					switch(escolha) {
+					
+					case "n":
+						if(!finished) {
+							indexdiff = starterindexdiff;
+						}
+						continue;
+					case "r":
+						indexdiff = indexdiff - 10;
+						while(indexdiff % 10 != 0) {
+							indexdiff--;
+						}
+						if(indexdiff <= 0) {
+							indexdiff = 0;
+						}
+						continue;
+					case "s":
+						return null;
+					case "p":
+						termoPesquisa = lerDados("Pesquisa:");
+						indexdiff = 0;
+						continue;
+					}
+				}
+				indexdiff = starterindexdiff;
+		}
+		return choice;
+	}
 	
+	static boolean isInt(String mensagem) {
+		try {
+			Integer.parseInt(mensagem);
+			return true;
+		}
+		catch (Exception e){
+			return false;
+		}
+	}
 	
 	public static int lerDadosInt(String aMensagem){
 		System.out.print(aMensagem);
