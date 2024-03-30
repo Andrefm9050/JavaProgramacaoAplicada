@@ -593,6 +593,9 @@ public class BDDriver {
  	 		}
 		return false;
  	}
+ 	
+ 	
+ 	
    
    
    public static void fecharConexao() {

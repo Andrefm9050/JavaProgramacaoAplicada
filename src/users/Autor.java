@@ -18,7 +18,7 @@ public class Autor extends UniqueUtilizador{
 public static void menuAutor(String login1) {
 		
 		while(true) {
-		System.out.println("1-Submeter obra para Revisão \n2-Estado da Revisão \n3-Inserir Obra \n4-Sair");
+		System.out.println("1-Submeter obra para Revisão \n2-Estado da Revisão \n3-Inserir Obra \n4-Pedido Remover Conta \n5-Sair");
 		
 		int opcao = lerDadosInt("Escolha uma das seguintes opções: ");
 		
@@ -35,8 +35,8 @@ public static void executaOpcao(int aOpcao, String login1){
 	case 1: submeterObraRevisao(); break;
 	case 2: estadoRevisao(); break;
 	case 3: inserirObra(); break;
-	//case 4: pedidoRemoverConta(); break;
-	case 4: sair(login1); break;
+	case 4: pedidoRemoverConta(); break;
+	case 5: sair(login1); break;
 	default: erro();
 	}
 }
@@ -52,6 +52,10 @@ private static void estadoRevisao() {
 
 
 private static void submeterObraRevisao() {
+	
+}
+
+private static void pedidoRemoverConta() {
 	
 }
 

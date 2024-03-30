@@ -32,6 +32,7 @@ public static void executaOpcao(int aOpcao, String login1){
 	switch(aOpcao) {
 	case 1: notificacaoRevisao(); break;
 	case 2: revisoes(); break;
+	case 3: pedidoRemoverConta(); break;
 	case 4: sair(login1); break;
 	default: erro();
 	}
@@ -49,6 +50,10 @@ private static void notificacaoRevisao() {
 }
 
 private static void revisoes() {
+	
+}
+
+private static void pedidoRemoverConta() {
 	
 }
 
