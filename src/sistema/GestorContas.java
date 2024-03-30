@@ -96,15 +96,18 @@ public class GestorContas {
 	}
 	
 	public static Utilizador pesquisarUtilizadoresUserName(String login1) { 
- 		if(BDDriver.listarUtilizadores().length != 0) {
- 			
- 		}
- 		Utilizador[] utilizadorBuffer = BDDriver.listarUtilizadores();
+ 		//if(BDDriver.listarUtilizadores().length != 0) {
+		int tamanhoArray;
+		tamanhoArray = BDDriver.listarUtilizadores().length;
+		Utilizador[] utilizadorBuffer = new Utilizador[tamanhoArray];
+		utilizadorBuffer = BDDriver.listarUtilizadores();
+ 		//}
+ 		//Utilizador[] utilizadorBuffer = BDDriver.listarUtilizadores();
  		//utilizadorBuffer = BDDriver.listarUtilizadores();
  		   
- 	    for(int i=0; i<utilizadorBuffer.length; i++) {
- 	    	if(utilizadorBuffer[i].getLogin() == login1) {
- 	    		return BDDriver.listarUtilizadores()[i];
+ 	    for(int i=0; i<tamanhoArray; i++) {
+ 	    	if(utilizadorBuffer[i].getLogin().contentEquals(login1)) {
+ 	    		return utilizadorBuffer[i];
  	    	}
  	    }
  		return null;

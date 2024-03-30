@@ -130,8 +130,8 @@ public class Main {
 		
 		while(true) {
 			String login1 = lerDados("Insira o seu username: ");
-			
-			if(GestorContas.pesquisarUtilizadoresUserName(login1)!=null) {
+			Utilizador utiTeste = GestorContas.pesquisarUtilizadoresUserName(login1);
+			if(utiTeste != null) {
 				System.out.println("Username já existe! Insira outro username.");		//verifica se o username é único
 			}else {
 				login2 = login1;
@@ -190,8 +190,10 @@ public class Main {
 			else {
 				System.out.println("Credenciais inválidas!");
 			}
-		} 
-		else {
+		} else if(userLoginSEstado != null && userLoginSEstado.getEstado() == EstadoConta.rejeitado){
+			System.out.println("O seu pedido de registo foi Rejeitado!");
+			
+		} else {
 			System.out.println("Credenciais inválidas!");
 		}
 		

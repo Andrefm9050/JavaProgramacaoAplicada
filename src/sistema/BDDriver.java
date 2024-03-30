@@ -205,7 +205,7 @@ public class BDDriver {
             ps.setString(1, nome1);			 								 		//funcao para criar gestor base de dados com inserção de variaveis do u1
             ps.setString(2, email1);         								 		//
             ps.setString(3, password1);  										    //
-            ps.setInt(4, 0);
+            ps.setInt(4, EstadoConta.estadoToInt(u1.getEstado()));
             ps.setString(5, login1);
             ResultSet rs = ps.executeQuery();
             rs.next();
@@ -257,7 +257,7 @@ public class BDDriver {
             ps.setString(1, nome1);
             ps.setString(2, email1);
             ps.setString(3, password1);
-            ps.setInt(4, 0);
+            ps.setInt(4, EstadoConta.estadoToInt(u1.getEstado()));
             ps.setString(5, login1);
             ps.setString(6, morada1);
             ps.setString(7, nif1);
@@ -304,7 +304,7 @@ public class BDDriver {
             ps.setString(1, nome1);
             ps.setString(2, email1);
             ps.setString(3, password1);
-            ps.setInt(4, 0);
+            ps.setInt(4, EstadoConta.estadoToInt(u1.getEstado()));
             ps.setString(5, login1);
             ps.setString(6, morada1);
             ps.setString(7, nif1);
@@ -400,7 +400,7 @@ public class BDDriver {
 	        	//System.out.println(idUser);
 	        	//if(user.equals(login1) && pass.equals(password1)) {
 	        		//System.out.println("Bem-vindo " + login1);
-	        	utilizadorNovo.add(new Autor(0,user, pass, nome, EstadoConta.intToEstado(estado), maill, null, nif, null, null));
+	        	utilizadorNovo.add(new Autor(idUser,user, pass, nome, EstadoConta.intToEstado(estado), maill, null, nif, null, null));
 	        	//utilizadorBuffer[contador] = new Autor(0,user, pass, nome, EstadoConta.ativos, maill, null, nif, null, null);
 	        		//ps1.close();
 	        		//return utilizadorNovo;

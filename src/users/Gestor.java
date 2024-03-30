@@ -90,7 +90,33 @@ public class Gestor extends Utilizador{
 	}
 	
 	private static void ativarInativarConta() {
-		
+		int tamanhoArray;
+ 		
+ 		tamanhoArray = BDDriver.listarUtilizadores().length;
+ 		Utilizador[] utilizadorBuffer = new Utilizador[tamanhoArray];
+ 		utilizadorBuffer = BDDriver.listarUtilizadores();
+ 		
+ 		for(int i=0; i<tamanhoArray; i++) {
+ 	    	System.out.println("ID:" + utilizadorBuffer[i].getIdUser() + " Username:" + utilizadorBuffer[i].getLogin() 
+ 	    			+ " Nome:" + utilizadorBuffer[i].getNome() + " Tipo Conta:" + utilizadorBuffer[i].getTipo());	
+ 		}
+ 		
+ 		int ativarInativarN;
+ 		int idEscolha = lerDadosInt("Insira o ID do utilizador que pretende ativar/Inativar:  ");
+ 		while(true) {
+ 			String ativarInativar = lerDados("Pretende ativar(a) ou inativar(i) a conta(a/i): ");
+ 			if(ativarInativar .contentEquals("a")) {
+ 				ativarInativarN = 4;
+ 				break;
+ 			}else if(ativarInativar.contentEquals("n")) {
+ 				ativarInativarN = 5;
+ 				break;
+ 			}else {
+ 				System.out.println("Resposta inválida! Insira a ou i como resposta. (a-ativo, i-inativo)");
+ 			}
+ 		}
+ 		
+ 		BDDriver.updateEstado(idEscolha, ativarInativarN);
 	}
 	
 	private static void pedidoRemoverConta() {
