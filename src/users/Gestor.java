@@ -216,7 +216,7 @@ public class Gestor extends Utilizador{
 		if(verify.equalsIgnoreCase("s")) {
 			rev.setEstado(EstadoRevisao.iniciada);
 			System.out.println("Escolha um revisor responsável");
-			Revisor revisor1 = Main.SelectionarObjetoMenu(GestorContas.listarRevisores());
+			Revisor revisor1 = (Revisor) Main.SelectionarObjetoMenu(GestorContas.listarRevisores());
 			int idRevisor = (int) revisor1.getIdRevisor();
 			rev.setRevisorResponsavel(idRevisor);
 		} else {

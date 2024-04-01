@@ -146,7 +146,7 @@ public class GestorContas {
 		ArrayList<Revisor> revisores = new ArrayList<Revisor>();
 		
 		for(var user : BDDriver.listarUtilizadores()) {
-			if(user instanceof Gestor) {
+			if(user instanceof Revisor) {
 				revisores.add((Revisor)user);
 			}
 		}

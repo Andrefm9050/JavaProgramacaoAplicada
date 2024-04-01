@@ -4,7 +4,7 @@ import java.util.Date;
 
 import users.Autor;
 
-public class Obra {
+public class Obra implements Comparable<Obra>{
 	private int obraId;
 	private String autor;
 	private String titulo; //Unico
@@ -114,6 +114,9 @@ public class Obra {
 	}
 
 
-
+	@Override
+	public int compareTo(Obra o) {
+		return dataSubmissao.compareTo(o.dataSubmissao);
+	}
 	
 }

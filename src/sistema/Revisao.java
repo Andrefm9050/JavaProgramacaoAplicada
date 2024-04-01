@@ -131,6 +131,16 @@ public class Revisao implements Comparable<Revisao>{
 	public Licensa[] getLicensas() {
 		return licensas;
 	}
+	
+	@Override
+    public int compareTo(Revisao o) {
+        if(revisaoID > o.revisaoID)
+            return 1;
+        if(revisaoID < o.revisaoID)
+            return -1;
+
+        return 0;
+    }
 
 
 }
