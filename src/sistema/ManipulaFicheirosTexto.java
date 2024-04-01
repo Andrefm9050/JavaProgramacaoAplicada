@@ -10,6 +10,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Vector;
 
+
+/**
+ * Classe responsavel por abrir e ler/escrever ficheiros de forma facilitada
+ * @author Andre Rios
+ */
 public class ManipulaFicheirosTexto {
 
 	  // aceder ficheiros
@@ -23,6 +28,11 @@ public class ManipulaFicheirosTexto {
 	  FileWriter fw;
 	  BufferedWriter bw;
 	  
+	  /**
+	   * Funcao para abrir ficheiro e prepara-lo para leitura
+	   * @param caminho de ficheiro
+	   * @return true se o ficheiro foi aberto para leitura
+	   */
 	  public boolean abrirFicheiroLeitura(String aCaminho) {
 
 	    if(aCaminho != null && aCaminho.length() >0) {
@@ -46,6 +56,11 @@ public class ManipulaFicheirosTexto {
 	    return false;
 	  }
 
+	  /**
+	   * @param caminho do ficheiro
+	   * @param modo de ficheiro append
+	   * @return true se o ficheiro foi aberto para escrita do modo selecionado
+	   */
 	  public boolean abrirFicheiroEscrita(String aCaminho, boolean aAppend) {
 	    if(aCaminho != null && aCaminho.length() >0) {
 	      /*
@@ -98,6 +113,9 @@ public class ManipulaFicheirosTexto {
 	    return false;
 	  }  
 
+	  /**
+	   * @return todas as linhas do ficheiro carregado anteriormente, devolve null se acontecer algum erro
+	   */
 	  public String[] lerFicheiro() {
 
 	    if(br != null) {

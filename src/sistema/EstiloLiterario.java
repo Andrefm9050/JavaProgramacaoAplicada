@@ -5,10 +5,14 @@ import users.EstadoConta;
 public enum EstiloLiterario {
 	narrativo,
 	lirico,
-	ficção,
+	ficcao,
 	thriller,
 	drama;
 	
+	/**
+	 * As execuções são contadas para cada execução de Login feita com sucesso, isto quer dizer que a mensagem tem que ter incluida "Login"
+	 * @return <int> o estilo literário referente, devolve 5 (EstiloLiterário nao existente) se não encontrar 
+	 */
 	public static int estiloToInt(String estiloLiterario) {
 		switch(estiloLiterario) {
 		case "narrativo":
@@ -34,7 +38,7 @@ public enum EstiloLiterario {
 		case "drama":
 			return EstiloLiterario.drama;
 		case "ficção":
-			return EstiloLiterario.ficção;
+			return EstiloLiterario.ficcao;
 		case "thriller":
 			return EstiloLiterario.thriller;
 		}

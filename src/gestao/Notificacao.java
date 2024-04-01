@@ -2,6 +2,11 @@ package gestao;
 
 import users.Utilizador;
 
+/**
+ * Classe responsavel por guardar dados relevantes sobre notificacoes
+ * @author Andre Rios
+ */
+
 public class Notificacao implements Comparable<Notificacao>{
 	private int notID;
 	private Utilizador utilizador;

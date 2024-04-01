@@ -37,7 +37,6 @@ public class Main {
 	//Mas nao funciona de outra forma já que o programa termina fora da função main
 	static long startmillis;
 	static long endmillis;
-	static GestorLogs gestorLogs = new GestorLogs();
 
 	
 	public static void main(String [] args)  {
@@ -56,7 +55,6 @@ public class Main {
 			} catch (InterruptedException e) {
 			}
 		}
-		//Utilizador u = SelectionarObjetoMenu(BDDriver.listarUtilizadores());
 		
 		while(GestorContas.listarGestores().length == 0) {
 			System.out.println("Nao existe nenhuma conta de administrador, por favor insira uma nova");
@@ -81,7 +79,15 @@ public class Main {
 	
 	private static void executaOpcao(int aOpcao){
 		switch(aOpcao) {
-		case 1: registo(lerDados("Insira o tipo de conta(Gestor, autor ou revisor): "),false); break;
+		case 1: 
+			String tipoConta = "";
+			
+			while(!tipoConta.contentEquals("autor") && !tipoConta.contentEquals("revisor")) {
+				tipoConta = lerDados("Insira o tipo de conta(autor ou revisor): ");
+			}
+			registo(tipoConta,false); 
+			
+			break;
 		case 2: login(); break;
 		case 3: sair(); break;
 		case 4: teste(); break;
@@ -172,7 +178,8 @@ public class Main {
 		//BDDriver.listarUtilizadores()[1].ge
 		
 		if(userLoginSEstado != null && (userLoginSEstado.getEstado().equals(EstadoConta.ativos) || userLoginSEstado.getEstado().equals(EstadoConta.por_remover))) {
-				
+			GestorLogs.adicionarLog(userLoginSEstado, userLoginSEstado.getNome() + " fez Login!");	
+
 			
 			if(userLoginSEstado instanceof Gestor) {
 				System.out.println("Bem-vindo " + login1);
@@ -203,6 +210,11 @@ public class Main {
 	
 	
 	//https://stackoverflow.com/questions/68532023/java-can-a-function-return-the-same-type-as-one-of-the-input-arguments
+	/**
+	 * 
+	 * @param Variável de qualquer tipo genérico que tenha hierarquia de <Comparable>
+	 * @return Uma variável do mesmo tipo dado como argumento, <null> se cancelar a operação
+	 */
 	public static <T extends Comparable<T>> T SelectionarObjetoMenu(T[] objlist) {
 		
 		String termoPesquisa = "";
@@ -226,7 +238,7 @@ public class Main {
 			System.out.println("Termo de pesquisa atual: " + termoPesquisa);
 			
 			System.out.println("Sair (s); Mudar termo Pesquisa (p); A seguir(n); Anterior (r); Mudar ordenação (o): " + ord + ";");
-			int starterindexdiff = indexdiff;
+			int starterindexdiff = indexdiff; //Ultimo index da listagem atual a partir do fromlist
 			boolean finished = true;
 			List<T> list = new ArrayList<T>();
 			int elementsfound = 0;
@@ -235,25 +247,30 @@ public class Main {
 				if(fromlist.get(p + indexdiff).toString().contains(termoPesquisa)) {
 						list.add(fromlist.get(p + indexdiff));
 						elementsfound++;
+						if(p+indexdiff + 1 >= fromlist.size()) {
+							finished = false; //Mesmo que possamos preencher a list com 10 elementos, podemos nem ter elementos a mais depois desta
+						}
 					}
 				}
 				catch(Exception e){
-					finished = false;
+					finished = false; //A lista nao foi preenchida com os 10 elementos
 					break;
 				}
 			}
-
-
+			
+			
+			
 			for(int i = 0; i< list.size(); i++) {
-				if(i == 0 || indexdiff % 10 != 0) {
+				if(i == 0 || indexdiff % 10 != 0) { //If statement antigo, isto é redundante mas não quero fazer mais uma fase de testes
 					System.out.println(i + ": " + list.get(i).toString());
 					indexdiff++;
 				}
 			}
+			
 				
 				escolha = lerDados(":");
 				
-				if(isInt(escolha) && !escolha.equals("")) {
+				if(isInt(escolha) && !escolha.equals("")) { //Escolha pode ser um objeto ou uma escolha extra
 					int index = Integer.parseInt(escolha);
 					try {
 						choice = list.get(index);
@@ -262,7 +279,7 @@ public class Main {
 					catch(Exception e) {
 						choice = null;
 						System.out.println("Escolha inválida");
-						indexdiff = starterindexdiff;
+						indexdiff = starterindexdiff; //A listagem vai ser feita denovo, então definimos o indice para o seu começo de novo
 					}
 				}
 				else {
@@ -270,7 +287,7 @@ public class Main {
 					
 					case "n":
 						if(!finished) {
-							indexdiff = starterindexdiff;
+							indexdiff = starterindexdiff; //O index não pode avançar mais
 						}
 						continue;
 					case "r":
@@ -297,7 +314,7 @@ public class Main {
 					}
 
 				}
-				indexdiff = starterindexdiff;
+				indexdiff = starterindexdiff; //A listagem vai ser feita denovo, então definimos o indice para o seu começo de novo
 		}
 		return choice;
 	}

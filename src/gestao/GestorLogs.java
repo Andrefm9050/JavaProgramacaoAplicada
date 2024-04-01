@@ -5,16 +5,30 @@ import java.util.ArrayList;
 import sistema.BDDriver;
 import users.Utilizador;
 
+/**
+ * Classe responsavel por mandar e listar os logs do sistema
+ * @author Andre Rios
+ */
 public class GestorLogs {
 	
-	public void adicionarLog(Utilizador u, String mensagem) {
+	/**
+	 * 
+	 * @param u Utilizador Responsavel pelo log
+	 * @param mensagem String Com a sua mensagem
+	 */
+	public static void adicionarLog(Utilizador u, String mensagem) {
 		BDDriver.adicionarLog(u,mensagem);
 	}
 	
-	public Log[] listarLogs() {
+	public static Log[] listarLogs() {
 		return BDDriver.listarLogs();
 	}
-	public Log[] listarLogs(Utilizador u) {
+	/**
+	 * 
+	 * @param u Utilizador Dos logs
+	 * @return Log[] do Utilizador
+	 */
+	public static Log[] listarLogs(Utilizador u) {
 		
 		Log[] logs = listarLogs();
 		
@@ -26,21 +40,30 @@ public class GestorLogs {
 		}
 		return result.toArray(new Log[0]);
 	}
-	public int nExecucoes() {
+	/**
+	 * As execucoes são contadas para cada execucao de Login feita com sucesso, isto quer dizer que a mensagem tem que ter incluida "Login"
+	 * @return int total de execuções (logins)
+	 */
+	public static int nExecucoes() {
 		Log[] logs = listarLogs();
 	
 		return nExecucoesDeLogs(logs);
 	}
-	public int nExecucoes(Utilizador u) {
+	/**
+	 * As execucoes são contadas para cada execução de Login feita com sucesso, isto quer dizer que a mensagem tem que ter incluida "Login"
+	 * @param u Utilizador responsavel pelos logs
+	 * @return int total de execucoes (logins) deste utilizador
+	 */
+	public static int nExecucoes(Utilizador u) {
 		Log[] logs = listarLogs(u);
 		
 		return nExecucoesDeLogs(logs);
 	}
 	
-	int nExecucoesDeLogs(Log[] logs) {
+	static int nExecucoesDeLogs(Log[] logs) {
 		int count = 0;
 		for(var log : logs) {
-			if(log.getMensagem().contains("Teste")) { //<- Modifica isto como quiseres, contamos todos os logs que digam que houve login
+			if(log.getMensagem().contains("Login")) { //<- Modifica isto como quiseres, contamos todos os logs que digam que houve login
 				count++;
 			}
 		}

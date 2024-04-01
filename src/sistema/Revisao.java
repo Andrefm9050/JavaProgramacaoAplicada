@@ -19,13 +19,31 @@ public class Revisao implements Comparable<Revisao>{
 	private Anotacao[] anotacoes; //ou getAnotacoes() seria melhor
 	private String[] observacoes; //ou getObservacoes() seria melhor
 	private double custo;
+	private Integer[] revisoresConfirmados;
+	private Integer[] revisoresNaoConfirmados;
 	private Integer[] revisoresRecusados; //ou getRevisorRecusados() seria melhor
 	private EstadoRevisao estado;
 	private Licensa[] licensas;
 
+	
+	/**
+	 * @param ID da revisao
+	 * @param ID da obra a ser revista
+	 * @param ID do gestor responsavel (0 = nao atribuido)
+	 * @param ID do revisor responsavel (0 = nao atribuido; ou estado = EstadoRevisao.iniciada = nao confirmado;)
+	 * @param Numero serie da revisao
+	 * @param Data de realizacao da revisao
+	 * @param Tempo total (em minutos) gastos na revisao
+	 * @param Anotacoes da revisao
+	 * @param Observacoes da revisao
+	 * @param Custo da revisao 
+	 * @param Lista de revisores que recusaram a revisao
+	 * @param Lista de licensas da revisao
+	 * @param Estado da revisao
+	 */
 	public Revisao(int revID, int obraID, int gestorID, int revisorResponsavel, String numeroSerie, Date dataRealizacao,
 			int tempoDecorrido, Anotacao[] anotacoes, String[] observacoes, double custo,
-			Integer[] revisoresRecusados,Licensa[] licensas, EstadoRevisao estado) {
+			Integer[] revisoresRecusados,Licensa[] licensas,Integer[] revisoresConfirmados,Integer[] revisoresNaoConfirmados, EstadoRevisao estado) {
 		this.revisaoID = revID;
 		this.obraID = obraID;
 		this.gestorID = gestorID;
@@ -40,6 +58,8 @@ public class Revisao implements Comparable<Revisao>{
 		this.estado = estado;
 		this.licensas = licensas;
 		this.revisaoID = revID;
+		this.revisoresConfirmados = revisoresConfirmados;
+		this.revisoresNaoConfirmados = revisoresNaoConfirmados;
 	}
 	public void setAnotacoes(Anotacao[] an) {
 		anotacoes = an;
@@ -52,6 +72,12 @@ public class Revisao implements Comparable<Revisao>{
 	}
 	public void setLicensas(Licensa[] lic) {
 		licensas = lic;
+	}
+	public void setRevisoresConfirmados(Integer[] rev) {
+		revisoresConfirmados = rev;
+	}
+	public void setRevisoresNaoConfirmados(Integer[] rev) {
+		revisoresNaoConfirmados = rev;
 	}
 	@Override
 	public String toString() {
@@ -141,6 +167,5 @@ public class Revisao implements Comparable<Revisao>{
 
         return 0;
     }
-
 
 }
