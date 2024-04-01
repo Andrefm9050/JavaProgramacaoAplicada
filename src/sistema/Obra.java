@@ -112,8 +112,8 @@ public class Obra {
 				+ numeroPaginas + ", numeroPalavras=" + numeroPalavras + ", isbn=" + isbn + ", numeroEdicao="
 				+ numeroEdicao + ", dataSubmissao=" + dataSubmissao + ", dataAprovacao=" + dataAprovacao + "]";
 	}
-	
-	
-	
+
+
+
 	
 }

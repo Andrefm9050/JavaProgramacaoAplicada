@@ -1,6 +1,8 @@
 package users;
 
-public class Utilizador {
+import java.util.Comparator;
+
+public class Utilizador implements Comparable<Utilizador> {
 	private int idUser;
 	private String login;
 	private String nome; 
@@ -91,7 +93,23 @@ public class Utilizador {
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
+
+
+	@Override
+	public int compareTo(Utilizador o) {
+		if(idUser > o.idUser) {
+			return 1;
+		}
+		if(idUser < o.idUser)
+			return -1;
+		
+		return 0;
+	}
 	
+	@Override
+	public String toString() {
+		return "UserID: " + idUser + "- " + super.toString();
+	}
 	
 	
 	

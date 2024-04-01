@@ -2,7 +2,7 @@ package gestao;
 
 import java.sql.Date;
 
-public class Log {
+public class Log implements Comparable<Log>{
 	private int idUser;
 	private String mensagem;
 	private Date hora;
@@ -20,5 +20,9 @@ public class Log {
 	}
 	public Date getHora() {
 		return hora;
+	}
+	@Override
+	public int compareTo(Log o) {
+		return hora.compareTo(o.hora);
 	}
 }
