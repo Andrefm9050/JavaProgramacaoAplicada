@@ -87,7 +87,7 @@ private static void submeterObraRevisao(String login1) {
 	//obraN;
 	BDDriver.alterarISBN(isbn1, obraID);
 	BDDriver.adicionarRevisao(0, obraID, 0); //numero de Serie, idObra, idGestor
-	Main.SelectionarObjetoMenu(BDDriver.listarRevisoes());
+	//Main.SelectionarObjetoMenu(BDDriver.listarRevisoes());
 	
 	System.out.println("Obra submetida para revisão com sucesso!");		
 	

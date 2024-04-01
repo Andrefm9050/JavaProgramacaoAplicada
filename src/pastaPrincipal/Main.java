@@ -89,18 +89,7 @@ public class Main {
 		}
 	}
 	public static void teste() {
-		//BDDriver.listarObras();
-		//int tamanhoArray;
- 		
- 		//tamanhoArray = BDDriver.listarObras().length;
- 		//Obra[] utilizadorBuffer = new Obra[tamanhoArray];
- 		//utilizadorBuffer = BDDriver.listarObras();
- 		
- 		//for(int i=0; i<tamanhoArray; i++) {
- 	    //	System.out.println(utilizadorBuffer[i].getAutor() + utilizadorBuffer[i].getTitulo());	
- 		//}
- 		//Main.SelectionarObjetoMenu(BDDriver.listarObras());
-		Gestor.pedidosRevisao();
+		Main.SelectionarObjetoMenu(BDDriver.listarRevisoes());
 	}
 	
 	

@@ -210,22 +210,53 @@ public class Gestor extends Utilizador{
  				revisoes.add(revisaoBuffer[i]);
  			}
  		}
+ 		
+ 		
+ 		//GestorContas.listarRevisores()
+ 		
+ 	
  		System.out.println("Escolha qual a revisão que deseja aprovar/reprovar");
 		Revisao rev = Main.SelectionarObjetoMenu(revisoes.toArray(new Revisao[0]));
 		String verify = lerDados("Deseja aprovar o pedido(s/n): ");
+		
 		if(verify.equalsIgnoreCase("s")) {
 			rev.setEstado(EstadoRevisao.iniciada);
 			System.out.println("Escolha um revisor responsável");
 			Revisor revisor1 = (Revisor) Main.SelectionarObjetoMenu(GestorContas.listarRevisores());
+			int tamanhoArray2 = GestorContas.listarRevisores().length;
+	 		Revisor[] revisorBuffer = new Revisor[tamanhoArray2];
+	 		revisorBuffer = GestorContas.listarRevisores();
+	 		ArrayList<Revisor> revisores = new ArrayList<Revisor>();
+	 		for(int i = 0; i<tamanhoArray2; i++) {
+	 			if(revisorBuffer[i].getLogin() != revisor1.getLogin()) {
+	 				revisores.add(revisorBuffer[i]);
+	 			}
+	 		}
 			int idRevisor = (int) revisor1.getIdRevisor();
 			rev.setRevisorResponsavel(idRevisor);
 		} else {
 			rev.setEstado(EstadoRevisao.arquivado);
 		}
 		
+		System.out.println("Adicione mais revisores.");
+		Revisor revisor2 = (Revisor) Main.SelectionarObjetoMenu(GestorContas.listarRevisores());
+		BDDriver.adicionarRevisor(rev.getRevisaoID(), revisor2.getIdRevisor());
+		BDDriver.atualizarEstadoRevisao(rev.getRevisaoID(), 1);
+		
 	}
 	
 	
+	@Override
+	public String toString() {
+		return "Gestor [idGestor=" + idGestor + ", getGestorID()=" + getGestorID() + ", getIdUser()=" + getIdUser()
+				+ ", getLogin()=" + getLogin() + ", getNome()=" + getNome() + 
+				", getEmail()=" + getEmail() + ", getEstado()=" + getEstado() + ", getTipo()=" + getTipo()
+				+ ", toString()=" + super.toString() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
+				+ "]";
+	}
+
+
+
 	private static void erro() {
 		System.out.println("Opção inválida!");
 	}

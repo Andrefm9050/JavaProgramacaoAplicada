@@ -757,6 +757,74 @@ public class BDDriver {
  	
  	}
  	
+ 	public static void confirmarRevisorResponsavel(int idRevisao, boolean confirm) {
+ 		try {
+        	//Revisao revisao = (Autor) GestorContas.pesquisarUtilizadoresUserName(user);
+        	
+        	StringBuffer sqlQuery = new StringBuffer();
+        	sqlQuery.append("SELECT * FROM definir_confirmar_revisor_resp_revisao(?, ?)");  
+			PreparedStatement ps = conn.prepareStatement(sqlQuery.toString());
+			 ps.clearParameters();													
+	            ps.setInt(1, idRevisao);
+	            ps.setBoolean(2, confirm); //isbn
+	           
+	            ResultSet rs = ps.executeQuery();
+	            rs.next();
+	          ps.close();
+	         
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+ 	}
+ 	
+ 	
+ 	public static void adicionarRevisor(int idRevisao, int idRevisor) {
+ 		try {
+        	//Revisao revisao = (Autor) GestorContas.pesquisarUtilizadoresUserName(user);
+        	
+        	StringBuffer sqlQuery = new StringBuffer();
+        	sqlQuery.append("SELECT * FROM adicionar_revisor_revisao(?, ?)");  
+			PreparedStatement ps = conn.prepareStatement(sqlQuery.toString());
+			 ps.clearParameters();													
+	            ps.setInt(1, idRevisao);
+	            ps.setInt(2, idRevisor);
+	           
+	            ResultSet rs = ps.executeQuery();
+	            rs.next();
+	          ps.close();
+	         
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+ 	}
+ 	
+ 	
+ 	public static void atualizarEstadoRevisao(int idRevisao, int estado) {
+ 		try {
+        	//Revisao revisao = (Autor) GestorContas.pesquisarUtilizadoresUserName(user);
+        	
+        	StringBuffer sqlQuery = new StringBuffer();
+        	sqlQuery.append("CALL definir_estado_revisao(?, ?)");  
+			PreparedStatement ps = conn.prepareStatement(sqlQuery.toString());
+			 ps.clearParameters();													
+	            ps.setInt(1, idRevisao);
+	            ps.setInt(2, estado);
+	           
+	            ResultSet rs = ps.executeQuery();
+	            rs.next();
+	          ps.close();
+	         
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+ 	}
+ 	
  	
    
    
