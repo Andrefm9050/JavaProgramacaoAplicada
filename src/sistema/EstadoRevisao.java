@@ -8,6 +8,10 @@ public enum EstadoRevisao {
 	arquivado;
 	
 	
+	/**
+	 * @param numero de revisao
+	 * @return A sua representacao em forma de EstadoRevisao, devolve EstadoRevisao.iniciada se for dado um valor invalido
+	 */
 	public static EstadoRevisao intToEstado(int x) {
 		
 		switch(x) {

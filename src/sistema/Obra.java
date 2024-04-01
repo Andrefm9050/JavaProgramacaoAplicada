@@ -4,6 +4,11 @@ import java.util.Date;
 
 import users.Autor;
 
+
+/**
+ * Classe responsavel por guardar informacao relevante sobre uma obra
+ * @author Andre Rios, Andre Martins
+ */
 public class Obra implements Comparable<Obra>{
 	private int obraId;
 	private String autor;

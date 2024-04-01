@@ -18,6 +18,11 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 
+
+/**
+ * 
+ * @author Andre Martins
+ */
 public class GestorContas {
 	static Connection conn = null;
 	private static final String EMAIL_REGEX = "^[a-zA-Z0-9]*@[a-zA-Z]+\\.[a-zA-Z]+$";		//Expressão regular para o email
@@ -47,22 +52,12 @@ public class GestorContas {
         return matcher.matches();
 	}
 	
-	public static boolean configurarDriver(String link,String username,String password,String bd) {
-	   try {
-		Class.forName("org.postgresql.Driver");
-	} catch (ClassNotFoundException e) {
-		return false;
-	}
-	   try {
-		conn = DriverManager.getConnection(link + bd, username, password);
-	} catch (SQLException e) {
-		return false;
-	}
-	   return true;
-   }
 	
 	
-	
+	/**
+	 * @param nif
+	 * @return true se o NIF for unico
+	 */
 	public static boolean nifVal(String nif1) {
 		int tamanhoArray;
 		tamanhoArray = BDDriver.listarUtilizadores().length;
@@ -70,7 +65,7 @@ public class GestorContas {
 		utilizadorBuffer = BDDriver.listarUtilizadores();
 		
 			for(int i = 0; i<tamanhoArray; i++) {
-				if(utilizadorBuffer[i] instanceof UniqueUtilizador && ( (UniqueUtilizador) BDDriver.listarUtilizadores()[i]).getNif() == nif1 ) {
+				if(utilizadorBuffer[i] instanceof UniqueUtilizador && ( (UniqueUtilizador) BDDriver.listarUtilizadores()[i]).getNif().contentEquals(nif1) ) {
 					return false;
 				}
 			}
@@ -117,6 +112,12 @@ public class GestorContas {
  		
  	}
 	
+	/**
+	 * 
+	 * @param username/login da conta
+	 * @param password da conta
+	 * @return Utilizador com essas credencias (se existir)
+	 */
 	public static Utilizador encontrarUtilizador(String login1, String password1) { //verifica se existe esse utilizador na base de dados em geral
 		   //BDDriver.listarUtilizadores();
 		   

@@ -28,9 +28,16 @@ import users.Revisor;
 
 import users.Utilizador;
 
+/**
+ * Classe responsavel para separar a conexao da base de dados ha aplicacao
+ * @author Andre Rios, Andre Mendes
+ */
 public class BDDriver {
    static Connection conn = null;
    
+   /**
+    * Esta funcao disponibiliza um menu para editar o ficheiro de Properties, se esse ficheiro nao existir um e criado
+    */
    public static void menuConfiguracao() {
 	   ManipulaFicheirosTexto fich = new ManipulaFicheirosTexto();
 	   
@@ -77,6 +84,11 @@ public class BDDriver {
 	   
    }
 
+   /**
+    * 
+    * @param caminho do ficheiro de configuração
+    * @return true se a configuração e conexao foi feita com sucesso
+    */
    public static boolean configurarDriverPorFicheiro(String caminho) {
 	   ManipulaFicheirosTexto fich = new ManipulaFicheirosTexto();
 	   if(!fich.abrirFicheiroLeitura(caminho)) return false;
@@ -505,7 +517,8 @@ public class BDDriver {
 	    		rs.getDouble(1),
 	    		null,
 	    		null,
-	    		EstadoRevisao.intToEstado(rs.getInt(8)));
+	    		null,
+	    		null, EstadoRevisao.intToEstado(rs.getInt(8)));
 	    
 	    
 	    //Revisores Recusados
@@ -517,6 +530,24 @@ public class BDDriver {
 	    revisores.add(localrs.getInt(1));
 	    }
 	    rev.setRevisoresRec(revisores.toArray(new Integer[0]));
+	    localps.close();
+	    
+	    //Revisores Confirmados
+	    localps = conn.prepareStatement("SELECT * FROM listar_revisores_revisao(?)");
+	    localps.setInt(0, revisaoID);
+	    localrs = localps.executeQuery();
+	    ArrayList<Integer> naoconfirm = new ArrayList<Integer>();
+	    ArrayList<Integer> confirm = new ArrayList<Integer>();
+	    while(localrs.next()) {
+	    	if(rs.getBoolean(3)) {
+	    		confirm.add(rs.getInt(1));
+	    	}
+	    	else {
+	    		naoconfirm.add(rs.getInt(1));
+	    	}
+	    }
+	    rev.setRevisoresConfirmados(confirm.toArray(new Integer[0]));
+	    rev.setRevisoresNaoConfirmados(naoconfirm.toArray(new Integer[0]));
 	    localps.close();
 	    
 	    //Observacoes
