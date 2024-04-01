@@ -24,4 +24,22 @@ public enum EstiloLiterario {
 		}	
 		return 5;
 	}
+	
+	public static EstiloLiterario stringToEstilo(String estilo) {
+		switch(estilo) {
+		case "narrativo":
+			return EstiloLiterario.narrativo;
+		case "lirico":
+			return EstiloLiterario.lirico;
+		case "drama":
+			return EstiloLiterario.drama;
+		case "ficção":
+			return EstiloLiterario.ficção;
+		case "thriller":
+			return EstiloLiterario.thriller;
+		}
+		return null;
+	}
+	
+	
 }

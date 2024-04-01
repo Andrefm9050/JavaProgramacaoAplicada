@@ -18,6 +18,7 @@ import java.sql.Timestamp;
 
 import sistema.BDDriver;
 import sistema.GestorContas;
+import sistema.Obra;
 import users.Autor;
 //import ProjetoProgramacao.Gestor;
 import users.EstadoConta;
@@ -84,16 +85,20 @@ public class Main {
 		}
 	}
 	public static void teste() {
-		//Gestor.menuGestor(null);
-		//System.out.println(BDDriver.listarUtilizadores().length);
-		Utilizador[] utilizadorBuffer = BDDriver.listarUtilizadores();
- 		//utilizadorBuffer = BDDriver.listarUtilizadores();
- 		   
- 	    for(int i=0; i<utilizadorBuffer.length; i++) {
- 	    	System.out.println(utilizadorBuffer[i].getIdUser());
- 	    	
- 	    }
+		//BDDriver.listarObras();
+		//int tamanhoArray;
+ 		
+ 		//tamanhoArray = BDDriver.listarObras().length;
+ 		//Obra[] utilizadorBuffer = new Obra[tamanhoArray];
+ 		//utilizadorBuffer = BDDriver.listarObras();
+ 		
+ 		//for(int i=0; i<tamanhoArray; i++) {
+ 	    //	System.out.println(utilizadorBuffer[i].getAutor() + utilizadorBuffer[i].getTitulo());	
+ 		//}
+ 		//Main.SelectionarObjetoMenu(BDDriver.listarObras());
+		Gestor.pedidosRevisao();
 	}
+	
 	
 	
 	private static void erro() {
@@ -173,7 +178,7 @@ public class Main {
 		Utilizador userLoginSEstado = BDDriver.encontrarUtilizador(login1, password1);
 		//BDDriver.listarUtilizadores()[1].ge
 		
-		if(userLoginSEstado != null && userLoginSEstado.getEstado() == EstadoConta.ativos) {
+		if(userLoginSEstado != null && (userLoginSEstado.getEstado().equals(EstadoConta.ativos) || userLoginSEstado.getEstado().equals(EstadoConta.por_remover))) {
 				
 			
 			if(userLoginSEstado instanceof Gestor) {
@@ -191,7 +196,7 @@ public class Main {
 			else {
 				System.out.println("Credenciais inválidas!");
 			}
-		} else if(userLoginSEstado != null && userLoginSEstado.getEstado() == EstadoConta.rejeitado){
+		} else if(userLoginSEstado != null && userLoginSEstado.getEstado().equals(EstadoConta.rejeitado) ){
 			System.out.println("O seu pedido de registo foi Rejeitado!");
 			
 		} else {

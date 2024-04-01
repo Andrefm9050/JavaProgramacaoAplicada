@@ -387,6 +387,7 @@ public class BDDriver {
 	        while(rs2.next()) {
 	        	//user[contador] = rs.getString(5);
 	        	int idUser = rs2.getInt(1);
+	        	int idAutor = rs2.getInt(2);
 	        	String user = rs2.getString(6);
 	        	String pass = rs2.getString(4);
 	        	String maill = rs2.getString(3);
@@ -400,7 +401,7 @@ public class BDDriver {
 	        	//System.out.println(idUser);
 	        	//if(user.equals(login1) && pass.equals(password1)) {
 	        		//System.out.println("Bem-vindo " + login1);
-	        	utilizadorNovo.add(new Autor(idUser,user, pass, nome, EstadoConta.intToEstado(estado), maill, null, nif, null, null));
+	        	utilizadorNovo.add(new Autor(idAutor, idUser,user, pass, nome, EstadoConta.intToEstado(estado), maill, null, nif, null, null));
 	        	//utilizadorBuffer[contador] = new Autor(0,user, pass, nome, EstadoConta.ativos, maill, null, nif, null, null);
 	        		//ps1.close();
 	        		//return utilizadorNovo;
@@ -420,6 +421,7 @@ public class BDDriver {
 	        while(rs3.next()) {
 	        	//user[contador] = rs.getString(5);
 	        	int idUserN = rs3.getInt(1);
+	        	int idRevisor = rs3.getInt(2);
 	        	String user = rs3.getString(6);
 	        	String pass = rs3.getString(4);
 	        	String maill = rs3.getString(3);
@@ -430,7 +432,7 @@ public class BDDriver {
 	        	String telefone = rs3.getString(10);
 	        	
 	        	//System.out.println(nif);
-	        	utilizadorNovo.add(new Revisor(idUserN,user, pass, nome, EstadoConta.intToEstado(estado), maill, null, nif, null, null));
+	        	utilizadorNovo.add(new Revisor(idRevisor,idUserN,user, pass, nome, EstadoConta.intToEstado(estado), maill, null, nif, null, null));
 	        	//utilizadorBuffer[contador] = new Revisor(0,user, pass, nome, EstadoConta.ativos, maill, null, nif, null, null);
 	        	//if(user.equals(login1) && pass.equals(password1)) {
 	        		
@@ -484,10 +486,11 @@ public class BDDriver {
  		try {
  		PreparedStatement ps = conn.prepareStatement("SELECT * FROM listar_revisoes()");
 	    ResultSet rs = ps.executeQuery();
-	    int revisaoID = rs.getInt(5);
-	    int revisorResID = rs.getInt(6);
-	    int obraID = rs.getInt(7);
-	    int gestorID = rs.getInt(9);
+	    while(rs.next()) {
+	    int revisaoID = rs.getInt("id_revisao");
+	    int revisorResID = rs.getInt(5);
+	    int obraID = rs.getInt(6);
+	    int gestorID = rs.getInt(7);
 	    
 	    Revisao rev = new Revisao(
 	    		revisaoID,
@@ -496,76 +499,76 @@ public class BDDriver {
 	    		revisorResID,
 	    		rs.getString(3),
 	    		rs.getDate(2),
-	    		rs.getDate(4),
+	    		rs.getInt(9),
 	    		null,
 	    		null,
 	    		rs.getDouble(1),
 	    		null,
 	    		null,
 	    		EstadoRevisao.intToEstado(rs.getInt(8)));
-	    ps.close();
 	    
 	    
 	    //Revisores Recusados
-	    ps = conn.prepareStatement("SELECT * FROM listar_revisor_recusado_revisao(?)");
-	    ps.setInt(1, revisaoID);
-	    rs = ps.executeQuery();
+	    PreparedStatement localps = conn.prepareStatement("SELECT * FROM listar_revisor_recusado_revisao(?)");
+	    localps.setInt(1, revisaoID);
+	    ResultSet localrs = localps.executeQuery();
 	    ArrayList<Integer> revisores = new ArrayList<Integer>();
-	    while(rs.next()) {
-	    revisores.add(rs.getInt(1));
+	    while(localrs.next()) {
+	    revisores.add(localrs.getInt(1));
 	    }
 	    rev.setRevisoresRec(revisores.toArray(new Integer[0]));
-	    ps.close();
+	    localps.close();
 	    
 	    //Observacoes
-	    ps = conn.prepareStatement("SELECT * FROM listar_observacao_de_revisao(?)");
-	    ps.setInt(1, revisaoID);
-	    rs = ps.executeQuery();
+	    localps = conn.prepareStatement("SELECT * FROM listar_observacao_de_revisao(?)");
+	    localps.setInt(1, revisaoID);
+	    localrs = localps.executeQuery();
 	    
 	    ArrayList<String> observacoes = new ArrayList<String>();
-	    while(rs.next()) {
-	    	observacoes.add(rs.getString(3));
+	    while(localrs.next()) {
+	    	observacoes.add(localrs.getString(3));
 	    }
 	    rev.setObservacoes(observacoes.toArray(new String[0]));
-	    ps.close();
+	    localps.close();
 	    
 	    //Anotacoes
-	    ps = conn.prepareStatement("SELECT * FROM listar_anotacao_de_revisao(?)");
-	    ps.setInt(1, revisaoID);
-	    rs = ps.executeQuery();
+	    localps = conn.prepareStatement("SELECT * FROM listar_anotacao_de_revisao(?)");
+	    localps.setInt(1, revisaoID);
+	    localrs = localps.executeQuery();
 	    
 	    ArrayList<Anotacao> anotacoes = new ArrayList<Anotacao>();
-	    while(rs.next()) {
+	    while(localrs.next()) {
 	    	anotacoes.add(new Anotacao(
-	    			rs.getInt(1),
-	    			rs.getString(4),
-	    			rs.getInt(5),
-	    			rs.getInt(6),
-	    			rs.getDate(3)
+	    			localrs.getInt(1),
+	    			localrs.getString(4),
+	    			localrs.getInt(5),
+	    			localrs.getInt(6),
+	    			localrs.getDate(3)
 	    			));
 	    }
 	    rev.setAnotacoes(anotacoes.toArray(new Anotacao[0]));
-	    ps.close();
+	    localps.close();
 	    
 	    //Licensas
-	    ps = conn.prepareStatement("SELECT * FROM listar_licensas_de_revisao(?);");
-	    ps.setInt(1, revisaoID);
-	    rs = ps.executeQuery();
+	    localps = conn.prepareStatement("SELECT * FROM listar_licensas_de_revisao(?);");
+	    localps.setInt(1, revisaoID);
+	    localrs = localps.executeQuery();
 	    ArrayList<Licensa> licensas = new ArrayList<Licensa>();
-	    while(rs.next()) {
+	    while(localrs.next()) {
 	    	licensas.add(new Licensa(
-	    			rs.getInt(1),
-	    			rs.getInt(2),
-	    			rs.getString(3),
-	    			rs.getInt(4),
-	    			rs.getDate(5)
+	    			localrs.getInt(1),
+	    			localrs.getInt(2),
+	    			localrs.getString(3),
+	    			localrs.getInt(4),
+	    			localrs.getDate(5)
 	    			));
 	    }
 	    rev.setLicensas(licensas.toArray(new Licensa[0]));
+	    localps.close();
 	    
 	    revisoes.add(rev);
-	    
-	    
+ 		}
+	    ps.close();
  		}
  		catch(Exception e) {
  			e.printStackTrace();
@@ -594,10 +597,174 @@ public class BDDriver {
 		return false;
  	}
  	
+ 	public static int adicionarObra(String user) {
+		//String autor = user;
+		
+		
+		//String dataSub = lerDados("Insira a data de inicio de atividade no seguinte formato yyyy-mm-dd: ");
+		//DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        //LocalDate date = LocalDate.parse(dataSub, formatter);
+        //Date completedDate = Date.valueOf(date);
+        
+        
+        
+        try {
+        	Autor autor = (Autor) GestorContas.pesquisarUtilizadoresUserName(user);
+        	int idAutor = autor.getIdAutor();
+        	String titulo = lerDados("Insira o nome do titulo da obra: ");
+        	String subTitulo = lerDados("Insira o sub-titulo da obra (opcional-enter): ");
+        	String estiloLiterario1 = lerDados("Insira o estilo literario da obra (drama, ficção, thriller): ");
+        	String tipoPubli = lerDados("Insira o tipo de publicação (capa dura, de bolso, ebook): ");
+        	int nPaginas = lerDadosInt("Insira o número de páginas: ");
+        	int nPalavras = lerDadosInt("Insira o número de palavras: ");
+        	//int codigoISBN = lerDadosInt("Insira o código ISBN: ");
+        	int nEdicao = lerDadosInt("Insir o número de edição da obra: ");
+        	StringBuffer sqlQuery = new StringBuffer();
+        	sqlQuery.append("SELECT * FROM criar_obra(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");  
+			PreparedStatement ps = conn.prepareStatement(sqlQuery.toString());
+			 ps.clearParameters();													
+	            ps.setInt(1, idAutor);
+	            ps.setInt(2, 0); //isbn
+	            ps.setInt(3, nPaginas);  								 		
+	            ps.setInt(4, nPalavras);  										    
+	            ps.setString(5, titulo);
+	            ps.setString(6, subTitulo);
+	            ps.setString(7, tipoPubli);
+	            ps.setInt(8, EstiloLiterario.estiloToInt(estiloLiterario1));
+	            ps.setInt(9, nEdicao);
+	            ps.setDate(10, null);
+	            ps.setDate(11, null);
+	            ResultSet rs = ps.executeQuery();
+	            rs.next();
+	          ps.close();
+	          
+	          //ps.setInt(8, EstiloLiterario.estiloToInt(estiloLiterario1));
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+ 		
+ 		
+ 		
+ 		return 0;
+ 	}
+ 	
+ 	public static Obra[] listarObras() {
+ 		
+ 		ArrayList<Obra> obraNova = new ArrayList<Obra>();
+    	//String teste = rs.getString(7);w
+    	//utilizadorNovo.add(new Gestor(idGestor,idUser,user, pass, nome, EstadoConta.intToEstado(estado), maill, null));
+ 		
+		
+		try {
+			StringBuffer sqlQuery = new StringBuffer();
+    		sqlQuery.append("SELECT * FROM listar_obras()");  
+			PreparedStatement ps = conn.prepareStatement(sqlQuery.toString());
+			ps.clearParameters();
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				int idObra = rs.getInt(1); //id obra
+				int idAutor = rs.getInt(2); //id autor
+				Date dataAprovacao = rs.getDate(3); //data
+				Date dataSubmissao = rs.getDate(4);
+				int isbn = rs.getInt(5);
+				int nEdicao = rs.getInt(6);
+				int nPaginas = rs.getInt(7);
+				int nPalavras = rs.getInt(8);
+				String subTitulo = rs.getString(9);
+				String titulo = rs.getString(10);
+				String tipoPubli = rs.getString(11);
+				String estiloLiterario1 = rs.getString(12);
+				//System.out.println(estiloLiterario1);
+				String autorNome = null;
+				int tamanhoArray = BDDriver.listarUtilizadores().length;
+				Utilizador[] utilizadorBuffer = new Utilizador[tamanhoArray];
+				utilizadorBuffer = BDDriver.listarUtilizadores();
+				for(int i = 0; i<tamanhoArray; i++) {
+					if(utilizadorBuffer[i] instanceof Autor) {
+						if(((Autor) utilizadorBuffer[i]).getIdAutor() == idAutor ) {
+							autorNome = utilizadorBuffer[i].getLogin();
+						}
+						
+					}
+					
+				}
+				obraNova.add(new Obra(idObra, autorNome, titulo, subTitulo, EstiloLiterario.stringToEstilo(estiloLiterario1), 
+						TipoPublicacao.stringToTipo(tipoPubli),
+						nPaginas, nPalavras, isbn, nEdicao, dataSubmissao, dataAprovacao));
+				
+				//int obraId, String autor, String titulo, String subTitulo, EstiloLiterario estiloLiterario,
+				//TipoPublicacao tipoPublicacao, int numeroPaginas, int numeroPalavras, int isbn, int numeroEdicao,
+				//Date dataSubmissao, Date dataAprovacao
+			}
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+ 		
+ 		
+ 		
+		return obraNova.toArray(new Obra[0]);
+ 	}
+ 	
+ 	
+ 	public static void alterarISBN(int isbnNumber, int idObra) {
+ 		try {
+			StringBuffer sqlQuery = new StringBuffer();
+    		sqlQuery.append("SELECT * FROM definir_obra_isbn(?,?)");  
+			PreparedStatement ps = conn.prepareStatement(sqlQuery.toString());
+			ps.clearParameters();
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+ 	}
+ 	
+ 	
+ 	public static void adicionarRevisao(int nSerie, int idObra, int idGestor ) {
+ 
+ 		
+ 		
+ 		
+ 		try {
+        	//Revisao revisao = (Autor) GestorContas.pesquisarUtilizadoresUserName(user);
+        	
+        	StringBuffer sqlQuery = new StringBuffer();
+        	sqlQuery.append("SELECT * FROM criar_revisao(?, ?, ?)");  
+			PreparedStatement ps = conn.prepareStatement(sqlQuery.toString());
+			 ps.clearParameters();													
+	            ps.setInt(1, nSerie);
+	            ps.setInt(2, idObra); //isbn
+	            ps.setInt(3, idGestor);  								 		
+	            //idGestor null por agora
+	            ResultSet rs = ps.executeQuery();
+	            rs.next();
+	          ps.close();
+	         
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+ 		
+ 		
+ 	
+ 	}
  	
  	
    
    
+ 	
+ 	
+ 	
+ 	
+ 	
    public static void fecharConexao() {
 	   try {
 		if(conn != null && !conn.isClosed()) {
@@ -611,6 +778,8 @@ public class BDDriver {
 		e.printStackTrace();
 	}
    }
+   
+   
 
    private static int lerDadosInt(String aMensagem) {
       System.out.println(aMensagem);

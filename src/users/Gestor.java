@@ -7,7 +7,9 @@ import java.util.Scanner;
 
 import pastaPrincipal.Main;
 import sistema.BDDriver;
+import sistema.EstadoRevisao;
 import sistema.GestorContas;
+import sistema.Revisao;
 
 public class Gestor extends Utilizador{
 	
@@ -28,7 +30,7 @@ public class Gestor extends Utilizador{
 		
 		while(true) {
 		System.out.println("1-Aprovar/Rejeitar Pedidos de Registo \n2-Criar conta Gestor \n3-Ativar/Inativar Conta \n4-Pedido Remover Conta "
-				+ "\n5-Pedidos Remoção Contas Conta \n6-Sair");
+				+ "\n5-Pedidos Remoção Contas Conta \n6-Pedidos Revisao \n7-Sair");
 		
 		int opcao = lerDadosInt("Escolha uma das seguintes opções: ");
 		
@@ -47,9 +49,10 @@ public class Gestor extends Utilizador{
 		case 1: aprovarRejeitarPedidosRegisto(); break;
 		case 2: criarGestor(); break;
 		case 3: ativarInativarConta(); break;
-		case 4: pedidoRemoverConta(login1); break;
+		case 4: GestorContas.pedidoRemoverConta(login1); break;
 		case 5: pedidosRemocaoConta(); break;
-		case 6: sair(login1); break;
+		case 6: pedidosRevisao(); break;
+		case 7: sair(login1); break;
 		default: erro();
 		}
 	}
@@ -161,27 +164,6 @@ public class Gestor extends Utilizador{
  		BDDriver.updateEstado(idEscolha, ativarInativarN);
 	}
 	
-	private static void pedidoRemoverConta(String login1) {
-		
-		
-		while(true) {
- 			String resposta = lerDados("Deseja fazer um pedido de remoção de conta(s/n): ");
- 			if(resposta.contentEquals("s")) {
- 				String respostaConfirm = lerDados("Tem mesmo a certeza que pretende fazer o pedido de remoção de conta(s/n): ");
- 				if(respostaConfirm.contentEquals("s")) {
- 					break;
- 				}
- 			}else if(resposta.contentEquals("n")) {
- 				break;
- 			}else {
- 				System.out.println("Resposta inválida! Insira s ou n como resposta. (s-sim, n-nao)");
- 			}
- 		}
-		Utilizador novoUti = GestorContas.pesquisarUtilizadoresUserName(login1);
-		
-		BDDriver.updateEstado(novoUti.getIdUser(), 2);
-		//por_remover - 2
-	}
 	
 	private static void pedidosRemocaoConta() {
 		int tamanhoArray;
@@ -198,8 +180,49 @@ public class Gestor extends Utilizador{
  	    	
  		}
  		//utilizadorNovo.toArray(new Utilizador[0])
- 		Main.SelectionarObjetoMenu(utilizadorNovo.toArray(new Utilizador[0]));
+ 		Utilizador utiliRemove = Main.SelectionarObjetoMenu(utilizadorNovo.toArray(new Utilizador[0]));
  		
+ 		while(true) {
+ 			String verify = lerDados("Tem a certeza que deseja aceitar a remoção do utilizador selecionado(s/n): ");
+ 			if(verify.contentEquals("s")) {
+ 				BDDriver.updateEstado(utiliRemove.getIdUser(), 3);
+ 				break;
+ 			} else if(verify.contentEquals("n")) {
+ 				break;
+ 			} else {
+ 				System.out.println("Resposta inválida! Insira s ou n (s-sim, n-não)");
+ 			}
+ 		}
+ 		
+	}
+	
+	
+	public static void pedidosRevisao() {
+		//ArrayList<Revisao> revisoes = new ArrayList<Revisao>();
+		int tamanhoArray;
+ 		
+ 		tamanhoArray = BDDriver.listarRevisoes().length;
+ 		Revisao[] revisaoBuffer = new Revisao[tamanhoArray];
+ 		revisaoBuffer = BDDriver.listarRevisoes();
+ 		ArrayList<Revisao> revisoes = new ArrayList<Revisao>();
+ 		for(int i = 0; i<tamanhoArray; i++) {
+ 			if(revisaoBuffer[i].getEstado()==EstadoRevisao.iniciada) {
+ 				revisoes.add(revisaoBuffer[i]);
+ 			}
+ 		}
+ 		System.out.println("Escolha qual a revisão que deseja aprovar/reprovar");
+		Revisao rev = Main.SelectionarObjetoMenu(revisoes.toArray(new Revisao[0]));
+		String verify = lerDados("Deseja aprovar o pedido(s/n): ");
+		if(verify.equalsIgnoreCase("s")) {
+			rev.setEstado(EstadoRevisao.iniciada);
+			System.out.println("Escolha um revisor responsável");
+			Revisor revisor1 = Main.SelectionarObjetoMenu(GestorContas.listarRevisores());
+			int idRevisor = (int) revisor1.getIdRevisor();
+			rev.setRevisorResponsavel(idRevisor);
+		} else {
+			rev.setEstado(EstadoRevisao.arquivado);
+		}
+		
 	}
 	
 	

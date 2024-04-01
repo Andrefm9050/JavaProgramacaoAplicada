@@ -1,6 +1,7 @@
 package sistema;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.sql.Date;
 
 import users.Gestor;
@@ -14,7 +15,7 @@ public class Revisao {
 	private int revisorResponsavel;
 	private String numeroSerie; // SEQAAAAMMDDHHMMSS (SEQ = Nrevisoes + 1, AAAAMMDDHHMMSS = Instante)
 	private Date dataRealizacao;
-	private Date tempoDecorrido;
+	private int tempoDecorrido;
 	private Anotacao[] anotacoes; //ou getAnotacoes() seria melhor
 	private String[] observacoes; //ou getObservacoes() seria melhor
 	private double custo;
@@ -23,7 +24,7 @@ public class Revisao {
 	private Licensa[] licensas;
 	
 	public Revisao(int revID, int obraID, int gestorID, int revisorResponsavel, String numeroSerie, Date dataRealizacao,
-			Date tempoDecorrido, Anotacao[] anotacoes, String[] observacoes, double custo,
+			int tempoDecorrido, Anotacao[] anotacoes, String[] observacoes, double custo,
 			Integer[] revisoresRecusados,Licensa[] licensas, EstadoRevisao estado) {
 		this.obraID = obraID;
 		this.gestorID = gestorID;
@@ -37,6 +38,7 @@ public class Revisao {
 		this.revisoresRecusados = revisoresRecusados;
 		this.estado = estado;
 		this.licensas = licensas;
+		this.revisaoID = revID;
 	}
 	public void setAnotacoes(Anotacao[] an) {
 		anotacoes = an;
@@ -50,4 +52,84 @@ public class Revisao {
 	public void setLicensas(Licensa[] lic) {
 		licensas = lic;
 	}
+	@Override
+	public String toString() {
+		return "Revisao [revisaoID=" + revisaoID + ", obraID=" + obraID + ", gestorID=" + gestorID
+				+ ", revisorResponsavel=" + revisorResponsavel + ", numeroSerie=" + numeroSerie + ", dataRealizacao="
+				+ dataRealizacao + ", tempoDecorrido=" + tempoDecorrido + ", anotacoes=" + Arrays.toString(anotacoes)
+				+ ", observacoes=" + Arrays.toString(observacoes) + ", custo=" + custo + ", revisoresRecusados="
+				+ Arrays.toString(revisoresRecusados) + ", estado=" + estado + ", licensas=" + Arrays.toString(licensas)
+				+ "]";
+	}
+	public int getRevisaoID() {
+		return revisaoID;
+	}
+	public void setRevisaoID(int revisaoID) {
+		this.revisaoID = revisaoID;
+	}
+	public int getObraID() {
+		return obraID;
+	}
+	public void setObraID(int obraID) {
+		this.obraID = obraID;
+	}
+	public int getGestorID() {
+		return gestorID;
+	}
+	public void setGestorID(int gestorID) {
+		this.gestorID = gestorID;
+	}
+	public int getRevisorResponsavel() {
+		return revisorResponsavel;
+	}
+	public void setRevisorResponsavel(int revisorResponsavel) {
+		this.revisorResponsavel = revisorResponsavel;
+	}
+	public String getNumeroSerie() {
+		return numeroSerie;
+	}
+	public void setNumeroSerie(String numeroSerie) {
+		this.numeroSerie = numeroSerie;
+	}
+	public Date getDataRealizacao() {
+		return dataRealizacao;
+	}
+	public void setDataRealizacao(Date dataRealizacao) {
+		this.dataRealizacao = dataRealizacao;
+	}
+	public int getTempoDecorrido() {
+		return tempoDecorrido;
+	}
+	public void setTempoDecorrido(int tempoDecorrido) {
+		this.tempoDecorrido = tempoDecorrido;
+	}
+	public double getCusto() {
+		return custo;
+	}
+	public void setCusto(double custo) {
+		this.custo = custo;
+	}
+	public Integer[] getRevisoresRecusados() {
+		return revisoresRecusados;
+	}
+	public void setRevisoresRecusados(Integer[] revisoresRecusados) {
+		this.revisoresRecusados = revisoresRecusados;
+	}
+	public EstadoRevisao getEstado() {
+		return estado;
+	}
+	public void setEstado(EstadoRevisao estado) {
+		this.estado = estado;
+	}
+	public Anotacao[] getAnotacoes() {
+		return anotacoes;
+	}
+	public String[] getObservacoes() {
+		return observacoes;
+	}
+	public Licensa[] getLicensas() {
+		return licensas;
+	}
+	
+	
 }

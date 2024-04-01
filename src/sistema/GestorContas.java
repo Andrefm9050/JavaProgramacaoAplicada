@@ -4,6 +4,7 @@ import java.util.regex.Pattern;
 import users.Autor;
 import users.EstadoConta;
 import users.Gestor;
+import users.Revisor;
 import users.UniqueUtilizador;
 import users.Utilizador;
 
@@ -13,6 +14,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 
 public class GestorContas {
@@ -139,11 +142,78 @@ public class GestorContas {
 		return utilizadores.toArray(new Gestor[0]);
 	}
 	
+	public static Revisor[] listarRevisores() {
+		ArrayList<Revisor> revisores = new ArrayList<Revisor>();
+		
+		for(var user : BDDriver.listarUtilizadores()) {
+			if(user instanceof Gestor) {
+				revisores.add((Revisor)user);
+			}
+		}
+		return revisores.toArray(new Revisor[0]);
+	}
 	
 	
-	
-	
-	
-	
+public static void pedidoRemoverConta(String login1) {
+		
+		
+		while(true) {
+ 			String resposta = lerDados("Deseja fazer um pedido de remoção de conta(s/n): ");
+ 			if(resposta.contentEquals("s")) {
+ 				String respostaConfirm = lerDados("Tem mesmo a certeza que pretende fazer o pedido de remoção de conta(s/n): ");
+ 				if(respostaConfirm.contentEquals("s")) {
+ 					break;
+ 				}
+ 			}else if(resposta.contentEquals("n")) {
+ 				break;
+ 			}else {
+ 				System.out.println("Resposta inválida! Insira s ou n como resposta. (s-sim, n-nao)");
+ 			}
+ 		}
+		Utilizador novoUti = GestorContas.pesquisarUtilizadoresUserName(login1);
+		
+		BDDriver.updateEstado(novoUti.getIdUser(), 2);
+		//por_remover - 2
+	}
 
+
+public static int isbnUnico() {
+	int tamanhoArray;
+	Random rand = new Random();
+	int randomNum = rand.nextInt(1000001);
+	tamanhoArray = BDDriver.listarObras().length;
+	Obra[] obrasBuffer = new Obra[tamanhoArray];
+	obrasBuffer = BDDriver.listarObras();
+	ArrayList<Obra> obraNovo = new ArrayList<Obra>();
+	int contador = 0;
+	
+	while(true) {
+		for(int i=0; i<tamanhoArray; i++) {
+			if(obrasBuffer[i].getIsbn()==randomNum ) {
+				contador = 1;
+			}
+		}
+		if(contador == 1) {
+			randomNum = rand.nextInt(1000001);
+		}else if(contador == 0){
+			return randomNum;
+		}
+	}
+	
+}
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+public static String lerDados(String aMensagem){
+	System.out.print(aMensagem);
+	return(new Scanner(System.in)).nextLine();
+}
 }
