@@ -187,11 +187,11 @@ public class Main {
 			}
 			else if(userLoginSEstado instanceof Autor) {
 				System.out.println("Bem-vindo " + login1);
-				Autor.menuAutor(login1);
+				Autor.menuAutor((Autor)userLoginSEstado);
 			}
 			else if(userLoginSEstado instanceof Revisor) {
 				System.out.println("Bem-vindo " + login1);
-				Revisor.menuRevisor(login1);
+				Revisor.menuRevisor((Revisor)userLoginSEstado);
 			}
 			else {
 				System.out.println("Credenciais inválidas!");

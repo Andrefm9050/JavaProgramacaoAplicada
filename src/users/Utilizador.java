@@ -10,6 +10,7 @@ public class Utilizador implements Comparable<Utilizador> {
 	private String email; //Unico, formato (destino@entidade.dominio)
 	private EstadoConta estado;
 	private String tipo;
+	private String ordenacao;
 	
 	
 	
@@ -22,6 +23,7 @@ public class Utilizador implements Comparable<Utilizador> {
 		this.estado = estado;
 		this.email = email;
 		this.tipo = tipo;
+		ordenacao = "";
 	}
 
 
@@ -94,21 +96,36 @@ public class Utilizador implements Comparable<Utilizador> {
 		this.tipo = tipo;
 	}
 
+	public void setOrdenacao(String ordenacao) {
+		this.ordenacao = ordenacao;
+	}
 
 	@Override
 	public int compareTo(Utilizador o) {
-		if(idUser > o.idUser) {
-			return 1;
+		switch(ordenacao) {
+		case "":
+			if(idUser > o.idUser) {
+				return 1;
+			}
+			if(idUser < o.idUser)
+				return -1;
+			
+			return 0;
+		
+		case "nome":
+			return nome.compareTo(o.nome);
 		}
-		if(idUser < o.idUser)
-			return -1;
 		
 		return 0;
 	}
 	
 	@Override
 	public String toString() {
-		return "UserID: " + idUser + "- " + super.toString();
+		return "Utilizador [idUser=" + idUser + ", getUserID()=" + getIdUser() + ", getIdUser()=" + getIdUser()
+				+ ", getLogin()=" + getLogin() + ", getNome()=" + getNome() + 
+				", getEmail()=" + getEmail() + ", getEstado()=" + getEstado() + ", getTipo()=" + getTipo()
+				+ ", toString()=" + super.toString() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
+				+ "]";
 	}
 	
 	

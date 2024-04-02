@@ -8,6 +8,8 @@ import pastaPrincipal.Main;
 import sistema.BDDriver;
 import sistema.EstiloLiterario;
 import sistema.Obra;
+import sistema.Revisao;
+
 import java.util.Random;
 
 public class Autor extends UniqueUtilizador{
@@ -35,10 +37,13 @@ public int getIdAutor() {
 
 
 
-public static void menuAutor(String login1) {
+public static void menuAutor(Autor login1) {
 		
 		while(true) {
-		System.out.println("1-Submeter obra para Revisão \n2-Estado da Revisão \n3-Inserir Obra \n4-Pedido Remover Conta \n5-Sair");
+		System.out.println("1-Submeter obra para Revisão \n2-Estado da Revisão \n3-Inserir Obra \n4-Pedido Remover Conta");
+		System.out.println("5- Listar Pedidos Revisao das minhas obras");
+		System.out.println("6- Listar as minhas obras");
+		System.out.println("7- Sair");
 		
 		int opcao = lerDadosInt("Escolha uma das seguintes opções: ");
 		
@@ -48,17 +53,53 @@ public static void menuAutor(String login1) {
 	
 }
 
-public static void executaOpcao(int aOpcao, String login1){
+public static void executaOpcao(int aOpcao, Autor user){
 	
 	
 	switch(aOpcao) {
-	case 1: submeterObraRevisao(login1); break;
+	case 1: submeterObraRevisao(user.getLogin()); break;
 	case 2: estadoRevisao(); break;
-	case 3: inserirObra(login1); break;
-	case 4: GestorContas.pedidoRemoverConta(login1); break;
-	case 5: sair(login1); break;
+	case 3: inserirObra(user.getLogin()); break;
+	case 4: GestorContas.pedidoRemoverConta(user.getLogin()); break;
+	case 5: listarPedidosRevisao(user); break;
+	case 6: listarObras(user); break;
+	case 7: sair(user.getLogin()); break;
 	default: erro();
 	}
+}
+
+static void listarObras(Autor user) {
+	String choice = "";
+	while(!(choice.contains("d") || choice.contains("t"))) {
+		choice = Main.lerDados("Ordenar por Data de submissao(d) ou Titulo(t): ");
+	}
+	Obra[] list = BDDriver.listarObras();
+	ArrayList<Obra> actualList = new ArrayList<Obra>();
+	for(var obr : list) {
+		if(obr.getAutorID() == user.getIdAutor()) {
+			obr.setOrdenacao(choice);
+			actualList.add(obr);
+		}
+	}
+	
+	Main.SelectionarObjetoMenu(list);
+}
+static void listarPedidosRevisao(Autor user) {
+	String choice = "";
+	while(!(choice.contains("d") || choice.contains("n"))) {
+		choice = Main.lerDados("Ordenar por Data de criacao(d) ou Numero de serie(n): ");
+	}
+	
+	Revisao[] list = BDDriver.listarRevisoes();
+	ArrayList<Revisao> actualList = new ArrayList<Revisao>();
+	for(var rev : list) {
+		if(rev.getObra().getAutorID() == user.getIdAutor()) {
+			rev.setOrdenacao(choice);
+			actualList.add(rev);
+		}
+	}
+	Main.SelectionarObjetoMenu(actualList.toArray(new Revisao[0]));
+	
 }
 private static void submeterObraRevisao(String login1) {
 	//BDDriver.listarObras();

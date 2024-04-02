@@ -499,17 +499,33 @@ public class BDDriver {
  		try {
  		PreparedStatement ps = conn.prepareStatement("SELECT * FROM listar_revisoes()");
 	    ResultSet rs = ps.executeQuery();
+	    Obra[] obras = BDDriver.listarObras();
+	    Revisor[] revisores = GestorContas.listarRevisores();
 	    while(rs.next()) {
 	    int revisaoID = rs.getInt("id_revisao");
 	    int revisorResID = rs.getInt(5);
 	    int obraID = rs.getInt(6);
 	    int gestorID = rs.getInt(7);
 	    
+	    Obra obra = null;
+	    
+	    for(var o : obras) {
+	    	if(o.getObraId() == obraID) {
+	    		obra = o;
+	    	}
+	    }
+	    Revisor revisor = null;
+	    for(var rev : revisores) {
+	    	if(rev.getIdRevisor() == revisorResID) {
+	    		revisor = rev;
+	    	}
+	    }
+	    
 	    Revisao rev = new Revisao(
 	    		revisaoID,
-	    		obraID,
+	    		obra,
 	    		gestorID,
-	    		revisorResID,
+	    		revisor,
 	    		rs.getString(3),
 	    		rs.getDate(2),
 	    		rs.getInt(9),
@@ -526,29 +542,41 @@ public class BDDriver {
 	    PreparedStatement localps = conn.prepareStatement("SELECT * FROM listar_revisor_recusado_revisao(?)");
 	    localps.setInt(1, revisaoID);
 	    ResultSet localrs = localps.executeQuery();
-	    ArrayList<Integer> revisores = new ArrayList<Integer>();
+	    ArrayList<Revisor> revisores1 = new ArrayList<Revisor>();
 	    while(localrs.next()) {
-	    revisores.add(localrs.getInt(1));
+	    	int revID = localrs.getInt(1);
+	    	for(Revisor rev2 : revisores) {
+	    		if(rev2.getIdRevisor() == revID)
+	    		revisores1.add(rev2);
+	    	}
 	    }
-	    rev.setRevisoresRec(revisores.toArray(new Integer[0]));
+	    rev.setRevisoresRec(revisores1.toArray(new Revisor[0]));
+	    revisores1.clear();
 	    localps.close();
 	    
 	    //Revisores Confirmados
 	    localps = conn.prepareStatement("SELECT * FROM listar_revisores_revisao(?)");
 	    localps.setInt(1, revisaoID);
 	    localrs = localps.executeQuery();
-	    ArrayList<Integer> naoconfirm = new ArrayList<Integer>();
-	    ArrayList<Integer> confirm = new ArrayList<Integer>();
+	    ArrayList<Revisor> naoconfirm = new ArrayList<Revisor>();
+	    ArrayList<Revisor> confirm = new ArrayList<Revisor>();
 	    while(localrs.next()) {
-	    	if(rs.getBoolean(3)) {
-	    		confirm.add(rs.getInt(1));
+	    	int revID = localrs.getInt(1);
+	    	boolean confirmed = localrs.getBoolean(3);
+	    	for(Revisor rev3 : revisores) {
+	    		if(rev3.getIdRevisor() == revID) {
+		    		if(confirmed) {
+		    		confirm.add(rev3);
+			    	}
+			    	else {
+			    		naoconfirm.add(rev3);
+			    	}
+	    		}
 	    	}
-	    	else {
-	    		naoconfirm.add(rs.getInt(1));
-	    	}
+	    	
 	    }
-	    rev.setRevisoresConfirmados(confirm.toArray(new Integer[0]));
-	    rev.setRevisoresNaoConfirmados(naoconfirm.toArray(new Integer[0]));
+	    rev.setRevisoresConfirmados(confirm.toArray(new Revisor[0]));
+	    rev.setRevisoresNaoConfirmados(naoconfirm.toArray(new Revisor[0]));
 	    localps.close();
 	    
 	    //Observacoes
@@ -599,6 +627,9 @@ public class BDDriver {
 	    localps.close();
 	    
 	    revisoes.add(rev);
+	    
+	
+	    
  		}
 	    ps.close();
  		}
@@ -710,10 +741,8 @@ public class BDDriver {
 				String estiloLiterario1 = rs.getString(12);
 				//System.out.println(estiloLiterario1);
 				String autorNome = null;
-				int tamanhoArray = BDDriver.listarUtilizadores().length;
-				Utilizador[] utilizadorBuffer = new Utilizador[tamanhoArray];
-				utilizadorBuffer = BDDriver.listarUtilizadores();
-				for(int i = 0; i<tamanhoArray; i++) {
+				Utilizador[] utilizadorBuffer = listarUtilizadores();
+				for(int i = 0; i<utilizadorBuffer.length; i++) {
 					if(utilizadorBuffer[i] instanceof Autor) {
 						if(((Autor) utilizadorBuffer[i]).getIdAutor() == idAutor ) {
 							autorNome = utilizadorBuffer[i].getLogin();
@@ -722,7 +751,7 @@ public class BDDriver {
 					}
 					
 				}
-				obraNova.add(new Obra(idObra, autorNome, titulo, subTitulo, EstiloLiterario.stringToEstilo(estiloLiterario1), 
+				obraNova.add(new Obra(idObra, autorNome,idAutor, titulo, subTitulo, EstiloLiterario.stringToEstilo(estiloLiterario1), 
 						TipoPublicacao.stringToTipo(tipoPubli),
 						nPaginas, nPalavras, isbn, nEdicao, dataSubmissao, dataAprovacao));
 				

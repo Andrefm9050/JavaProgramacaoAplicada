@@ -12,6 +12,7 @@ import users.Autor;
 public class Obra implements Comparable<Obra>{
 	private int obraId;
 	private String autor;
+	private int autorID;
 	private String titulo; //Unico
 	private String subTitulo; //opcional
 	private EstiloLiterario estiloLiterario;
@@ -22,10 +23,12 @@ public class Obra implements Comparable<Obra>{
 	private int numeroEdicao;
 	private Date dataSubmissao;
 	private Date dataAprovacao;
+	private String ordenacao;
 	/**
 	 * 
 	 * @param obraId - ID da obra
 	 * @param autor - Nome do Autor
+	 * @param autorID - ID do Autor
 	 * @param titulo - Titulo da Obra
 	 * @param subTitulo - SubTitulo da Obra
 	 * @param estiloLiterario - Estilo Literario
@@ -37,10 +40,11 @@ public class Obra implements Comparable<Obra>{
 	 * @param dataSubmissao - Data de Submissao da Obra
 	 * @param dataAprovacao - Data de Aprovacao da Obra
 	 */
-	public Obra(int obraId, String autor, String titulo, String subTitulo, EstiloLiterario estiloLiterario,
+	public Obra(int obraId, String autor,int autorID, String titulo, String subTitulo, EstiloLiterario estiloLiterario,
 			TipoPublicacao tipoPublicacao, int numeroPaginas, int numeroPalavras, int isbn, int numeroEdicao,
 			Date dataSubmissao, Date dataAprovacao) {
 		this.autor = autor;
+		this.autorID = autorID;
 		this.titulo = titulo;
 		this.subTitulo = subTitulo;
 		this.estiloLiterario = estiloLiterario;
@@ -52,9 +56,13 @@ public class Obra implements Comparable<Obra>{
 		this.dataSubmissao = dataSubmissao;
 		this.dataAprovacao = dataAprovacao;
 		this.obraId = obraId;
+		ordenacao = "";
 	}
 	public String getTitulo() {
 		return titulo;
+	}
+	public int getAutorID() {
+		return autorID;
 	}
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
@@ -125,6 +133,9 @@ public class Obra implements Comparable<Obra>{
 	public void setObraId(int obraId) {
 		this.obraId = obraId;
 	}
+	public void setOrdenacao(String ordenacao) {
+		this.ordenacao = ordenacao;
+	}
 	@Override
 	public String toString() {
 		return "Obra [obraId=" + obraId + ", autor=" + autor + ", titulo=" + titulo + ", subTitulo=" + subTitulo
@@ -136,7 +147,16 @@ public class Obra implements Comparable<Obra>{
 
 	@Override
 	public int compareTo(Obra o) {
-		return dataSubmissao.compareTo(o.dataSubmissao);
+		switch(ordenacao) {
+		case "":
+			return dataSubmissao.compareTo(o.dataSubmissao);
+		case "t":
+			return titulo.compareTo(o.titulo);
+		case "d":
+			return dataSubmissao.compareTo(o.dataSubmissao);
+		}
+		
+		return 0;
 	}
 	
 }

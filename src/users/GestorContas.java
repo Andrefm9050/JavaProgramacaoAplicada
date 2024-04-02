@@ -68,7 +68,9 @@ public class GestorContas {
 		return true;
 		
 	}
-	
+	public static Utilizador[] listarUtilizadores() {
+		return BDDriver.listarUtilizadores();
+	}
 	public static Utilizador pesquisarUtilizadoresEmail(String mail1) { 
 		int tamanhoArray;
  		

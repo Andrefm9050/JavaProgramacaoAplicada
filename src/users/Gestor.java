@@ -8,6 +8,7 @@ import java.util.Scanner;
 import pastaPrincipal.Main;
 import sistema.BDDriver;
 import sistema.EstadoRevisao;
+import sistema.Obra;
 import sistema.Revisao;
 
 public class Gestor extends Utilizador{
@@ -29,8 +30,12 @@ public class Gestor extends Utilizador{
 		
 		while(true) {
 		System.out.println("1-Aprovar/Rejeitar Pedidos de Registo \n2-Criar conta Gestor \n3-Ativar/Inativar Conta \n4-Pedido Remover Conta "
-				+ "\n5-Pedidos Remoção Contas Conta \n6-Pedidos Revisao \n7-Sair");
-		
+				+ "\n5-Pedidos Remoção Contas Conta \n6-Pedidos Revisao");
+		System.out.println("7-Listar Utilizadores");
+		System.out.println("8-Listar Pedidos Revisao");
+		System.out.println("9-Listar Pedidos Revisao nao finalizados por data");
+		System.out.println("10-Listar Pedidos Revisao de Obra");
+		System.out.println("11-Sair");
 		int opcao = lerDadosInt("Escolha uma das seguintes opções: ");
 		
 		executaOpcao(opcao, user);
@@ -51,9 +56,61 @@ public class Gestor extends Utilizador{
 		case 4: GestorContas.pedidoRemoverConta(user.getLogin()); break;
 		case 5: pedidosRemocaoConta(); break;
 		case 6: pedidosRevisao(user); break;
-		case 7: sair(user.getLogin()); break;
+		case 7: listarUtilizadores(); break;
+		case 8: listarPedidosRevisao(); break;
+		case 9: listarPedidosNaoFinalizados(); break;
+		case 10: listarPedidosDeObra(); break;
+		case 11: sair(user.getLogin()); break;
 		default: erro();
 		}
+	}
+	static void listarPedidosDeObra() {
+		Obra obra = Main.SelectionarObjetoMenu(BDDriver.listarObras());
+		
+		if(obra == null) return;
+		
+		Revisao[] list = BDDriver.listarRevisoes();
+		ArrayList<Revisao> actualList = new ArrayList<Revisao>();
+		for(var rev : list) {
+			if(rev.getObraID() == obra.getObraId()) {
+				actualList.add(rev);
+			}
+		}
+		Main.SelectionarObjetoMenu(actualList.toArray(new Revisao[0]));
+		
+		
+	}
+	static void listarPedidosNaoFinalizados() {
+		Revisao[] list = BDDriver.listarRevisoes();
+		ArrayList<Revisao> actualList = new ArrayList<Revisao>();
+		for(var rev : list) {
+			if(rev.getEstado() != EstadoRevisao.finalizada) {
+				rev.setOrdenacao("d");
+				actualList.add(rev);
+			}
+		}
+		Main.SelectionarObjetoMenu(actualList.toArray(new Revisao[0]));
+	}
+	static void listarPedidosRevisao() {
+		String choice = "";
+		while(!(choice.contentEquals("d") || choice.contentEquals("t") || choice.contentEquals("a"))) {
+			choice = Main.lerDados("Ordenar listagem por Data de criacao (d), Titulo de Obra (t) ou por Autor(a):");
+		}
+		Revisao[] list = BDDriver.listarRevisoes();
+		for(var rev : list) {
+			rev.setOrdenacao(choice.charAt(0) + "");
+		}
+		Main.SelectionarObjetoMenu(list);
+	}
+	
+	static void listarUtilizadores() {
+		//Listar utilizadores por nome
+		
+		Utilizador[] list = GestorContas.listarUtilizadores();
+		for(var user : list) {
+			user.setOrdenacao("nome");
+		}
+		Main.SelectionarObjetoMenu(list);
 	}
 	
 	
@@ -232,12 +289,12 @@ public class Gestor extends Utilizador{
 	 			}
 	 		}
 			int idRevisor = (int) revisor1.getIdRevisor();
-			rev.setRevisorResponsavel(idRevisor);
+			rev.setRevisorResponsavel(revisor1); //???
 			BDDriver.atualizarIdGestorRevisao(rev.getRevisaoID(), gestor.getGestorID());
 			BDDriver.definirRevisorResponsavel(rev.getRevisaoID(),idRevisor);
 			BDDriver.atualizarEstadoRevisao(rev.getRevisaoID(), 1);
 		} else {
-			rev.setEstado(EstadoRevisao.arquivado);
+			BDDriver.atualizarEstadoRevisao(rev.getRevisaoID(), 4);
 		}
 		
 		

@@ -9,29 +9,29 @@ import users.Revisor;
 
 public class Revisao implements Comparable<Revisao>{
 	private int revisaoID;
-	private int obraID;
+	private Obra obra;
 	//private Autor autor; <- Ja temos um autor a partir da obra
 	private int gestorID;
-	private int revisorResponsavel;
+	private Revisor revisorResponsavel;
 	private String numeroSerie; // SEQAAAAMMDDHHMMSS (SEQ = Nrevisoes + 1, AAAAMMDDHHMMSS = Instante)
 	private Date dataRealizacao;
 	private int tempoDecorrido;
 	private Anotacao[] anotacoes; //ou getAnotacoes() seria melhor
 	private String[] observacoes; //ou getObservacoes() seria melhor
 	private double custo;
-	private Integer[] revisoresConfirmados;
-	private Integer[] revisoresNaoConfirmados;
-	private Integer[] revisoresRecusados; //ou getRevisorRecusados() seria melhor
+	private Revisor[] revisoresConfirmados;
+	private Revisor[] revisoresNaoConfirmados;
+	private Revisor[] revisoresRecusados; //ou getRevisorRecusados() seria melhor
 	private EstadoRevisao estado;
 	private Licensa[] licensas;
-
+	private String ordenacao;
 	
 /**
  * 
  * @param revID - ID da revisao
- * @param obraID - ID da obra a ser revista
+ * @param obra - ID da obra a ser revista
  * @param gestorID - ID do gestor responsavel (0 = nao atribuido)
- * @param revisorResponsavel - ID do revisor responsavel (0 = nao atribuido; ou estado = EstadoRevisao.iniciada = nao confirmado;)
+ * @param revisorResponsavel - Revisor responsavel (null = nao atribuido; ou estado = EstadoRevisao.iniciada = nao confirmado;)
  * @param numeroSerie - Numero serie da revisao
  * @param dataRealizacao - Data de realizacao da revisao
  * @param tempoDecorrido - Tempo total (em minutos) gastos na revisao
@@ -44,11 +44,11 @@ public class Revisao implements Comparable<Revisao>{
  * @param revisoresNaoConfirmados - Lista de revisores com confirmacao pendente
  * @param estado - Estado da revisao
  */
-	public Revisao(int revID, int obraID, int gestorID, int revisorResponsavel, String numeroSerie, Date dataRealizacao,
+	public Revisao(int revID, Obra obra, int gestorID, Revisor revisorResponsavel, String numeroSerie, Date dataRealizacao,
 			int tempoDecorrido, Anotacao[] anotacoes, String[] observacoes, double custo,
-			Integer[] revisoresRecusados,Licensa[] licensas,Integer[] revisoresConfirmados,Integer[] revisoresNaoConfirmados, EstadoRevisao estado) {
+			Revisor[] revisoresRecusados,Licensa[] licensas,Revisor[] revisoresConfirmados,Revisor[] revisoresNaoConfirmados, EstadoRevisao estado) {
 		this.revisaoID = revID;
-		this.obraID = obraID;
+		this.obra = obra;
 		this.gestorID = gestorID;
 		this.revisorResponsavel = revisorResponsavel;
 		this.numeroSerie = numeroSerie;
@@ -63,6 +63,7 @@ public class Revisao implements Comparable<Revisao>{
 		this.revisaoID = revID;
 		this.revisoresConfirmados = revisoresConfirmados;
 		this.revisoresNaoConfirmados = revisoresNaoConfirmados;
+		ordenacao = "";
 	}
 	public void setAnotacoes(Anotacao[] an) {
 		anotacoes = an;
@@ -70,21 +71,21 @@ public class Revisao implements Comparable<Revisao>{
 	public void setObservacoes(String[] obs) {
 		observacoes = obs;
 	}
-	public void setRevisoresRec(Integer[] rev) {
+	public void setRevisoresRec(Revisor[] rev) {
 		revisoresRecusados = rev;
 	}
 	public void setLicensas(Licensa[] lic) {
 		licensas = lic;
 	}
-	public void setRevisoresConfirmados(Integer[] rev) {
+	public void setRevisoresConfirmados(Revisor[] rev) {
 		revisoresConfirmados = rev;
 	}
-	public void setRevisoresNaoConfirmados(Integer[] rev) {
+	public void setRevisoresNaoConfirmados(Revisor[] rev) {
 		revisoresNaoConfirmados = rev;
 	}
 	@Override
 	public String toString() {
-		return "Revisao [revisaoID=" + revisaoID + ", obraID=" + obraID + ", gestorID=" + gestorID
+		return "Revisao [revisaoID=" + revisaoID + " NomeObra= "+ obra.getTitulo() +", obraID=" + obra.getObraId() + ", gestorID=" + gestorID
 				+ ", revisorResponsavel=" + revisorResponsavel + ", numeroSerie=" + numeroSerie + ", dataRealizacao="
 				+ dataRealizacao + ", tempoDecorrido=" + tempoDecorrido + ", anotacoes=" + Arrays.toString(anotacoes)
 				+ ", observacoes=" + Arrays.toString(observacoes) + ", custo=" + custo + ", revisoresRecusados="
@@ -98,10 +99,13 @@ public class Revisao implements Comparable<Revisao>{
 		this.revisaoID = revisaoID;
 	}
 	public int getObraID() {
-		return obraID;
+		return obra.getObraId();
 	}
-	public void setObraID(int obraID) {
-		this.obraID = obraID;
+	public Obra getObra(){
+		return obra;
+	}
+	public void setObra(Obra obra) {
+		this.obra = obra;
 	}
 	public int getGestorID() {
 		return gestorID;
@@ -109,10 +113,10 @@ public class Revisao implements Comparable<Revisao>{
 	public void setGestorID(int gestorID) {
 		this.gestorID = gestorID;
 	}
-	public int getRevisorResponsavel() {
+	public Revisor getRevisorResponsavel() {
 		return revisorResponsavel;
 	}
-	public void setRevisorResponsavel(int revisorResponsavel) {
+	public void setRevisorResponsavel(Revisor revisorResponsavel) {
 		this.revisorResponsavel = revisorResponsavel;
 	}
 	public String getNumeroSerie() {
@@ -139,13 +143,16 @@ public class Revisao implements Comparable<Revisao>{
 	public void setCusto(double custo) {
 		this.custo = custo;
 	}
-	public Integer[] getRevisoresRecusados() {
+	public Revisor[] getRevisoresRecusados() {
 		return revisoresRecusados;
 	}
-	public void setRevisoresRecusados(Integer[] revisoresRecusados) {
+	public void setRevisoresRecusados(Revisor[] revisoresRecusados) {
 		this.revisoresRecusados = revisoresRecusados;
 	}
-	public Integer[] getRevisoresNaoConfirmados() {
+	public Revisor[] getRevisoresConfirmados() {
+		return revisoresNaoConfirmados;
+	}
+	public Revisor[] getRevisoresNaoConfirmados() {
 		return revisoresNaoConfirmados;
 	}
 	public EstadoRevisao getEstado() {
@@ -163,15 +170,40 @@ public class Revisao implements Comparable<Revisao>{
 	public Licensa[] getLicensas() {
 		return licensas;
 	}
-	
+	public void setOrdenacao(String ordenacao) {
+		//d -data criacao
+		//t -titulo obra
+		//a - autor
+		//n - numero serie
+		this.ordenacao = ordenacao;
+		
+	}
 	@Override
     public int compareTo(Revisao o) {
-        if(revisaoID > o.revisaoID)
+		
+		switch(ordenacao) {
+		case "":
+			if(revisaoID > o.revisaoID)
             return 1;
         if(revisaoID < o.revisaoID)
             return -1;
 
-        return 0;
+        return 0;			
+		
+		case "d":
+			return dataRealizacao.compareTo(o.dataRealizacao);
+			
+		case "t":
+			return obra.getTitulo().compareTo(o.obra.getTitulo());
+			
+		case "a":
+			return obra.getAutor().compareTo(obra.getAutor());
+		case "n":
+			return numeroSerie.compareTo(o.numeroSerie);
+        
+		}
+        
+		return 0;
     }
 
 }

@@ -19,11 +19,12 @@ public class Revisor extends UniqueUtilizador {
 		this.idRevisor = idRevisor;
 	}
 	
-public static void menuRevisor(String login1) {
+public static void menuRevisor(Revisor login1) {
 		
 		while(true) {
-		System.out.println("1-Notificações de Revisão \n2-Revisões \n3-Pedido Remover Conta \n4-Sair");
-		
+		System.out.println("1-Notificações de Revisão \n2-Revisões \n3-Pedido Remover Conta");
+		System.out.println("4-Listar meus pedidos de revisao");
+		System.out.println("5-Sair");
 		int opcao = lerDadosInt("Escolha uma das seguintes opções: ");
 		
 		executaOpcao(opcao, login1);
@@ -32,19 +33,46 @@ public static void menuRevisor(String login1) {
 	
 }
 
-public static void executaOpcao(int aOpcao, String login1){
+public static void executaOpcao(int aOpcao, Revisor login1){
 	
 	
 	switch(aOpcao) {
-	case 1: notificacaoRevisao(login1); break;
+	case 1: notificacaoRevisao(login1.getLogin()); break;
 	case 2: revisoes(); break;
-	case 3: GestorContas.pedidoRemoverConta(login1); break;
-	case 4: sair(login1); break;
+	case 3: GestorContas.pedidoRemoverConta(login1.getLogin()); break;
+	case 4: listarPedidosRevisao(login1); break;
+	case 5: sair(login1.getLogin()); break;
 	default: erro();
 	}
 }
 
 
+static void listarPedidosRevisao(Revisor user) {
+	String choice = "";
+	while(!(choice.contentEquals("d") || choice.contentEquals("t"))) {
+		choice = Main.lerDados("Ordenar listagem por Data de criacao (d) ou Titulo de Obra (t):");
+	}
+	Revisao[] list = BDDriver.listarRevisoes();
+	ArrayList<Revisao> actualList = new ArrayList<Revisao>();
+	
+	for(var rev : list) {
+		if(rev.getRevisorResponsavel() != null && rev.getRevisorResponsavel().getIdRevisor() != user.getIdRevisor()) {
+			for(var revisorConf :rev.getRevisoresConfirmados()) {
+				if(revisorConf.getIdRevisor() == user.getIdRevisor()) {
+					rev.setOrdenacao(choice);
+					actualList.add(rev);
+				}
+			}
+		}
+		else if(rev.getRevisorResponsavel() != null) {
+			rev.setOrdenacao(choice);
+			actualList.add(rev);
+		}
+	}
+	
+	Main.SelectionarObjetoMenu(actualList.toArray(new Revisao[0]));
+	
+}
 
 private static void gerirRevisao() {
 	
@@ -77,7 +105,7 @@ private static void notificacaoRevisao(String login1) {
 				if(revisaoBuffer[i].getRevisoresRecusados().length!=0) {
 					
 					for(int j=0; j<revisaoBuffer[i].getRevisoresRecusados().length;j++) {
-						if(revisaoBuffer[i].getRevisoresRecusados()[j] != Revisor.getIdRevisor()) {
+						if(revisaoBuffer[i].getRevisoresRecusados()[j].getIdRevisor() != Revisor.getIdRevisor()) {
 							revisoes.add(revisaoBuffer[i]);	
 							added = true;
 						}
@@ -86,14 +114,14 @@ private static void notificacaoRevisao(String login1) {
 				
 				if(added) continue;
 				
-				if(revisaoBuffer[i].getRevisorResponsavel() == Revisor.getIdRevisor()) {
+				if(revisaoBuffer[i].getRevisorResponsavel().getIdRevisor() == Revisor.getIdRevisor()) {
 					revisoes.add(revisaoBuffer[i]);
 				}
 				else {
-					Integer[] revsnaoconfirm = revisaoBuffer[i].getRevisoresNaoConfirmados();
+					Revisor[] revsnaoconfirm = revisaoBuffer[i].getRevisoresNaoConfirmados();
 					boolean ishere = false;
 					for(int j = 0; j<revsnaoconfirm.length;j++) {
-						if(revsnaoconfirm[j] == Revisor.getIdRevisor()) {
+						if(revsnaoconfirm[j].getIdRevisor() == Revisor.getIdRevisor()) {
 							ishere = true;
 						}
 					}
@@ -115,7 +143,7 @@ private static void notificacaoRevisao(String login1) {
 		
 		String verify1 = lerDados("Deseja aceitar fazer esta revisão(s/n): ");
 		if(verify1.equalsIgnoreCase("s")) {
-			if(rev.getRevisorResponsavel() != Revisor.getIdRevisor()) {
+			if(rev.getRevisorResponsavel().getIdRevisor() != Revisor.getIdRevisor()) {
 				
 				BDDriver.confirmarRevisorNormal(rev.getRevisaoID(),Revisor.getIdRevisor(), true);
 			} else {
@@ -125,7 +153,7 @@ private static void notificacaoRevisao(String login1) {
 			 System.out.println("Confirmado");
 			
 		} else if(verify1.equalsIgnoreCase("n")){
-			if(rev.getRevisorResponsavel() != Revisor.getIdRevisor()) {
+			if(rev.getRevisorResponsavel().getIdRevisor() != Revisor.getIdRevisor()) {
 				BDDriver.confirmarRevisorNormal(rev.getRevisaoID(),Revisor.getIdRevisor(), false);
 			} else {
 				BDDriver.confirmarRevisorResponsavel(rev.getRevisaoID(), false);
