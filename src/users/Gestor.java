@@ -234,12 +234,15 @@ public class Gestor extends Utilizador{
 	 		}
 			int idRevisor = (int) revisor1.getIdRevisor();
 			rev.setRevisorResponsavel(idRevisor);
+			BDDriver.atualizarIdGestorRevisao(rev.getRevisaoID(), revisor1.getIdRevisor());
 		} else {
 			rev.setEstado(EstadoRevisao.arquivado);
 		}
 		
+		
 		System.out.println("Adicione mais revisores.");
 		Revisor revisor2 = (Revisor) Main.SelectionarObjetoMenu(GestorContas.listarRevisores());
+		BDDriver.atualizarIdGestorRevisao(rev.getRevisaoID(), revisor2.getIdRevisor()); //idRevisao idGestor
 		BDDriver.adicionarRevisor(rev.getRevisaoID(), revisor2.getIdRevisor());
 		BDDriver.atualizarEstadoRevisao(rev.getRevisaoID(), 1);
 		

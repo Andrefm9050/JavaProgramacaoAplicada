@@ -534,7 +534,7 @@ public class BDDriver {
 	    
 	    //Revisores Confirmados
 	    localps = conn.prepareStatement("SELECT * FROM listar_revisores_revisao(?)");
-	    localps.setInt(0, revisaoID);
+	    localps.setInt(1, revisaoID);
 	    localrs = localps.executeQuery();
 	    ArrayList<Integer> naoconfirm = new ArrayList<Integer>();
 	    ArrayList<Integer> confirm = new ArrayList<Integer>();
@@ -793,7 +793,7 @@ public class BDDriver {
         	//Revisao revisao = (Autor) GestorContas.pesquisarUtilizadoresUserName(user);
         	
         	StringBuffer sqlQuery = new StringBuffer();
-        	sqlQuery.append("SELECT * FROM definir_confirmar_revisor_resp_revisao(?, ?)");  
+        	sqlQuery.append("CALL definir_confirmar_revisor_resp_revisao(?, ?)");  
 			PreparedStatement ps = conn.prepareStatement(sqlQuery.toString());
 			 ps.clearParameters();													
 	            ps.setInt(1, idRevisao);
@@ -808,6 +808,29 @@ public class BDDriver {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
+ 	}
+ 	
+ 	public static void confirmarRevisorNormal(int idRevisao, boolean confirm) {
+ 		try {
+        	//Revisao revisao = (Autor) GestorContas.pesquisarUtilizadoresUserName(user);
+        	
+        	StringBuffer sqlQuery = new StringBuffer();
+        	sqlQuery.append("CALL definir_confirmar_revisor_resp_revisao(?, ?)");  
+			PreparedStatement ps = conn.prepareStatement(sqlQuery.toString());
+			 ps.clearParameters();													
+	            ps.setInt(1, idRevisao);
+	           // ps.setInt(2, idRevisor);
+	            ps.setBoolean(2, confirm); //isbn
+	           
+	            ResultSet rs = ps.executeQuery();
+	            rs.next();
+	          ps.close();
+	         
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
  	}
  	
  	
@@ -844,6 +867,29 @@ public class BDDriver {
 			 ps.clearParameters();													
 	            ps.setInt(1, idRevisao);
 	            ps.setInt(2, estado);
+	           
+	            ResultSet rs = ps.executeQuery();
+	            rs.next();
+	          ps.close();
+	         
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+ 	}
+ 	
+ 	
+ 	public static void atualizarIdGestorRevisao(int idRevisao, int idGestor) {
+ 		try {
+        	//Revisao revisao = (Autor) GestorContas.pesquisarUtilizadoresUserName(user);
+        	
+        	StringBuffer sqlQuery = new StringBuffer();
+        	sqlQuery.append("CALL definir_gestor_revisao(?, ?)");  
+			PreparedStatement ps = conn.prepareStatement(sqlQuery.toString());
+			 ps.clearParameters();													
+	            ps.setInt(1, idRevisao);
+	            ps.setInt(2, idGestor);
 	           
 	            ResultSet rs = ps.executeQuery();
 	            rs.next();

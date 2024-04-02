@@ -87,10 +87,22 @@ private static void notificacaoRevisao(String login1) {
 		//if(revisaoBuffer[i].getRevisoresRecusados()[j]!=idRevisor) {
 		System.out.println("Selecione uma revisão para aceitar/rejeitar: ");
 		Revisao rev = Main.SelectionarObjetoMenu(revisoes.toArray(new Revisao[0]));
+		
+		
+		
 		String verify1 = lerDados("Deseja aceitar fazer esta revisão(s/n): ");
 		if(verify1.equalsIgnoreCase("s")) {
-			BDDriver.confirmarRevisorResponsavel(idRevisor, true);
-		} 
+			if(rev.getRevisorResponsavel()>0) {
+				BDDriver.confirmarRevisorNormal(rev.getRevisaoID(), true);
+			} else {
+				BDDriver.confirmarRevisorResponsavel(rev.getRevisaoID(), true);
+			}
+				
+			 
+			
+		} else if(verify1.equalsIgnoreCase("n")){
+			BDDriver.confirmarRevisorResponsavel(rev.getRevisaoID(), false);
+		}
 		//BDDriver.listarRevisoes()
 		revisoes.toArray(new Revisao[0]);
 	//return utilizadores.toArray(new Gestor[0]);
