@@ -21,12 +21,12 @@ import java.util.List;
 import java.sql.Timestamp;
 
 import sistema.BDDriver;
-import sistema.GestorContas;
 import sistema.Obra;
 import users.Autor;
 //import ProjetoProgramacao.Gestor;
 import users.EstadoConta;
 import users.Gestor;
+import users.GestorContas;
 import users.Revisor;
 import users.Utilizador;
 
@@ -183,7 +183,7 @@ public class Main {
 			
 			if(userLoginSEstado instanceof Gestor) {
 				System.out.println("Bem-vindo " + login1);
-				Gestor.menuGestor(login1);
+				Gestor.menuGestor((Gestor)userLoginSEstado);
 			}
 			else if(userLoginSEstado instanceof Autor) {
 				System.out.println("Bem-vindo " + login1);
@@ -212,8 +212,8 @@ public class Main {
 	//https://stackoverflow.com/questions/68532023/java-can-a-function-return-the-same-type-as-one-of-the-input-arguments
 	/**
 	 * 
-	 * @param Variável de qualquer tipo genérico que tenha hierarquia de <Comparable>
-	 * @return Uma variável do mesmo tipo dado como argumento, <null> se cancelar a operação
+	 * @param objlist - lista de variável de qualquer tipo genérico que tenha hierarquia de Comparable
+	 * @return Uma variável do mesmo tipo dado como argumento, null se cancelar a operação
 	 */
 	public static <T extends Comparable<T>> T SelectionarObjetoMenu(T[] objlist) {
 		

@@ -16,7 +16,7 @@ public class UniqueUtilizador extends Utilizador{
 		super(idUser,login, password, nome, estado, email, tipo);
 		this.nif = nif;
 		this.telefone = telefone;
-		this.morada = morada;
+		this.morada = Morada;
 		
 		// TODO Auto-generated constructor stub
 	}

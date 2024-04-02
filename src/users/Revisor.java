@@ -6,7 +6,6 @@ import java.util.Scanner;
 import pastaPrincipal.Main;
 import sistema.BDDriver;
 import sistema.EstadoRevisao;
-import sistema.GestorContas;
 import sistema.Revisao;
 
 public class Revisor extends UniqueUtilizador {
@@ -56,30 +55,54 @@ private static void notificacaoRevisao(String login1) {
 	int tamanhoArray2 = GestorContas.listarRevisores().length;
 	Revisor[] revisorBuffer = new Revisor[tamanhoArray2];
 	revisorBuffer = GestorContas.listarRevisores();
-	int idRevisor = 0;
+	Revisor Revisor = null;
 	for(int i = 0; i<tamanhoArray2; i++) {
 		if(revisorBuffer[i].getLogin().contentEquals(login1)) {
-			idRevisor = revisorBuffer[i].getIdRevisor();
+			Revisor = revisorBuffer[i];
 		}
 			
 	}
+	if(Revisor == null) return;
+	
 	int tamanhoArray;
 		
 		tamanhoArray = BDDriver.listarRevisoes().length;
 		Revisao[] revisaoBuffer = new Revisao[tamanhoArray];
 		revisaoBuffer = BDDriver.listarRevisoes();
 		ArrayList<Revisao> revisoes = new ArrayList<Revisao>();
+		
 		for(int i = 0; i<tamanhoArray; i++) {
-			if(revisaoBuffer[i].getEstado()==EstadoRevisao.aceite ) {
+			boolean added = false;
+			if(revisaoBuffer[i].getEstado()==EstadoRevisao.aceite) {
 				if(revisaoBuffer[i].getRevisoresRecusados().length!=0) {
+					
 					for(int j=0; j<revisaoBuffer[i].getRevisoresRecusados().length;j++) {
-						if(revisaoBuffer[i].getRevisoresRecusados()[j] != idRevisor) {
+						if(revisaoBuffer[i].getRevisoresRecusados()[j] != Revisor.getIdRevisor()) {
 							revisoes.add(revisaoBuffer[i]);	
+							added = true;
 						}
 					}
-				} else if(revisaoBuffer[i].getRevisoresRecusados().length==0){
+				}
+				
+				if(added) continue;
+				
+				if(revisaoBuffer[i].getRevisorResponsavel() == Revisor.getIdRevisor()) {
 					revisoes.add(revisaoBuffer[i]);
 				}
+				else {
+					Integer[] revsnaoconfirm = revisaoBuffer[i].getRevisoresNaoConfirmados();
+					boolean ishere = false;
+					for(int j = 0; j<revsnaoconfirm.length;j++) {
+						if(revsnaoconfirm[j] == Revisor.getIdRevisor()) {
+							ishere = true;
+						}
+					}
+					if(ishere) {
+						revisoes.add(revisaoBuffer[i]);
+					}
+				}
+				
+				
 			}
 		}
 		revisoes.toArray(new Revisao[0]);
@@ -92,16 +115,21 @@ private static void notificacaoRevisao(String login1) {
 		
 		String verify1 = lerDados("Deseja aceitar fazer esta revisão(s/n): ");
 		if(verify1.equalsIgnoreCase("s")) {
-			if(rev.getRevisorResponsavel()>0) {
-				BDDriver.confirmarRevisorNormal(rev.getRevisaoID(), true);
+			if(rev.getRevisorResponsavel() != Revisor.getIdRevisor()) {
+				
+				BDDriver.confirmarRevisorNormal(rev.getRevisaoID(),Revisor.getIdRevisor(), true);
 			} else {
 				BDDriver.confirmarRevisorResponsavel(rev.getRevisaoID(), true);
 			}
 				
-			 
+			 System.out.println("Confirmado");
 			
 		} else if(verify1.equalsIgnoreCase("n")){
-			BDDriver.confirmarRevisorResponsavel(rev.getRevisaoID(), false);
+			if(rev.getRevisorResponsavel() != Revisor.getIdRevisor()) {
+				BDDriver.confirmarRevisorNormal(rev.getRevisaoID(),Revisor.getIdRevisor(), false);
+			} else {
+				BDDriver.confirmarRevisorResponsavel(rev.getRevisaoID(), false);
+			}
 		}
 		//BDDriver.listarRevisoes()
 		revisoes.toArray(new Revisao[0]);

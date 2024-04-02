@@ -1,13 +1,5 @@
-package sistema;
+package users;
 import java.util.regex.Pattern;
-
-import users.Autor;
-import users.EstadoConta;
-import users.Gestor;
-import users.Revisor;
-import users.UniqueUtilizador;
-import users.Utilizador;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -17,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.regex.Matcher;
+import sistema.BDDriver;
+import sistema.Obra;
 
 
 /**
@@ -55,7 +49,7 @@ public class GestorContas {
 	
 	
 	/**
-	 * @param nif
+	 * @param nif1 - NIF
 	 * @return true se o NIF for unico
 	 */
 	public static boolean nifVal(String nif1) {
@@ -114,8 +108,8 @@ public class GestorContas {
 	
 	/**
 	 * 
-	 * @param username/login da conta
-	 * @param password da conta
+	 * @param login1 - username/login da conta
+	 * @param password1 - password da conta
 	 * @return Utilizador com essas credencias (se existir)
 	 */
 	public static Utilizador encontrarUtilizador(String login1, String password1) { //verifica se existe esse utilizador na base de dados em geral

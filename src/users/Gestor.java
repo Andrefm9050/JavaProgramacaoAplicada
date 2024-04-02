@@ -8,7 +8,6 @@ import java.util.Scanner;
 import pastaPrincipal.Main;
 import sistema.BDDriver;
 import sistema.EstadoRevisao;
-import sistema.GestorContas;
 import sistema.Revisao;
 
 public class Gestor extends Utilizador{
@@ -26,7 +25,7 @@ public class Gestor extends Utilizador{
 	public int getGestorID() {
 		return idGestor;
 	}
-	public static void menuGestor(String login1) {
+	public static void menuGestor(Gestor user) {
 		
 		while(true) {
 		System.out.println("1-Aprovar/Rejeitar Pedidos de Registo \n2-Criar conta Gestor \n3-Ativar/Inativar Conta \n4-Pedido Remover Conta "
@@ -34,7 +33,7 @@ public class Gestor extends Utilizador{
 		
 		int opcao = lerDadosInt("Escolha uma das seguintes opções: ");
 		
-		executaOpcao(opcao, login1);
+		executaOpcao(opcao, user);
 		
 	}
 
@@ -42,17 +41,17 @@ public class Gestor extends Utilizador{
 	
 }
 	
-	public static void executaOpcao(int aOpcao, String login1){
+	public static void executaOpcao(int aOpcao, Gestor user){
 		
 		
 		switch(aOpcao) {
 		case 1: aprovarRejeitarPedidosRegisto(); break;
 		case 2: criarGestor(); break;
 		case 3: ativarInativarConta(); break;
-		case 4: GestorContas.pedidoRemoverConta(login1); break;
+		case 4: GestorContas.pedidoRemoverConta(user.getLogin()); break;
 		case 5: pedidosRemocaoConta(); break;
-		case 6: pedidosRevisao(); break;
-		case 7: sair(login1); break;
+		case 6: pedidosRevisao(user); break;
+		case 7: sair(user.getLogin()); break;
 		default: erro();
 		}
 	}
@@ -197,7 +196,7 @@ public class Gestor extends Utilizador{
 	}
 	
 	
-	public static void pedidosRevisao() {
+	public static void pedidosRevisao(Gestor gestor) {
 		//ArrayList<Revisao> revisoes = new ArrayList<Revisao>();
 		int tamanhoArray;
  		
@@ -234,7 +233,9 @@ public class Gestor extends Utilizador{
 	 		}
 			int idRevisor = (int) revisor1.getIdRevisor();
 			rev.setRevisorResponsavel(idRevisor);
-			BDDriver.atualizarIdGestorRevisao(rev.getRevisaoID(), revisor1.getIdRevisor());
+			BDDriver.atualizarIdGestorRevisao(rev.getRevisaoID(), gestor.getGestorID());
+			BDDriver.definirRevisorResponsavel(rev.getRevisaoID(),idRevisor);
+			BDDriver.atualizarEstadoRevisao(rev.getRevisaoID(), 1);
 		} else {
 			rev.setEstado(EstadoRevisao.arquivado);
 		}
@@ -242,9 +243,9 @@ public class Gestor extends Utilizador{
 		
 		System.out.println("Adicione mais revisores.");
 		Revisor revisor2 = (Revisor) Main.SelectionarObjetoMenu(GestorContas.listarRevisores());
-		BDDriver.atualizarIdGestorRevisao(rev.getRevisaoID(), revisor2.getIdRevisor()); //idRevisao idGestor
+		if(revisor2 != null) {
 		BDDriver.adicionarRevisor(rev.getRevisaoID(), revisor2.getIdRevisor());
-		BDDriver.atualizarEstadoRevisao(rev.getRevisaoID(), 1);
+		}
 		
 	}
 	

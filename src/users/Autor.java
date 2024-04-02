@@ -7,7 +7,6 @@ import java.util.Scanner;
 import pastaPrincipal.Main;
 import sistema.BDDriver;
 import sistema.EstiloLiterario;
-import sistema.GestorContas;
 import sistema.Obra;
 import java.util.Random;
 

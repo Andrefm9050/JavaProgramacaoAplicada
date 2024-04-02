@@ -13,8 +13,8 @@ public class GestorLogs {
 	
 	/**
 	 * 
-	 * @param u Utilizador Responsavel pelo log
-	 * @param mensagem String Com a sua mensagem
+	 * @param u - Utilizador Responsavel pelo log
+	 * @param mensagem - String Com a sua mensagem
 	 */
 	public static void adicionarLog(Utilizador u, String mensagem) {
 		BDDriver.adicionarLog(u,mensagem);
@@ -25,7 +25,7 @@ public class GestorLogs {
 	}
 	/**
 	 * 
-	 * @param u Utilizador Dos logs
+	 * @param u - Utilizador Dos logs
 	 * @return Log[] do Utilizador
 	 */
 	public static Log[] listarLogs(Utilizador u) {
@@ -51,7 +51,7 @@ public class GestorLogs {
 	}
 	/**
 	 * As execucoes são contadas para cada execução de Login feita com sucesso, isto quer dizer que a mensagem tem que ter incluida "Login"
-	 * @param u Utilizador responsavel pelos logs
+	 * @param u - Utilizador responsavel pelos logs
 	 * @return int total de execucoes (logins) deste utilizador
 	 */
 	public static int nExecucoes(Utilizador u) {

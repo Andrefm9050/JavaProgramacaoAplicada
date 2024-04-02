@@ -22,6 +22,21 @@ public class Obra implements Comparable<Obra>{
 	private int numeroEdicao;
 	private Date dataSubmissao;
 	private Date dataAprovacao;
+	/**
+	 * 
+	 * @param obraId - ID da obra
+	 * @param autor - Nome do Autor
+	 * @param titulo - Titulo da Obra
+	 * @param subTitulo - SubTitulo da Obra
+	 * @param estiloLiterario - Estilo Literario
+	 * @param tipoPublicacao - Tipo de Publicacao
+	 * @param numeroPaginas - Numero de paginas
+	 * @param numeroPalavras - Numero de palavras
+	 * @param isbn - Codigo ISBN
+	 * @param numeroEdicao - Numero da Edicao
+	 * @param dataSubmissao - Data de Submissao da Obra
+	 * @param dataAprovacao - Data de Aprovacao da Obra
+	 */
 	public Obra(int obraId, String autor, String titulo, String subTitulo, EstiloLiterario estiloLiterario,
 			TipoPublicacao tipoPublicacao, int numeroPaginas, int numeroPalavras, int isbn, int numeroEdicao,
 			Date dataSubmissao, Date dataAprovacao) {

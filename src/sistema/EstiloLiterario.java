@@ -11,7 +11,8 @@ public enum EstiloLiterario {
 	
 	/**
 	 * As execuções são contadas para cada execução de Login feita com sucesso, isto quer dizer que a mensagem tem que ter incluida "Login"
-	 * @return <int> o estilo literário referente, devolve 5 (EstiloLiterário nao existente) se não encontrar 
+	 * @param estiloLiterario - nome do estilo literario
+	 * @return int o estilo literário referente, devolve 5 (EstiloLiterário nao existente) se não encontrar 
 	 */
 	public static int estiloToInt(String estiloLiterario) {
 		switch(estiloLiterario) {

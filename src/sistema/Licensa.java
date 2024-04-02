@@ -15,11 +15,11 @@ public class Licensa implements Comparable<Licensa>{
 	private Date expiracao;
 	
 	/**
-	 * @param ID da licensa (gerado pela base de dados)
-	 * @param ID da revisao onde esta licensa esta a ser usada
-	 * @param Nome da licensa
-	 * @param Numero de serie da licensa
-	 * @param Expiracao da licensa
+	 * @param idLicensa - ID da licensa (gerado pela base de dados)
+	 * @param idRevisao - ID da revisao onde esta licensa esta a ser usada
+	 * @param nomeLicensa - Nome da licensa
+	 * @param numeroSerie - Numero de serie da licensa
+	 * @param expiracao - Expiracao da licensa
 	 */
 	public Licensa(int idLicensa, int idRevisao, String nomeLicensa, int numeroSerie, Date expiracao) {
 		this.idLicensa = idLicensa;

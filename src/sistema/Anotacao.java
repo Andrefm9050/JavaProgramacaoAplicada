@@ -14,11 +14,11 @@ public class Anotacao implements Comparable<Anotacao> {
 	private Date data;
 	
 	/**
-	 * @param ID da anotacao
-	 * @param Descricao ou conteudo da anotacao
-	 * @param Pagina onde esta descricao e aplicada
-	 * @param Paragrafo onde esta descricao e aplicada
-	 * @param Data de quando esta anotacao foi criada
+	 * @param anotID - ID da anotacao
+	 * @param descricao - Descricao ou conteudo da anotacao
+	 * @param pagina - Pagina onde esta descricao e aplicada
+	 * @param paragrafo - Paragrafo onde esta descricao e aplicada
+	 * @param data - Data de quando esta anotacao foi criada
 	 */
 	public Anotacao(int anotID, String descricao, int pagina, int paragrafo, Date data) {
 		this.anotID = anotID;

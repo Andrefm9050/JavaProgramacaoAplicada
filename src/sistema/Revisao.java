@@ -26,21 +26,24 @@ public class Revisao implements Comparable<Revisao>{
 	private Licensa[] licensas;
 
 	
-	/**
-	 * @param ID da revisao
-	 * @param ID da obra a ser revista
-	 * @param ID do gestor responsavel (0 = nao atribuido)
-	 * @param ID do revisor responsavel (0 = nao atribuido; ou estado = EstadoRevisao.iniciada = nao confirmado;)
-	 * @param Numero serie da revisao
-	 * @param Data de realizacao da revisao
-	 * @param Tempo total (em minutos) gastos na revisao
-	 * @param Anotacoes da revisao
-	 * @param Observacoes da revisao
-	 * @param Custo da revisao 
-	 * @param Lista de revisores que recusaram a revisao
-	 * @param Lista de licensas da revisao
-	 * @param Estado da revisao
-	 */
+/**
+ * 
+ * @param revID - ID da revisao
+ * @param obraID - ID da obra a ser revista
+ * @param gestorID - ID do gestor responsavel (0 = nao atribuido)
+ * @param revisorResponsavel - ID do revisor responsavel (0 = nao atribuido; ou estado = EstadoRevisao.iniciada = nao confirmado;)
+ * @param numeroSerie - Numero serie da revisao
+ * @param dataRealizacao - Data de realizacao da revisao
+ * @param tempoDecorrido - Tempo total (em minutos) gastos na revisao
+ * @param anotacoes - Anotacoes da revisao
+ * @param observacoes - Observacoes da revisao
+ * @param custo - Custo da revisao 
+ * @param revisoresRecusados - Lista de revisores que recusaram a revisao
+ * @param licensas - Lista de licensas da revisao
+ * @param revisoresConfirmados - Lista de revisores confirmados
+ * @param revisoresNaoConfirmados - Lista de revisores com confirmacao pendente
+ * @param estado - Estado da revisao
+ */
 	public Revisao(int revID, int obraID, int gestorID, int revisorResponsavel, String numeroSerie, Date dataRealizacao,
 			int tempoDecorrido, Anotacao[] anotacoes, String[] observacoes, double custo,
 			Integer[] revisoresRecusados,Licensa[] licensas,Integer[] revisoresConfirmados,Integer[] revisoresNaoConfirmados, EstadoRevisao estado) {
@@ -141,6 +144,9 @@ public class Revisao implements Comparable<Revisao>{
 	}
 	public void setRevisoresRecusados(Integer[] revisoresRecusados) {
 		this.revisoresRecusados = revisoresRecusados;
+	}
+	public Integer[] getRevisoresNaoConfirmados() {
+		return revisoresNaoConfirmados;
 	}
 	public EstadoRevisao getEstado() {
 		return estado;

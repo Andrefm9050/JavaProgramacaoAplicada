@@ -30,7 +30,7 @@ public class ManipulaFicheirosTexto {
 	  
 	  /**
 	   * Funcao para abrir ficheiro e prepara-lo para leitura
-	   * @param caminho de ficheiro
+	   * @param aCaminho - caminho de ficheiro
 	   * @return true se o ficheiro foi aberto para leitura
 	   */
 	  public boolean abrirFicheiroLeitura(String aCaminho) {
@@ -57,8 +57,8 @@ public class ManipulaFicheirosTexto {
 	  }
 
 	  /**
-	   * @param caminho do ficheiro
-	   * @param modo de ficheiro append
+	   * @param aCaminho - caminho do ficheiro
+	   * @param aAppend - modo de ficheiro append
 	   * @return true se o ficheiro foi aberto para escrita do modo selecionado
 	   */
 	  public boolean abrirFicheiroEscrita(String aCaminho, boolean aAppend) {

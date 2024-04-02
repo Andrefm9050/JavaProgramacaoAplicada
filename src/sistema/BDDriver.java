@@ -21,6 +21,7 @@ import pastaPrincipal.Main;
 import users.Autor;
 import users.EstadoConta;
 import users.Gestor;
+import users.GestorContas;
 import users.Revisor;
 import users.UniqueUtilizador;
 
@@ -29,7 +30,7 @@ import users.Revisor;
 import users.Utilizador;
 
 /**
- * Classe responsavel para separar a conexao da base de dados ha aplicacao
+ * Classe responsavel para separar a conexao da base de dados da aplicacao
  * @author Andre Rios, Andre Mendes
  */
 public class BDDriver {
@@ -787,6 +788,19 @@ public class BDDriver {
  		
  	
  	}
+ 	public static boolean definirRevisorResponsavel(int idRevisao, int idRevisor) {
+ 		try {
+ 			PreparedStatement ps = conn.prepareStatement("SELECT * FROM definir_revisor_revisao(?,?)");
+ 			ps.setInt(1, idRevisao);
+ 			ps.setInt(2, idRevisor);
+ 			ResultSet rs = ps.executeQuery();
+ 			rs.next();
+ 			return rs.getBoolean(1);
+ 		}
+ 		catch(SQLException e) {
+ 			return false;
+ 		}
+ 	}
  	
  	public static void confirmarRevisorResponsavel(int idRevisao, boolean confirm) {
  		try {
@@ -798,9 +812,7 @@ public class BDDriver {
 			 ps.clearParameters();													
 	            ps.setInt(1, idRevisao);
 	            ps.setBoolean(2, confirm); //isbn
-	           
-	            ResultSet rs = ps.executeQuery();
-	            rs.next();
+	          ps.execute();  
 	          ps.close();
 	         
 			
@@ -810,20 +822,18 @@ public class BDDriver {
 		}	
  	}
  	
- 	public static void confirmarRevisorNormal(int idRevisao, boolean confirm) {
+ 	public static void confirmarRevisorNormal(int idRevisao,int idRevisor, boolean confirm) {
  		try {
         	//Revisao revisao = (Autor) GestorContas.pesquisarUtilizadoresUserName(user);
         	
         	StringBuffer sqlQuery = new StringBuffer();
-        	sqlQuery.append("CALL definir_confirmar_revisor_resp_revisao(?, ?)");  
+        	sqlQuery.append("CALL definir_confirmar_revisor_revisao(?, ?, ?)");  
 			PreparedStatement ps = conn.prepareStatement(sqlQuery.toString());
 			 ps.clearParameters();													
 	            ps.setInt(1, idRevisao);
-	           // ps.setInt(2, idRevisor);
-	            ps.setBoolean(2, confirm); //isbn
-	           
-	            ResultSet rs = ps.executeQuery();
-	            rs.next();
+	            ps.setInt(2, idRevisor);
+	            ps.setBoolean(3, confirm); //isbn
+	          ps.execute();  
 	          ps.close();
 	         
 			
@@ -890,9 +900,6 @@ public class BDDriver {
 			 ps.clearParameters();													
 	            ps.setInt(1, idRevisao);
 	            ps.setInt(2, idGestor);
-	           
-	            ResultSet rs = ps.executeQuery();
-	            rs.next();
 	          ps.close();
 	         
 			
