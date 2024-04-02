@@ -14,7 +14,7 @@ import sistema.Obra;
 
 
 /**
- * 
+ * Classe responsavel por gerir contas e executar as suas diferentes operacoes no sistema
  * @author Andre Martins
  */
 public class GestorContas {

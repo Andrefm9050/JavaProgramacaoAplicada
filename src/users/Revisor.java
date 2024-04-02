@@ -114,7 +114,7 @@ private static void notificacaoRevisao(String login1) {
 				
 				if(added) continue;
 				
-				if(revisaoBuffer[i].getRevisorResponsavel().getIdRevisor() == Revisor.getIdRevisor()) {
+				if(revisaoBuffer[i].getRevisorResponsavel() != null && revisaoBuffer[i].getRevisorResponsavel().getIdRevisor() == Revisor.getIdRevisor()) {
 					revisoes.add(revisaoBuffer[i]);
 				}
 				else {
