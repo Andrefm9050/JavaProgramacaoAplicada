@@ -169,7 +169,7 @@ public static void pedidoRemoverConta(String login1) {
  		}
 		Utilizador novoUti = GestorContas.pesquisarUtilizadoresUserName(login1);
 		
-		BDDriver.updateEstado(novoUti.getIdUser(), 2);
+		BDDriver.setUtilizadorEstado(novoUti.getIdUser(), 2);
 		//por_remover - 2
 	}
 

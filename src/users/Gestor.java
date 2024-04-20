@@ -143,7 +143,7 @@ public class Gestor extends Utilizador{
  			}
  		}
  		
- 		BDDriver.updateEstado(idEscolha, aprovaRejeitaN);
+ 		BDDriver.setUtilizadorEstado(idEscolha, aprovaRejeitaN);
  		System.out.println("Tarefa terminada com sucesso.");
 	}
 	
@@ -217,7 +217,7 @@ public class Gestor extends Utilizador{
  			}
  		}
  		
- 		BDDriver.updateEstado(idEscolha, ativarInativarN);
+ 		BDDriver.setUtilizadorEstado(idEscolha, ativarInativarN);
 	}
 	
 	
@@ -241,7 +241,7 @@ public class Gestor extends Utilizador{
  		while(true) {
  			String verify = lerDados("Tem a certeza que deseja aceitar a remoção do utilizador selecionado(s/n): ");
  			if(verify.contentEquals("s")) {
- 				BDDriver.updateEstado(utiliRemove.getIdUser(), 3);
+ 				BDDriver.setUtilizadorEstado(utiliRemove.getIdUser(), 3);
  				break;
  			} else if(verify.contentEquals("n")) {
  				break;

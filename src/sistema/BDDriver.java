@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import gestao.Log;
+import gestao.Notificacao;
 import pastaPrincipal.Main;
 import users.Autor;
 import users.EstadoConta;
@@ -199,6 +200,48 @@ public class BDDriver {
 	   
 	   return logslist.toArray(new Log[0]);
    }
+   
+   public static boolean adicionarLicensaRevisao(Licensa l, Revisao r) {
+	   try {
+		PreparedStatement ps = conn.prepareStatement("SELECT * FROM criar_licensa_numa_revisao(?,?,?,?)");
+		ps.setInt(1, r.getRevisaoID());
+		ps.setString(2,l.getNomeLicensa());
+		ps.setInt(3, l.getNumeroSerie());
+		ps.setDate(4, l.getExpiracao());
+		ps.execute();
+		
+		ps.close();
+		
+		return true;
+		
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
+	   
+	   
+	   return false;
+   }
+   
+   public static boolean adicionarNotificacao(Notificacao n) {
+	   try {
+		PreparedStatement ps = conn.prepareStatement("SELECT * FROM criar_notificacao(?,?)");
+		ps.setInt(1, n.getUtilizadorID());
+		ps.setString(2, n.getDescricao());
+		
+		ps.execute();
+		ps.close();
+		
+		return true;
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
+	   
+	   
+	   return false;
+   }
+   
+
+   
    public static int adicionarUtilizador(Utilizador u1) {
      
       try {
@@ -640,7 +683,7 @@ public class BDDriver {
  		return revisoes.toArray(new Revisao[0]);
  	}
  	
- 	public static boolean updateEstado(int id, int estado) {
+ 	public static boolean setUtilizadorEstado(int id, int estado) {
  		try {
  	 		PreparedStatement ps = conn.prepareStatement("SELECT * FROM set_estado_utilizador(?, ?)");
  		    
@@ -652,7 +695,6 @@ public class BDDriver {
  		    ps.close();
  		    
  		    return true;
-////////////////////////////////
  	 		}
  	 		catch(Exception e) {
  	 			e.printStackTrace();
@@ -660,51 +702,26 @@ public class BDDriver {
 		return false;
  	}
  	
- 	public static int adicionarObra(String user) {
-		//String autor = user;
-		
-		
-		//String dataSub = lerDados("Insira a data de inicio de atividade no seguinte formato yyyy-mm-dd: ");
-		//DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        //LocalDate date = LocalDate.parse(dataSub, formatter);
-        //Date completedDate = Date.valueOf(date);
-        
+ 	public static int adicionarObra(Obra obra) {
         
         
         try {
-        	Autor autor = (Autor) GestorContas.pesquisarUtilizadoresUserName(user);
-        	int idAutor = autor.getIdAutor();
-        	String titulo = lerDados("Insira o nome do titulo da obra: ");
-        	String subTitulo = lerDados("Insira o sub-titulo da obra (opcional-enter): ");
-        	String estiloLiterario1 = lerDados("Insira o estilo literario da obra (drama, ficção, thriller): ");
-        	String tipoPubli = lerDados("Insira o tipo de publicação (capa dura, de bolso, ebook): ");
-        	int nPaginas = lerDadosInt("Insira o número de páginas: ");
-        	int nPalavras = lerDadosInt("Insira o número de palavras: ");
-        	//int codigoISBN = lerDadosInt("Insira o código ISBN: ");
-        	int nEdicao = lerDadosInt("Insir o número de edição da obra: ");
-        	StringBuffer sqlQuery = new StringBuffer();
-        	sqlQuery.append("SELECT * FROM criar_obra(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");  
-			PreparedStatement ps = conn.prepareStatement(sqlQuery.toString());
-			 ps.clearParameters();													
-	            ps.setInt(1, idAutor);
-	            ps.setInt(2, 0); //isbn
-	            ps.setInt(3, nPaginas);  								 		
-	            ps.setInt(4, nPalavras);  										    
-	            ps.setString(5, titulo);
-	            ps.setString(6, subTitulo);
-	            ps.setString(7, tipoPubli);
-	            ps.setInt(8, EstiloLiterario.estiloToInt(estiloLiterario1));
-	            ps.setInt(9, nEdicao);
-	            ps.setDate(10, null);
-	            ps.setDate(11, null);
-	            ResultSet rs = ps.executeQuery();
-	            rs.next();
-	          ps.close();
-	          
-	          //ps.setInt(8, EstiloLiterario.estiloToInt(estiloLiterario1));
+        	PreparedStatement ps = conn.prepareStatement("SELECT * FROM criar_obra(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    	  	ps.setInt(1, obra.getAutorID());
+            ps.setInt(2, obra.getIsbn()); //isbn
+            ps.setInt(3, obra.getNumeroPaginas());  								 		
+            ps.setInt(4, obra.getNumeroPalavras());  										    
+            ps.setString(5, obra.getTitulo());
+            ps.setString(6, obra.getSubTitulo());
+            ps.setString(7, TipoPublicacao.tipoToString(obra.getTipoPublicacao()));
+            ps.setInt(8, EstiloLiterario.estiloToInt(obra.getEstiloLiterario()));
+            ps.setInt(9, obra.getNumeroEdicao());
+            ps.setDate(10, null);
+            ps.setDate(11, null);
+        	ps.execute();  
+        	ps.close();
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
  		
@@ -712,6 +729,7 @@ public class BDDriver {
  		
  		return 0;
  	}
+ 	
  	
  	public static Obra[] listarObras() {
  		
@@ -817,6 +835,50 @@ public class BDDriver {
  		
  	
  	}
+ 	
+ 	public static boolean adicionarAnotacaoRevisao(Revisao rev,Anotacao a) {
+ 		
+ 		try {
+ 			
+ 			PreparedStatement ps = conn.prepareStatement("SELECT * FROM criar_anotacao(?,?,?,?)");
+ 			ps.setInt(1, rev.getRevisaoID());
+ 			ps.setString(2,a.getDescricao());
+ 			ps.setInt(3,a.getPagina());
+ 			ps.setInt(4, a.getParagrafo());
+ 			
+ 			ps.execute();
+ 			ps.close();
+ 			
+ 			return true;
+ 		}catch(SQLException e) {
+ 			e.printStackTrace();
+ 		}
+ 		
+ 		
+ 		return false;
+ 	}
+ 	
+ 	public static boolean adicionarObservacaoRevisao(int revID, String obs) {
+ 		
+ 		try {
+			PreparedStatement ps = conn.prepareStatement("SELECT * FROM criar_observacao(?,?)");
+			ps.setInt(1,revID);
+			ps.setString(2, obs);
+			ps.execute();
+			ps.close();
+			
+			
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+ 		
+ 		
+ 		return false;
+ 	}
+ 	
+ 	
+ 	
  	public static boolean definirRevisorResponsavel(int idRevisao, int idRevisor) {
  		try {
  			PreparedStatement ps = conn.prepareStatement("SELECT * FROM definir_revisor_revisao(?,?)");
@@ -870,6 +932,43 @@ public class BDDriver {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+ 	}
+ 	
+ 	public static boolean setPagarRevisao(int revID, float preco) {
+ 		
+ 		try {
+			PreparedStatement ps = conn.prepareStatement("CALL pagar_revisao(?,?)");
+			ps.setInt(1, revID);
+			ps.setFloat(2, preco);
+			ps.execute();
+			ps.close();
+			
+			
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+ 		
+ 		return false;
+ 	}
+ 	
+ 	public static boolean setAdicionarTempoRevisao(int idRevisao, int minutos) {
+ 		
+ 		try {
+			PreparedStatement ps = conn.prepareStatement("SELECT * FROM definir_adicionar_tempo_revisao(?,?)");
+			ps.setInt(1, idRevisao);
+			ps.setInt(2, minutos);
+			ps.execute();
+			ps.close();
+			
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+ 		
+ 		
+ 		return false;
  	}
  	
  	
@@ -938,6 +1037,73 @@ public class BDDriver {
 		}	
  	}
  	
+ 	public static Notificacao[] listarNotificacoes(int userID) {
+ 		ArrayList<Notificacao> result = new ArrayList<Notificacao>();
+ 		
+		try {
+			PreparedStatement ps = conn.prepareStatement("SELECT * FROM listar_notificacoes(?)");
+			ps.setInt(1, userID);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				Notificacao not = new Notificacao(
+						rs.getInt(3),
+						rs.getInt(4),
+						rs.getString("descricao"),
+						rs.getBoolean("lida"));
+				result.add(not);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+ 		
+		return result.toArray(new Notificacao[0]);
+ 		
+ 	}
+ 	
+ 	public static boolean setUtilizadorPassword(int idUser, String password) {
+ 		
+ 		try {
+			PreparedStatement ps = conn.prepareStatement("SELECT * FROM set_password_utilizador(?,?)");
+			ps.setInt(1, idUser);
+			ps.setString(2, password);
+			
+			ps.execute();
+			ps.close();
+			
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+ 		
+ 		
+ 		
+ 		
+ 		return false;
+ 	}
+ 	
+ 	
+ 	public static boolean setUtilizadorNome(int idUser,String nome) {
+ 		try {
+ 			
+ 			PreparedStatement ps = conn.prepareStatement("SELECT * FROM set_nome_utilizador(?,?)");
+ 			ps.setInt(1, idUser);
+ 			ps.setString(2, nome);
+ 			ps.execute();
+ 			ps.close();
+ 			
+ 			
+ 			return true;
+ 		} catch(SQLException e) {
+ 			e.printStackTrace();
+ 		}
+ 		
+ 		
+ 		return false;
+ 	}
  	
    
    

@@ -17,6 +17,17 @@ public enum TipoPublicacao {
 		return 3;
 	}
 	
+	public static String tipoToString(TipoPublicacao tipo) {
+		switch(tipo) {
+		case capaDura:
+			return "capa dura";
+		case deBolso:
+			return "de bolso";
+		case ebook:
+			return "ebook";
+		}
+		return null;
+	}
 	
 	public static TipoPublicacao stringToTipo(String tipo) {
 		switch(tipo) {

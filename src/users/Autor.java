@@ -133,6 +133,7 @@ private static void submeterObraRevisao(String login1) {
 	
 }
 
+//TODO
 private static void inserirObra(String login1) {
 	System.out.println("Inserir Obra");
 	while(true) {
@@ -140,7 +141,7 @@ private static void inserirObra(String login1) {
 		if(verify1.contentEquals("s")) {
 			
 			
-			BDDriver.adicionarObra(login1);
+			BDDriver.adicionarObra(null);
 			break;
 		} else if(verify1.contentEquals("n")) {
 			break;

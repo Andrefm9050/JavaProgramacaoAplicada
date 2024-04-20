@@ -32,4 +32,20 @@ public class Anotacao implements Comparable<Anotacao> {
 	public int compareTo(Anotacao o) {
 		return this.data.compareTo(o.data);
 	}
+
+	public int getAnotID() {
+		return anotID;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public int getPagina() {
+		return pagina;
+	}
+
+	public int getParagrafo() {
+		return paragrafo;
+	}
 }

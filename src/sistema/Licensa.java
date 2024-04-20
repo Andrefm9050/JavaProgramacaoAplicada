@@ -28,9 +28,21 @@ public class Licensa implements Comparable<Licensa>{
 		this.numeroSerie = numeroSerie;
 		this.expiracao = expiracao;
 	}
+	
 	@Override
 	public int compareTo(Licensa o) {
 		return expiracao.compareTo(o.expiracao);
+	}
+	
+	
+	public Date getExpiracao() {
+		return expiracao;
+	}
+	public String getNomeLicensa() {
+		return nomeLicensa;
+	}
+	public int getNumeroSerie() {
+		return numeroSerie;
 	}
 	
 }

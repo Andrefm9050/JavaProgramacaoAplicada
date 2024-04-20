@@ -30,6 +30,25 @@ public enum EstiloLiterario {
 		return 5;
 	}
 	
+	
+	public static int estiloToInt(EstiloLiterario tipo) {
+		switch(tipo) {
+		case narrativo:
+			return 0;
+		case lirico:
+			return 1;
+		case drama:
+			return 2;
+		case ficcao:
+			return 3;
+		case thriller:
+			return 4;
+		}	
+		return 5;
+	}
+	
+	
+	
 	public static EstiloLiterario stringToEstilo(String estilo) {
 		switch(estilo) {
 		case "narrativo":
