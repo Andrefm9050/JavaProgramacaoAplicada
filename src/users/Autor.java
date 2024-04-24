@@ -1,7 +1,7 @@
 package users;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.Scanner;
 
 import pastaPrincipal.Main;
@@ -29,7 +29,12 @@ public int getIdAutor() {
 		return idAutor;
 	}
 
-
+public Date getDataInicioAtividade() {
+	return dataInicioAtividade;
+}
+public String getEstilo() {
+	return estilo;
+}
 
 	public void setIdAutor(int idAutor) {
 		this.idAutor = idAutor;

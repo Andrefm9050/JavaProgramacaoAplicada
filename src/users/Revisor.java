@@ -19,6 +19,13 @@ public class Revisor extends UniqueUtilizador {
 		this.idRevisor = idRevisor;
 	}
 	
+	public String getFormacao() {
+		return formacaoAcademica;
+	}
+	public EspecializacaoArea getArea() {
+		return areaEspecializado;
+	}
+	
 public static void menuRevisor(Revisor login1) {
 		
 		while(true) {

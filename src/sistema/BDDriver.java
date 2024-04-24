@@ -253,7 +253,7 @@ public class BDDriver {
          String login1 = u1.getLogin();
          String nome1 = u1.getNome();
          int idUser;
-         if (tipo1.equalsIgnoreCase("Gestor")) {
+         if (u1 instanceof Gestor) {
             sqlQuery.append("SELECT * FROM criar_gestor(?, ? , ?, ? , ?)");  		// 4 era o 0
             PreparedStatement ps = conn.prepareStatement(sqlQuery.toString());		//
             //EstadoConta estado = EstadoConta.por_registar;
@@ -271,42 +271,8 @@ public class BDDriver {
             ps.close();
             return idUser;
          }
-
-         String morada1;
-         String nif1;
-         String telefone1;
-         String formacao;
-         if (tipo1.equalsIgnoreCase("Autor")) {
-            morada1 = lerDados("Insira a sua morada: ");
-           
-            while(true) {
-            	
-            	nif1 = lerDados("Insira o seu nif (9 números): ");
-            	if(GestorContas.nifVal(nif1) == false) {
-            		System.out.println("NIF já existe! Insira outro NIF.");
-            	} else if(GestorContas.validacaoNIF(nif1)!=true) {
-            		System.out.println("O seu número não tem 9 digitos! Insira novamente.");
-            	}
-            	else {
-            		break;
-            	}
-            }
-            
-            while(true) {
-            	telefone1 = lerDados("Insira o seu número contacto telefónico (Deverá começar por 9,2 ou 3): ");
-            	if(GestorContas.validacaoTelefone(telefone1)!=true) {
-            		System.out.println("O seu número não é válido! Insira novamente.");
-            	}else {
-            		break;
-            	}
-            	
-            }
-            
-            formacao = lerDados("Insira a data de inicio de atividade no seguinte formato yyyy-mm-dd: ");
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            LocalDate date = LocalDate.parse(formacao, formatter);
-            Date completedDate = Date.valueOf(date);
-            String estiloLiterario = lerDados("Insira o seu estilo literário(ex: drama, ficção, thriller): ");
+         else if(u1 instanceof Autor) {
+        	 Autor autor = (Autor)u1;
             sqlQuery.append("SELECT * FROM criar_autor(?, ?, ? , ? , ?, ?, ?, ?, ?, ?)");
             PreparedStatement ps = conn.prepareStatement(sqlQuery.toString());
             ps.clearParameters();
@@ -315,11 +281,11 @@ public class BDDriver {
             ps.setString(3, password1);
             ps.setInt(4, EstadoConta.estadoToInt(u1.getEstado()));
             ps.setString(5, login1);
-            ps.setString(6, morada1);
-            ps.setString(7, nif1);
-            ps.setString(8, telefone1);
-            ps.setDate(9, completedDate);
-            ps.setInt(10, EstiloLiterario.estiloToInt(estiloLiterario));
+            ps.setString(6, autor.getMorada());
+            ps.setString(7, autor.getNif());
+            ps.setString(8, autor.getTelefone());
+            ps.setDate(9, autor.getDataInicioAtividade());
+            ps.setInt(10, EstiloLiterario.estiloToInt(autor.getEstilo()));
             ResultSet rs = ps.executeQuery();
             rs.next();
             idUser = rs.getInt(1);
@@ -327,33 +293,8 @@ public class BDDriver {
             ps.close();
             return idUser;
          }
-
-         if (tipo1.equalsIgnoreCase("Revisor")) {
-            morada1 = lerDados("Insira a sua morada: ");
-            
-            while(true) {
-            	nif1 = lerDados("Insira o seu nif (9 números): ");
-            	if(GestorContas.nifVal(nif1) == false) {
-            		System.out.println("NIF já existe! Insira outro NIF.");
-            	} else if(GestorContas.validacaoNIF(nif1)!=true) {
-            		System.out.println("O seu número não tem 9 digitos! Insira novamente.");
-            	}
-            	else {
-            		break;
-            	}
-            }
-            
-            while(true) {
-            	telefone1 = lerDados("Insira o seu número contacto telefónico (Deverá começar por 9,2 ou 3): ");
-            	if(GestorContas.validacaoTelefone(telefone1)!=true) {
-            		System.out.println("O seu número não é válido! Insira novamente.");
-            	}else {
-            		break;
-            	}
-            	
-            }
-            formacao = lerDados("Insira a sua formacao academica: ");
-            String area = lerDados("Insira a sua area de especializacao: ");
+         else if(u1 instanceof Revisor) {
+        	Revisor revisor = (Revisor)u1;
             sqlQuery.append("SELECT * FROM criar_revisor(?, ? , ?, ? , ?, ?, ?, ?, ?, ?)");
             PreparedStatement ps = conn.prepareStatement(sqlQuery.toString());
             ps.clearParameters();
@@ -362,11 +303,11 @@ public class BDDriver {
             ps.setString(3, password1);
             ps.setInt(4, EstadoConta.estadoToInt(u1.getEstado()));
             ps.setString(5, login1);
-            ps.setString(6, morada1);
-            ps.setString(7, nif1);
-            ps.setString(8, telefone1);
-            ps.setString(9, formacao);
-            ps.setString(10, area);
+            ps.setString(6, revisor.getMorada());
+            ps.setString(7, revisor.getNif());
+            ps.setString(8, revisor.getTelefone());
+            ps.setString(9, revisor.getFormacao());
+            ps.setString(10, revisor.getArea().toString());
             ResultSet rs = ps.executeQuery();
             rs.next();
             idUser = rs.getInt(1);
