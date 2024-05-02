@@ -1,5 +1,10 @@
 package pastaPrincipal;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.InetAddress;
+import java.net.Socket;
 import java.sql.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -41,6 +46,38 @@ public class Main {
 	
 	public static void main(String [] args)  {
 		startmillis = System.currentTimeMillis();
+		
+		Socket socket        = null;	
+		PrintWriter out      = null;
+		BufferedReader in    = null;
+		String serverIP = "127.0.0.1";
+		int serverPort = 7777;
+		
+		try {
+			socket = new Socket(serverIP, serverPort);
+			System.out.println("## Client connected to server "+serverIP+":"+serverPort);
+			
+			out    = new PrintWriter(socket.getOutputStream(), true);
+			in     = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			
+			
+			String message = in.readLine();
+			out.println("<cliente> <hello>;");
+			
+			String ack = in.readLine();
+			System.out.println(ack);
+		}
+		catch(Exception e) {
+			
+		}
+		
+
+		while(true) {
+			out.println(lerDados("Mensagem: "));
+			boolean ok = false;
+			if(ok) break;
+		}
+		
 		char choice = 'n';
 		System.out.println("Deseja configurar a configuração de base de dados? (s/n)");
 		choice = lerDados("").charAt(0);
