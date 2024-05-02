@@ -9,20 +9,22 @@ import sistema.EstadoRevisao;
 import sistema.Revisao;
 
 public class Revisor extends UniqueUtilizador {
-	private EspecializacaoArea areaEspecializado;
+	private String areaEspecializado;
 	private String formacaoAcademica;
 	private int idRevisor;
 	
-	public Revisor(int idRevisor, int idUser,String login, String password, String nome, EstadoConta estado, String email, String tipo, String nif, String telefone, String morada) {
+	public Revisor(int idRevisor, int idUser,String login, String password, String nome, EstadoConta estado, String email, String tipo, String nif, String telefone, String morada,String formacao,String esp) {
 		super(idUser,login, password, nome, estado, email, tipo, nif, telefone, morada);
 		// TODO Auto-generated constructor stub
 		this.idRevisor = idRevisor;
+		this.formacaoAcademica = formacao;
+		this.areaEspecializado = esp;
 	}
 	
 	public String getFormacao() {
 		return formacaoAcademica;
 	}
-	public EspecializacaoArea getArea() {
+	public String getArea() {
 		return areaEspecializado;
 	}
 	

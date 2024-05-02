@@ -4,5 +4,4 @@ public enum EspecializacaoArea {
 	ciências,
 	literatura,
 	artes;
-	
 }

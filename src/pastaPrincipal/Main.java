@@ -47,53 +47,6 @@ public class Main {
 	public static void main(String [] args)  {
 		startmillis = System.currentTimeMillis();
 		
-		Socket socket        = null;	
-		PrintWriter out      = null;
-		BufferedReader in    = null;
-		String serverIP = "127.0.0.1";
-		int serverPort = 7777;
-		
-		try {
-			socket = new Socket(serverIP, serverPort);
-			System.out.println("## Client connected to server "+serverIP+":"+serverPort);
-			
-			out    = new PrintWriter(socket.getOutputStream(), true);
-			in     = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			
-			
-			String message = in.readLine();
-			out.println("<cliente> <hello>;");
-			
-			String ack = in.readLine();
-			if(!ack.contentEquals("<server> <ack>;")) {
-				//Close connection and application
-			}
-		}
-		catch(Exception e) {
-			
-		}
-		
-
-		while(true) {
-			out.println(lerDados("Mensagem: "));
-			boolean ok = false;
-			if(ok) break;
-		}
-		
-		char choice = 'n';
-		System.out.println("Deseja configurar a configuração de base de dados? (s/n)");
-		choice = lerDados("").charAt(0);
-		if(choice == 's' || choice == 'S')
-			BDDriver.menuConfiguracao();
-		
-		
-		while(!BDDriver.configurarDriverPorFicheiro("Properties")) {
-			System.out.println("Erro ao connectar á base de dados... a tentar de novo");
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-			}
-		}
 		
 		while(GestorContas.listarGestores().length == 0) {
 			System.out.println("Nao existe nenhuma conta de administrador, por favor insira uma nova");

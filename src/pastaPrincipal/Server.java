@@ -8,6 +8,8 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import sistema.BDDriver;
+import sistema.ServerDriver;
 import users.Utilizador;
 
 public class Server {
@@ -18,10 +20,24 @@ public class Server {
 	static BufferedReader in         = null;
 	
 	public static void main(String [] args)  {
-		Utilizador login = null;
 
-		int portNumber = 7777;
+		char choice = 'n';
+		System.out.println("Deseja configurar a configuração de base de dados? (s/n)");
+		choice = Main.lerDados("").charAt(0);
+		if(choice == 's' || choice == 'S')
+			BDDriver.menuConfiguracao();
 		
+		
+		while(!BDDriver.configurarDriverPorFicheiro("Properties")) {
+			System.out.println("Erro ao connectar á base de dados... a tentar de novo");
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+			}
+		}
+		
+		int portNumber = 7777;
+		while(true) {
 		try {
 			serverSocket = new ServerSocket(portNumber); //starts server
 			
@@ -38,7 +54,7 @@ public class Server {
 			System.exit(0);
 		} 
 		try {
-			clientSocket.setSoTimeout(10000); 
+			System.err.println("## Client Connected...");
 			out.println("<server> <hello>;");
 			
 			String clientReply = in.readLine();
@@ -50,12 +66,17 @@ public class Server {
 				out.println("<server> <bye>;");
 				fechaConexao();
 			}
-			
+			ServerDriver driver = new ServerDriver(out);
 			while(true) {
 				clientReply = in.readLine();
 				System.out.println(clientReply);
 				
-				
+				if(driver.executeComand(clientReply)) {
+					System.out.println("Success");
+				}
+				else {
+					System.out.println("Fail");
+				}
 				
 			}
 			
@@ -63,10 +84,12 @@ public class Server {
 			
 		}
 		catch(Exception e) {
-			
+			e.printStackTrace();
 		}
 		finally {
-			
+			fechaConexao();
+		}
+		System.out.println("Conexao fechada.");
 		}
 	}
 	

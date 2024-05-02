@@ -13,14 +13,16 @@ import sistema.Revisao;
 import java.util.Random;
 
 public class Autor extends UniqueUtilizador{
-	private String estilo;
+	private EstiloLiterario estilo;
 	private Date dataInicioAtividade;
 	private int idAutor;
 	
-	public Autor(int idAutor,int idUser,String login, String password, String nome, EstadoConta estado, String email, String tipo, String nif, String telefone, String morada) {
+	public Autor(int idAutor,int idUser,String login, String password, String nome, EstadoConta estado, String email, String tipo, String nif, String telefone, String morada,Date dataInicioAtividade,EstiloLiterario e) {
 		super(idUser,login, password, nome, estado, email, tipo, nif, telefone, morada);
 		// TODO Auto-generated constructor stub
 		this.idAutor = idAutor;
+		this.dataInicioAtividade = dataInicioAtividade;
+		this.estilo = e;
 	}
 	
 	
@@ -33,7 +35,7 @@ public Date getDataInicioAtividade() {
 	return dataInicioAtividade;
 }
 public String getEstilo() {
-	return estilo;
+	return estilo.toString();
 }
 
 	public void setIdAutor(int idAutor) {
