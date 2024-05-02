@@ -65,7 +65,9 @@ public class Main {
 			out.println("<cliente> <hello>;");
 			
 			String ack = in.readLine();
-			System.out.println(ack);
+			if(!ack.contentEquals("<server> <ack>;")) {
+				//Close connection and application
+			}
 		}
 		catch(Exception e) {
 			
