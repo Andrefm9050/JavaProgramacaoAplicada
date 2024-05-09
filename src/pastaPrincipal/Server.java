@@ -45,9 +45,10 @@ public class Server {
 			System.out.println("## Server up and running at IP "+address.getHostAddress()+":"+serverSocket.getLocalPort()+" Hostname "+address.getHostName()+" ##"+"\n## Server waiting for connections...");
 		
 			clientSocket = serverSocket.accept(); // waits until a client request a connection
+			clientSocket.setSoTimeout(20000);
 			out          = new PrintWriter(clientSocket.getOutputStream(), true); 
 			in           = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-	
+			
 		} catch (IOException ioe) {
 		  	ioe.printStackTrace();
 		  	System.err.println("## Server Exiting due to error...");
@@ -68,6 +69,10 @@ public class Server {
 			}
 			ServerDriver driver = new ServerDriver(out);
 			while(true) {
+				System.out.println(" ");
+				System.out.println("Waiting for client message... ");
+				System.out.println(" ");
+				
 				clientReply = in.readLine();
 				System.out.println(clientReply);
 				

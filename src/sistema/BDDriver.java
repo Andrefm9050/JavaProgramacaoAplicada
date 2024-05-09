@@ -679,6 +679,7 @@ public class BDDriver {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return 1;
 		}	
  		
  		
@@ -712,7 +713,7 @@ public class BDDriver {
 				String subTitulo = rs.getString(9);
 				String titulo = rs.getString(10);
 				String tipoPubli = rs.getString(11);
-				String estiloLiterario1 = rs.getString(12);
+				int estiloLiterario1 = rs.getInt("estilo_literario");
 				//System.out.println(estiloLiterario1);
 				String autorNome = null;
 				Utilizador[] utilizadorBuffer = listarUtilizadores();
@@ -725,7 +726,7 @@ public class BDDriver {
 					}
 					
 				}
-				obraNova.add(new Obra(idObra, autorNome,idAutor, titulo, subTitulo, EstiloLiterario.stringToEstilo(estiloLiterario1), 
+				obraNova.add(new Obra(idObra, autorNome,idAutor, titulo, subTitulo, EstiloLiterario.intToEstilo(estiloLiterario1), 
 						TipoPublicacao.stringToTipo(tipoPubli),
 						nPaginas, nPalavras, isbn, nEdicao, dataSubmissao, dataAprovacao));
 				
@@ -780,6 +781,7 @@ public class BDDriver {
  			return true;
  		}
  		catch(Exception e) {
+ 			e.printStackTrace();
  			return false;
  		}
  		
