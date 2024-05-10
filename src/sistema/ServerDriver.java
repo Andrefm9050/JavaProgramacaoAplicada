@@ -1,6 +1,10 @@
 package sistema;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.Socket;
 
 import users.Autor;
 import users.EstadoConta;
@@ -9,14 +13,81 @@ import users.GestorContas;
 import users.Revisor;
 import users.Utilizador;
 
-public class ServerDriver {
+public class ServerDriver extends Thread{
 	
 	Utilizador login = null;
-	PrintWriter clientWriter = null;
+    Socket clientSocket       = null;	
+	PrintWriter clientWriter           = null;
+	BufferedReader clientBuffer         = null;
+	int clientInstanceID;
 	
 	
-	public ServerDriver(PrintWriter pw) {
-		clientWriter = pw;
+	public ServerDriver(Socket clientSocket,int clientID) {
+		
+		try {
+			clientInstanceID = clientID;
+			clientWriter          = new PrintWriter(clientSocket.getOutputStream(), true);
+			clientBuffer           = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void run() {
+		try {
+			System.err.println(clientInstanceID + " ## Client Connected...");
+			clientWriter.println("<server> <hello>;");
+			
+			String clientReply = clientBuffer.readLine();
+			
+			if(clientReply.contentEquals("<cliente> <hello>;")) {
+				clientWriter.println("<server> <ack>;");
+			}
+			else {
+				clientWriter.println("<server> <bye>;");
+				fechaConexao();
+			}
+			while(true) {
+				System.out.println(" ");
+				System.out.println(clientInstanceID + "## Waiting for client message... ");
+				System.out.println(" ");
+				
+				clientReply = clientBuffer.readLine();
+				System.out.println(clientReply);
+				
+				if(executeComand(clientReply)) {
+					System.out.println(clientInstanceID + "## Success");
+				}
+				else {
+					System.out.println(clientInstanceID + "## Fail");
+				}
+				
+			}
+			
+			
+			
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			fechaConexao();
+		}
+	}
+	public void fechaConexao() {
+		try {
+		    if (clientBuffer != null) 
+		    	clientBuffer.close();
+		    if (clientWriter != null) 
+		    	clientWriter.close();
+		    
+		    if (clientSocket != null) 
+		    	clientSocket.close();
+		    
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public boolean executeComand(String message) {
@@ -25,15 +96,19 @@ public class ServerDriver {
 		if(message.split("<cliente>").length == 0) {
 			return false;
 		}
-		System.out.println("Raw Split: " + message.split("<")[2].split(">")[0]);
+		//System.out.println("Raw Split: " + message.split("<")[2].split(">")[0]);
 		String[] args = message.split("<");
 		for(int i = 0; i<args.length; i++) {
 			args[i] = args[i].split(">")[0];
 		}
 		
-		System.out.println("Splitted argument: " + args[2]);
+		//System.out.println("Splitted argument: " + args[2]);
 		
 		switch(args[2]) { //Primeiro arg
+		case "hello":
+			return ack();
+			case "ack":
+				return ack();
 			case "autenticar":
 				String username = args[3].split(",")[0];
 				String password = args[3].split(",")[1];
@@ -67,13 +142,19 @@ public class ServerDriver {
 				switch(args[3]) {
 				case "obra":
 					return listarObras();
+				case "revisao":
+					return listarRevisoes();
 				}
 				break;
 		}
 		
-		return true;
+		return false;
 	}
 	
+	boolean ack() {
+		clientWriter.println("<server> <ack>;");
+		return true;
+	}
 	boolean listarObras() {
 		if(!(login instanceof Autor)) {
 			clientWriter.println("<server> <listar> <obra> <fail>;");
@@ -112,11 +193,47 @@ public class ServerDriver {
 			return false;
 		}
 		
-		String message = "<server> <listar> <revisao> <";
+		Revisao[] revisoes = GestorRevisoes.listarRevisoes(); //TODO usar listarRevisoesAutor()
+		if(revisoes.length > 0) {
+			String message = "<server> <listar> <revisao> <";
+		for(int x=0; x<revisoes.length; x++) {
+			
+			Revisao revisao = revisoes[x];
+			Revisor resp = revisao.getRevisorResponsavel();
+			int respID = (resp != null ? resp.getIdRevisor() : 0);
+			String[] observacoes = revisao.getObservacoes();
+			String stringifiedObservacoes = "";
+			
+			for(int i=0; i<observacoes.length;i++) {
+				stringifiedObservacoes = stringifiedObservacoes + observacoes[i] + (i == observacoes.length-1 ? "" : " - ");
+			}
+			
+			if(x != 0) {
+				message = message + ", ";
+			}
+			
+			message = message + String.format("%s,%s,%s,%s,(%s),%s,%s",
+					Integer.toString(revisao.getGestorID()),
+					respID,
+					revisao.getDataRealizacao().toString(),
+					Integer.toString(revisao.getTempoDecorrido()),
+					stringifiedObservacoes,
+					Double.toString(revisao.getCusto()),
+					revisao.getEstado().toString()
+					);
+		}
+		message = message + ">;";
 		
-		Revisao[] revisoes = GestorRevisoes.listarRevisoesAutor((Autor)login);
+		clientWriter.println(message);
+		}
+		else
+		{
+			clientWriter.println("<server> <listar> <revisao> <fail>;");
+			return false;
+		}
 		
 		
+		return true;
 		
 	}
 	
@@ -136,8 +253,6 @@ public class ServerDriver {
 				stringifiedObservacoes = stringifiedObservacoes + observacoes[i] + (i == observacoes.length-1 ? "" : ",");
 				
 			}
-			
-			
 			
 			message = message + String.format(" <%s,%s,%s,%s,(%s),%s,%s>;",
 					Integer.toString(rev.getGestorID()),
@@ -223,9 +338,9 @@ public class ServerDriver {
 				args[2],
 				args[3],
 				EstadoConta.valueOf(args[4]),
-				args[5],
-				args[6],
-				args[7])) {
+				(login instanceof Gestor ? null : args[5]),
+				(login instanceof Gestor ? null : args[6]),
+				(login instanceof Gestor ? null : args[7]))) {
 			clientWriter.println("<server> <update> <ok>;");
 			return true;
 		}
