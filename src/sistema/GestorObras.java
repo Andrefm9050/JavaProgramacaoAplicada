@@ -10,6 +10,11 @@ public class GestorObras {
 		return BDDriver.listarObras();
 	}
 	
+	/**
+	 * 
+	 * @param titulo - Titulo da obra
+	 * @return obra com o titulo dado se existente
+	 */
 	public static Obra pesquisarObraPorTitulo(String titulo) {
 		Obra[] lista = listarObras();
 		for(var obra : lista) {
@@ -20,6 +25,11 @@ public class GestorObras {
 		return null;
 	}
 	
+	/**
+	 * 
+	 * @param a - Autor
+	 * @return lista de obras do autor
+	 */
 	public static Obra[] listarObrasAutor(Autor a) {
 		Obra[] list = listarObras();
 		ArrayList<Obra> result = new ArrayList<Obra>();

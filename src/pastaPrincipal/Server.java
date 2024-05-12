@@ -14,12 +14,17 @@ import sistema.BDDriver;
 import sistema.ServerDriver;
 import users.Utilizador;
 
+
+/**
+ * Classe inicial do lado do servidor da aplicacao
+ * @author Andre Rios
+ */
 public class Server {
 	
 	static ServerSocket serverSocket = null;
 	
-	public static void main(String [] args)  {
 
+	public static void main(String [] args)  {
 		char choice = 'n';
 		System.out.println("Deseja configurar a configuração de base de dados? (s/n)");
 		choice = Main.lerDados("").charAt(0);
@@ -34,6 +39,7 @@ public class Server {
 			} catch (InterruptedException e) {
 			}
 		}
+		
 		boolean portSelected = false;
 		while(!portSelected) {
 			int portNumber = Main.lerDadosInt("Porto:");

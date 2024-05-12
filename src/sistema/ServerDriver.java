@@ -13,6 +13,11 @@ import users.GestorContas;
 import users.Revisor;
 import users.Utilizador;
 
+
+/**
+ * Classe responsavel por processar uma thread de conexao da parte do servidor
+ * @author Andre Rios
+ */
 public class ServerDriver extends Thread{
 	
 	Utilizador login = null;
@@ -40,13 +45,17 @@ public class ServerDriver extends Thread{
 			clientWriter.println("<server> <hello>;");
 			
 			String clientReply = clientBuffer.readLine();
-			
-			if(clientReply.contentEquals("<cliente> <hello>;")) {
-				clientWriter.println("<server> <ack>;");
+			if(clientReply != null) {
+				if(clientReply.contentEquals("<cliente> <hello>;")) {
+					clientWriter.println("<server> <ack>;");
+				}
+				else {
+					clientWriter.println("<server> <bye>;");
+					return;
+				}
 			}
 			else {
-				clientWriter.println("<server> <bye>;");
-				fechaConexao();
+				return;
 			}
 			while(true) {
 				System.out.println(" ");
@@ -55,6 +64,7 @@ public class ServerDriver extends Thread{
 				
 				clientReply = clientBuffer.readLine();
 				System.out.println(clientReply);
+				try {
 				int commandResult = executeComand(clientReply);
 				if(commandResult == 1) {
 					System.out.println(clientInstanceID + "## Success");
@@ -65,6 +75,10 @@ public class ServerDriver extends Thread{
 				else if(commandResult == 2) {
 					System.out.println(clientInstanceID + "## Disconnect Request.");
 					break;
+				}
+				}
+				catch(Exception e) {
+					System.out.println(clientInstanceID + "## Comando inválido");
 				}
 				
 			}
@@ -93,6 +107,12 @@ public class ServerDriver extends Thread{
 		System.out.println(clientInstanceID + "## Disconnected.");
 	}
 
+	
+	
+	/**
+	 * @param message - Comando mandado pelo cliente
+	 * @return codigo de sucesso (0 - erro, 1 - sucesso, 2 - desconectar)
+	 */
 	public int executeComand(String message) {
 		
 		//<login> <autenticar> <username,password>;
@@ -109,6 +129,15 @@ public class ServerDriver extends Thread{
 		
 		switch(args[2]) { //Primeiro arg
 		
+			case "autenticar":
+				String username = args[3].split(",")[0];
+				String password = args[3].split(",")[1];
+				
+				return autenticar(username,password);
+		}
+		
+		if(login != null) {
+			switch(args[2]) {
 			case "bye":
 				return bye();
 			
@@ -118,11 +147,7 @@ public class ServerDriver extends Thread{
 			case "ack":
 				return ack();
 				
-			case "autenticar":
-				String username = args[3].split(",")[0];
-				String password = args[3].split(",")[1];
-				
-				return autenticar(username,password);
+	
 			
 			case "info":
 				return detalhesUser();
@@ -155,10 +180,12 @@ public class ServerDriver extends Thread{
 					return listarRevisoes();
 				}
 				break;
+			}
 		}
 		
 		return 0;
 	}
+	
 	int bye() {
 		return 2;
 	}
@@ -167,6 +194,7 @@ public class ServerDriver extends Thread{
 		clientWriter.println("<server> <ack>;");
 		return 1;
 	}
+	
 	int listarObras() {
 		if(!(login instanceof Autor)) {
 			clientWriter.println("<server> <listar> <obra> <fail>;");
@@ -432,11 +460,10 @@ public class ServerDriver extends Thread{
 		return result;
 	}
 	
-	//TODO <- adicionar check de conta que pode ser usada em login
 	int autenticar(String user,String password) {
 		Utilizador u = BDDriver.encontrarUtilizador(user, password);
 		
-		if(u != null) {
+		if(u != null && u.getEstado() == EstadoConta.ativos || u.getEstado() == EstadoConta.por_remover) {
 			login = u;
 			clientWriter.println("<server> <autenticar> <success>;");
 			return 1;
