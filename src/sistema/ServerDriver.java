@@ -55,18 +55,19 @@ public class ServerDriver extends Thread{
 				
 				clientReply = clientBuffer.readLine();
 				System.out.println(clientReply);
-				
-				if(executeComand(clientReply)) {
+				int commandResult = executeComand(clientReply);
+				if(commandResult == 1) {
 					System.out.println(clientInstanceID + "## Success");
 				}
-				else {
+				else if(commandResult == 0){
 					System.out.println(clientInstanceID + "## Fail");
+				}
+				else if(commandResult == 2) {
+					System.out.println(clientInstanceID + "## Disconnect Request.");
+					break;
 				}
 				
 			}
-			
-			
-			
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -75,6 +76,7 @@ public class ServerDriver extends Thread{
 			fechaConexao();
 		}
 	}
+	
 	public void fechaConexao() {
 		try {
 		    if (clientBuffer != null) 
@@ -88,13 +90,14 @@ public class ServerDriver extends Thread{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		System.out.println(clientInstanceID + "## Disconnected.");
 	}
 
-	public boolean executeComand(String message) {
+	public int executeComand(String message) {
 		
 		//<login> <autenticar> <username,password>;
 		if(message.split("<cliente>").length == 0) {
-			return false;
+			return 0;
 		}
 		//System.out.println("Raw Split: " + message.split("<")[2].split(">")[0]);
 		String[] args = message.split("<");
@@ -105,10 +108,16 @@ public class ServerDriver extends Thread{
 		//System.out.println("Splitted argument: " + args[2]);
 		
 		switch(args[2]) { //Primeiro arg
-		case "hello":
-			return ack();
+		
+			case "bye":
+				return bye();
+			
+			case "hello":
+				return ack();
+				
 			case "ack":
 				return ack();
+				
 			case "autenticar":
 				String username = args[3].split(",")[0];
 				String password = args[3].split(",")[1];
@@ -129,7 +138,7 @@ public class ServerDriver extends Thread{
 						return inserirObra(obraArgs);
 				}
 				
-				return false;
+				return 0;
 			case "pesquisa":
 				switch(args[3]) {
 					case "obra":
@@ -148,17 +157,21 @@ public class ServerDriver extends Thread{
 				break;
 		}
 		
-		return false;
+		return 0;
+	}
+	int bye() {
+		clientWriter.println("<server> <bye>;");
+		return 2;
 	}
 	
-	boolean ack() {
+	int ack() {
 		clientWriter.println("<server> <ack>;");
-		return true;
+		return 1;
 	}
-	boolean listarObras() {
+	int listarObras() {
 		if(!(login instanceof Autor)) {
 			clientWriter.println("<server> <listar> <obra> <fail>;");
-			return false;
+			return 0;
 		}
 		String message = "<server> <listar> <obra> <";
 		
@@ -180,17 +193,17 @@ public class ServerDriver extends Thread{
 		}
 		if(obras.length > 0) {
 			clientWriter.println(message);
-			return true;
+			return 1;
 		}
 		
 		clientWriter.println("<server> <listar> <obra> <fail>;");
-		return false;
+		return 0;
 	}
 	
-	boolean listarRevisoes() {
+	int listarRevisoes() {
 		if(!(login instanceof Autor)) {
 			clientWriter.println("<server> <listar> <revisao> <fail>;");
-			return false;
+			return 0;
 		}
 		
 		Revisao[] revisoes = GestorRevisoes.listarRevisoes(); //TODO usar listarRevisoesAutor()
@@ -229,15 +242,15 @@ public class ServerDriver extends Thread{
 		else
 		{
 			clientWriter.println("<server> <listar> <revisao> <fail>;");
-			return false;
+			return 0;
 		}
 		
 		
-		return true;
+		return 1;
 		
 	}
 	
-	boolean pesquisaRevisao(String numSerie) {
+	int pesquisaRevisao(String numSerie) {
 		Revisao rev = GestorRevisoes.peesquisarRevisaoPorSerie(numSerie);
 		
 		if(rev != null) {
@@ -265,16 +278,16 @@ public class ServerDriver extends Thread{
 					);
 			
 		   clientWriter.println(message);
-		   return true;
+		   return 1;
 		}
 		
 		clientWriter.println("<server> <pesquisa> <revisao> <fail>;");
 		
-		return false;
+		return 0;
 	}
 	
 	
-	boolean pesquisarObra(String titulo) {
+	int pesquisarObra(String titulo) {
 		Obra obra = GestorObras.pesquisarObraPorTitulo(titulo);
 		if(obra != null) {
 			String message = "<server> <pesquisa> <obra>";
@@ -291,17 +304,17 @@ public class ServerDriver extends Thread{
 					);
 			
 			clientWriter.println(message);
-			return true;
+			return 1;
 		}
 		
 		clientWriter.println("<server> <pesquisa> <obra> <fail>;");
-		return false;
+		return 0;
 	}
 	
-	boolean inserirObra(String[] args) {
+	int inserirObra(String[] args) {
 		if(!(login instanceof Autor)) {
 			clientWriter.println("<server> <inserir> <obra> <fail>;");
-			return false;
+			return 0;
 		}
 		Autor autor = (Autor)login;
 		Obra obra = new Obra(
@@ -322,15 +335,15 @@ public class ServerDriver extends Thread{
 		
 		if(BDDriver.adicionarObra(obra) == 0) {
 			clientWriter.println("<server> <inserir> <obra> <ok>;");
-			return true;
+			return 1;
 		}
 		else {
 			clientWriter.println("<server> <inserir> <obra> <fail>;");
-			return false;
+			return 0;
 		}
 	}
 	
-	boolean atualizarUser(String[] args) {
+	int atualizarUser(String[] args) {
 		
 		if(BDDriver.editarUtilizador(login.getIdUser(),
 				args[0],
@@ -342,15 +355,15 @@ public class ServerDriver extends Thread{
 				(login instanceof Gestor ? null : args[6]),
 				(login instanceof Gestor ? null : args[7]))) {
 			clientWriter.println("<server> <update> <ok>;");
-			return true;
+			return 1;
 		}
 		
 		clientWriter.println("<server> <update> <fail>;");
-		return false;
+		return 0;
 		
 	}
 	
-	boolean detalhesUser() {
+	int detalhesUser() {
 		String tipo = "";
 		if(login instanceof Gestor) {
 			tipo = "Gestor"; 
@@ -362,7 +375,7 @@ public class ServerDriver extends Thread{
 			tipo = "Autor";
 		}
 		
-		boolean result = true;
+		int result = 1;
 		
 		String message = "<server> <info>";
 		switch(tipo) {
@@ -413,7 +426,7 @@ public class ServerDriver extends Thread{
 			
 		default:
 			message = message + " <fail>;";
-			result = false;
+			result = 0;
 			break;
 		}
 		clientWriter.println(message);
@@ -421,17 +434,17 @@ public class ServerDriver extends Thread{
 	}
 	
 	//TODO <- adicionar check de conta que pode ser usada em login
-	boolean autenticar(String user,String password) {
+	int autenticar(String user,String password) {
 		Utilizador u = BDDriver.encontrarUtilizador(user, password);
 		
 		if(u != null) {
 			login = u;
 			clientWriter.println("<server> <autenticar> <success>;");
-			return true;
+			return 1;
 		}
 		else {
 			clientWriter.println("<server> <autenticar> <fail>;");
-			return false;
+			return 0;
 		}
 	}
 }
