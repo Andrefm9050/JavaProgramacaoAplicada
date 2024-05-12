@@ -160,7 +160,6 @@ public class ServerDriver extends Thread{
 		return 0;
 	}
 	int bye() {
-		clientWriter.println("<server> <bye>;");
 		return 2;
 	}
 	
