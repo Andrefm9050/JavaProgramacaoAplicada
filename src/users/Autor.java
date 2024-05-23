@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.sql.Date;
 import java.util.Scanner;
 
+import pastaPrincipal.Cliente;
 import pastaPrincipal.Main;
 import sistema.BDDriver;
 import sistema.EstiloLiterario;
@@ -13,14 +14,16 @@ import sistema.Revisao;
 import java.util.Random;
 
 public class Autor extends UniqueUtilizador{
-	private String estilo;
+	private EstiloLiterario estilo;
 	private Date dataInicioAtividade;
 	private int idAutor;
 	
-	public Autor(int idAutor,int idUser,String login, String password, String nome, EstadoConta estado, String email, String tipo, String nif, String telefone, String morada) {
+	public Autor(int idAutor,int idUser,String login, String password, String nome, EstadoConta estado, String email, String tipo, String nif, String telefone, String morada, Date data, EstiloLiterario estilo) {
 		super(idUser,login, password, nome, estado, email, tipo, nif, telefone, morada);
 		// TODO Auto-generated constructor stub
 		this.idAutor = idAutor;
+		this.dataInicioAtividade = data;
+		this.estilo = estilo;
 	}
 	
 	
@@ -32,7 +35,7 @@ public int getIdAutor() {
 public Date getDataInicioAtividade() {
 	return dataInicioAtividade;
 }
-public String getEstilo() {
+public EstiloLiterario getEstilo() {
 	return estilo;
 }
 
@@ -45,10 +48,14 @@ public String getEstilo() {
 public static void menuAutor(Autor login1) {
 		
 		while(true) {
-		System.out.println("1-Submeter obra para Revisão \n2-Estado da Revisão \n3-Inserir Obra \n4-Pedido Remover Conta");
+		System.out.println("1- Submeter obra para Revisão \n2- Estado da Revisão \n3- Inserir Obra \n4- Pedido Remover Conta");
 		System.out.println("5- Listar Pedidos Revisao das minhas obras");
 		System.out.println("6- Listar as minhas obras");
-		System.out.println("7- Sair");
+		System.out.println("7- Visualizar dados pessoais");
+		System.out.println("8- ALterar dados pessoais");
+		System.out.println("9- Pesquisar Obras");
+		System.out.println("10- Listar todas as revisões associadas ao utilizador");
+		System.out.println("11- Sair");
 		
 		int opcao = lerDadosInt("Escolha uma das seguintes opções: ");
 		
@@ -64,11 +71,15 @@ public static void executaOpcao(int aOpcao, Autor user){
 	switch(aOpcao) {
 	case 1: submeterObraRevisao(user.getLogin()); break;
 	case 2: estadoRevisao(); break;
-	case 3: inserirObra(user.getLogin()); break;
+	case 3: Cliente.inserirNovaObra(user); break; 
 	case 4: GestorContas.pedidoRemoverConta(user.getLogin()); break;
 	case 5: listarPedidosRevisao(user); break;
-	case 6: listarObras(user); break;
-	case 7: sair(user.getLogin()); break;
+	case 6: Cliente.listarTodasObrasAutor(user); break;
+	case 7: Cliente.consultaDadosPessoaisCliente(); break;
+	case 8: Cliente.alterarDadosPessoais(user); break;
+	case 9: Cliente.pesquisarObra(user); break;
+	case 10: Cliente.listarTodasRevisoesAutor(); break;
+	case 11: sair(user.getLogin()); break;
 	default: erro();
 	}
 }
@@ -139,14 +150,20 @@ private static void submeterObraRevisao(String login1) {
 }
 
 //TODO
-private static void inserirObra(String login1) {
+private static void inserirObra(String login1, Autor userAutor) {
 	System.out.println("Inserir Obra");
 	while(true) {
 		String verify1 = lerDados("Deseja inserir uma obra(s/n): ");
 		if(verify1.contentEquals("s")) {
 			
 			
-			BDDriver.adicionarObra(null);
+			//BDDriver.adicionarObra(null);
+			
+			if(Cliente.inserirNovaObra(userAutor)==true) {
+				System.out.println("Obra inserida com sucesso!");
+			} else {
+				System.out.println("Obra não foi inserida com sucesso!");
+			}
 			break;
 		} else if(verify1.contentEquals("n")) {
 			break;

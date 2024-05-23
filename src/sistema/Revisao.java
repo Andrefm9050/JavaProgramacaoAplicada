@@ -60,7 +60,6 @@ public class Revisao implements Comparable<Revisao>{
 		this.revisoresRecusados = revisoresRecusados;
 		this.estado = estado;
 		this.licensas = licensas;
-		this.revisaoID = revID;
 		this.revisoresConfirmados = revisoresConfirmados;
 		this.revisoresNaoConfirmados = revisoresNaoConfirmados;
 		ordenacao = "";
@@ -83,15 +82,7 @@ public class Revisao implements Comparable<Revisao>{
 	public void setRevisoresNaoConfirmados(Revisor[] rev) {
 		revisoresNaoConfirmados = rev;
 	}
-	@Override
-	public String toString() {
-		return "Revisao [revisaoID=" + revisaoID + " NomeObra= "+ obra.getTitulo() +", obraID=" + obra.getObraId() + ", gestorID=" + gestorID
-				+ ", revisorResponsavel=" + revisorResponsavel + ", numeroSerie=" + numeroSerie + ", dataRealizacao="
-				+ dataRealizacao + ", tempoDecorrido=" + tempoDecorrido + ", anotacoes=" + Arrays.toString(anotacoes)
-				+ ", observacoes=" + Arrays.toString(observacoes) + ", custo=" + custo + ", revisoresRecusados="
-				+ Arrays.toString(revisoresRecusados) + ", estado=" + estado + ", licensas=" + Arrays.toString(licensas)
-				+ "]";
-	}
+	
 	public int getRevisaoID() {
 		return revisaoID;
 	}
@@ -177,6 +168,14 @@ public class Revisao implements Comparable<Revisao>{
 		//n - numero serie
 		this.ordenacao = ordenacao;
 		
+	}
+	
+	
+	@Override
+	public String toString() {
+		return "Revisao gestorID=" + gestorID + ", numeroSerie=" + numeroSerie + ", dataRealizacao=" + dataRealizacao
+				+ ", tempoDecorrido=" + tempoDecorrido + ", custo="
+				+ custo + ", estado=" + estado;
 	}
 	@Override
     public int compareTo(Revisao o) {

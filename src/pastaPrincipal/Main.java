@@ -14,7 +14,8 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.Scanner;
 import java.util.Vector;
-
+import java.net.InetAddress;  
+import java.net.UnknownHostException; 
 import gestao.GestorLogs;
 
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ import users.Utilizador;
 
 public class Main {
 	
-	//
+	
 	//Eu nao queria estar a meter isto aqui
 	//Mas nao funciona de outra forma já que o programa termina fora da função main
 	static long startmillis;
@@ -47,63 +48,19 @@ public class Main {
 	public static void main(String [] args)  {
 		startmillis = System.currentTimeMillis();
 		
-		Socket socket        = null;	
-		PrintWriter out      = null;
-		BufferedReader in    = null;
-		String serverIP = "127.0.0.1";
-		int serverPort = 7777;
 		
-		try {
-			socket = new Socket(serverIP, serverPort);
-			System.out.println("## Client connected to server "+serverIP+":"+serverPort);
-			
-			out    = new PrintWriter(socket.getOutputStream(), true);
-			in     = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			
-			
-			String message = in.readLine();
-			out.println("<cliente> <hello>;");
-			
-			String ack = in.readLine();
-			if(!ack.contentEquals("<server> <ack>;")) {
-				//Close connection and application
+		try {  
+            InetAddress localhost = InetAddress.getLocalHost();  
+            System.out.println("Local IP Address: " + localhost.getHostAddress());  
+        } catch (UnknownHostException ex) {  
+            ex.printStackTrace();  
+        }  
+		
+		
+		if(Cliente.configurarConexao() == true) {
+			System.out.println("Conexão ok!");
 			}
-		}
-		catch(Exception e) {
-			
-		}
 		
-
-		while(true) {
-			out.println(lerDados("Mensagem: "));
-			boolean ok = false;
-			if(ok) break;
-		}
-		
-		char choice = 'n';
-		System.out.println("Deseja configurar a configuração de base de dados? (s/n)");
-		choice = lerDados("").charAt(0);
-		if(choice == 's' || choice == 'S')
-			BDDriver.menuConfiguracao();
-		
-		
-		while(!BDDriver.configurarDriverPorFicheiro("Properties")) {
-			System.out.println("Erro ao connectar á base de dados... a tentar de novo");
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-			}
-		}
-		
-		while(GestorContas.listarGestores().length == 0) {
-			System.out.println("Nao existe nenhuma conta de administrador, por favor insira uma nova");
-			registo("Gestor",true);
-			System.out.println("Obrigado! Agora pode se registar com uma conta diferente ou fazer login com a mesma conta");
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-			}
-		}
 
 		while(true) {
 			System.out.println("1-Registar \n2-Login \n3-Sair");
@@ -169,7 +126,6 @@ public class Main {
 	
 	private static void registo(String tipo1,boolean primeiraconta) {
 		
-
 		String login2;
 		
 		while(true) {
@@ -202,22 +158,35 @@ public class Main {
 		}
 		}
 		
-		
-		
 		Utilizador u1 = new Utilizador(0,login2, password1, nome1, primeiraconta ? EstadoConta.ativos : EstadoConta.por_registar, email2, tipo1); //<- Aqui nao ha problema o id=0 pois estamos a inserir
 		BDDriver.adicionarUtilizador(u1);
 		
 	}
 	
 	private static void login() {
+		
+		
+		
 		String login1 = lerDados("Insira o seu username: ");
 		String password1 = lerDados("Insira a sua password: ");
 		
-		Utilizador userLoginSEstado = BDDriver.encontrarUtilizador(login1, password1);
+		if(Cliente.autenticacaoCliente(login1,password1)==true) {
+			System.out.println("Conexão ok");
+		} else {
+			System.out.println("Não foi feita conexão!");
+		}
+		
+		//Cliente.consultaDadosPessoaisCliente();
+			
+		//mandar mensagem com credenciais para o servidor
+		//verificar se é true or false
+		//caso seja true enviar mensagem info para servidor
+		Utilizador userLoginSEstado = Cliente.consultaDadosPessoaisCliente();
+		
 		//BDDriver.listarUtilizadores()[1].ge
 		
 		if(userLoginSEstado != null && (userLoginSEstado.getEstado().equals(EstadoConta.ativos) || userLoginSEstado.getEstado().equals(EstadoConta.por_remover))) {
-			GestorLogs.adicionarLog(userLoginSEstado, userLoginSEstado.getNome() + " fez Login!");	
+			//GestorLogs.adicionarLog(userLoginSEstado, userLoginSEstado.getNome() + " fez Login!");	
 
 			
 			if(userLoginSEstado instanceof Gestor) {
@@ -241,6 +210,7 @@ public class Main {
 		} else {
 			System.out.println("Credenciais inválidas!");
 		}
+		
 		
 		//BDDriver.listarUtilizadores2(BDDriver.listarUtilizador(login1, password1), "gestores");
 		//BDDriver.listarUtilizador(login1, password1);

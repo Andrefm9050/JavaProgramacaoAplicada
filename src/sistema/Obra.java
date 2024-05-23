@@ -138,10 +138,10 @@ public class Obra implements Comparable<Obra>{
 	}
 	@Override
 	public String toString() {
-		return "Obra [obraId=" + obraId + ", autor=" + autor + ", titulo=" + titulo + ", subTitulo=" + subTitulo
+		return "Obra obraId=" + obraId + ", autor=" + autor + ", titulo=" + titulo + ", subTitulo=" + subTitulo
 				+ ", estiloLiterario=" + estiloLiterario + ", tipoPublicacao=" + tipoPublicacao + ", numeroPaginas="
 				+ numeroPaginas + ", numeroPalavras=" + numeroPalavras + ", isbn=" + isbn + ", numeroEdicao="
-				+ numeroEdicao + ", dataSubmissao=" + dataSubmissao + ", dataAprovacao=" + dataAprovacao + "]";
+				+ numeroEdicao + ", dataSubmissao=" + dataSubmissao + ", dataAprovacao=" + dataAprovacao;
 	}
 
 

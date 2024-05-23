@@ -45,4 +45,40 @@ public enum EstadoConta {
 		}
 		return null;
 	}
+	
+	public static EstadoConta stringToEstado(String x) {
+		switch(x) {
+		case "por_registar":
+			return por_registar;
+		case "rejeitado":
+			return rejeitado;
+		case "por_remover":
+			return por_remover;
+		case "removido":
+			return removido;
+		case "ativos":
+			return ativos;
+		case "desativos":
+			return desativos;
+		}
+		return null;
+	}
+	
+	public static String estadoToString(EstadoConta estado) {
+		switch(estado) {
+		case por_registar:
+			return "por_registar";
+		case rejeitado:
+			return "rejeitado";
+		case por_remover:
+			return "por_remover";
+		case removido:
+			return "removido";
+		case ativos:
+			return "ativos";
+		case desativos:
+			return "desativos";
+		}
+		return null;
+	}
 }	

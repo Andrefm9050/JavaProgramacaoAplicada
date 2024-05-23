@@ -178,26 +178,26 @@ public static int isbnUnico() {
 	int tamanhoArray;
 	Random rand = new Random();
 	int randomNum = rand.nextInt(1000001);
-	tamanhoArray = BDDriver.listarObras().length;
-	Obra[] obrasBuffer = new Obra[tamanhoArray];
-	obrasBuffer = BDDriver.listarObras();
-	ArrayList<Obra> obraNovo = new ArrayList<Obra>();
-	int contador = 0;
+	//tamanhoArray = BDDriver.listarObras().length;
+	//Obra[] obrasBuffer = new Obra[tamanhoArray];
+	//obrasBuffer = BDDriver.listarObras();
+	//ArrayList<Obra> obraNovo = new ArrayList<Obra>();
+	//int contador = 0;
+	return randomNum;
 	
-	while(true) {
-		for(int i=0; i<tamanhoArray; i++) {
-			if(obrasBuffer[i].getIsbn()==randomNum ) {
-				contador = 1;
-			}
-		}
-		if(contador == 1) {
-			randomNum = rand.nextInt(1000001);
-		}else if(contador == 0){
-			return randomNum;
-		}
-	}
-	
+	//while(true) {
+		//for(int i=0; i<tamanhoArray; i++) {
+		//	if(obrasBuffer[i].getIsbn()==randomNum ) {
+				//contador = 1;
+			//}
+		//}
+		//if(contador == 1) {
+			//randomNum = rand.nextInt(1000001);
+		//}else if(contador == 0){
+			//return randomNum;
+		//}
 }
+	
 
 
 

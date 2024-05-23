@@ -1,5 +1,7 @@
 package sistema;
 
+import users.EstadoConta;
+
 public enum EstadoRevisao {
 	iniciada,
 	aceite,
@@ -25,6 +27,22 @@ public enum EstadoRevisao {
 				return finalizada;
 			case 4:
 				return arquivado;
+		}
+		return iniciada;
+	}
+	
+	public static EstadoRevisao stringToEstado(String x) {
+		switch(x) {
+		case "iniciada":
+			return iniciada;
+		case "aceite":
+			return aceite;
+		case "decorrer":
+			return decorrer;
+		case "finalizada":
+			return finalizada;
+		case "arquivado":
+			return arquivado;
 		}
 		return iniciada;
 	}

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import pastaPrincipal.Cliente;
 import pastaPrincipal.Main;
 import sistema.BDDriver;
 import sistema.EstadoRevisao;
@@ -35,7 +36,9 @@ public class Gestor extends Utilizador{
 		System.out.println("8-Listar Pedidos Revisao");
 		System.out.println("9-Listar Pedidos Revisao nao finalizados por data");
 		System.out.println("10-Listar Pedidos Revisao de Obra");
-		System.out.println("11-Sair");
+		System.out.println("11-Consultar dados pessoais");
+		System.out.println("12-Alterar dados pessoais");
+		System.out.println("13-Sair");
 		int opcao = lerDadosInt("Escolha uma das seguintes opções: ");
 		
 		executaOpcao(opcao, user);
@@ -60,7 +63,9 @@ public class Gestor extends Utilizador{
 		case 8: listarPedidosRevisao(); break;
 		case 9: listarPedidosNaoFinalizados(); break;
 		case 10: listarPedidosDeObra(); break;
-		case 11: sair(user.getLogin()); break;
+		case 11: Cliente.consultaDadosPessoaisCliente(); break;
+		case 12: Cliente.alterarDadosPessoais(user); break;
+		case 13: sair(user.getLogin()); break;
 		default: erro();
 		}
 	}

@@ -3,6 +3,7 @@ package users;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import pastaPrincipal.Cliente;
 import pastaPrincipal.Main;
 import sistema.BDDriver;
 import sistema.EstadoRevisao;
@@ -13,10 +14,12 @@ public class Revisor extends UniqueUtilizador {
 	private String formacaoAcademica;
 	private int idRevisor;
 	
-	public Revisor(int idRevisor, int idUser,String login, String password, String nome, EstadoConta estado, String email, String tipo, String nif, String telefone, String morada) {
+	public Revisor(int idRevisor, int idUser,String login, String password, String nome, EstadoConta estado, String email, String tipo, String nif, String telefone, String morada, EspecializacaoArea areaEspecializado, String formacaoAcademica) {
 		super(idUser,login, password, nome, estado, email, tipo, nif, telefone, morada);
 		// TODO Auto-generated constructor stub
 		this.idRevisor = idRevisor;
+		this.areaEspecializado = areaEspecializado;
+		this.formacaoAcademica = formacaoAcademica;
 	}
 	
 	public String getFormacao() {
@@ -31,7 +34,10 @@ public static void menuRevisor(Revisor login1) {
 		while(true) {
 		System.out.println("1-Notificações de Revisão \n2-Revisões \n3-Pedido Remover Conta");
 		System.out.println("4-Listar meus pedidos de revisao");
-		System.out.println("5-Sair");
+		System.out.println("5-Consultar dados pessoais");
+		System.out.println("6-Alterar dados pessoais");
+		System.out.println("7- Pesquisar revisões");
+		System.out.println("8-Sair");
 		int opcao = lerDadosInt("Escolha uma das seguintes opções: ");
 		
 		executaOpcao(opcao, login1);
@@ -48,7 +54,10 @@ public static void executaOpcao(int aOpcao, Revisor login1){
 	case 2: revisoes(); break;
 	case 3: GestorContas.pedidoRemoverConta(login1.getLogin()); break;
 	case 4: listarPedidosRevisao(login1); break;
-	case 5: sair(login1.getLogin()); break;
+	case 5: Cliente.consultaDadosPessoaisCliente(); break;
+	case 6: Cliente.alterarDadosPessoais(login1); break;
+	case 7: Cliente.pesquisarRevisao(); break;
+	case 8: sair(login1.getLogin()); break;
 	default: erro();
 	}
 }
