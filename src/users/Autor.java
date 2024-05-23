@@ -17,7 +17,7 @@ public class Autor extends UniqueUtilizador{
 	private EstiloLiterario estilo;
 	private Date dataInicioAtividade;
 	private int idAutor;
-	
+
 	public Autor(int idAutor,int idUser,String login, String password, String nome, EstadoConta estado, String email, String tipo, String nif, String telefone, String morada, Date data, EstiloLiterario estilo) {
 		super(idUser,login, password, nome, estado, email, tipo, nif, telefone, morada);
 		// TODO Auto-generated constructor stub
@@ -25,9 +25,9 @@ public class Autor extends UniqueUtilizador{
 		this.dataInicioAtividade = data;
 		this.estilo = estilo;
 	}
-	
-	
-	
+
+
+
 public int getIdAutor() {
 		return idAutor;
 	}
@@ -46,7 +46,7 @@ public EstiloLiterario getEstilo() {
 
 
 public static void menuAutor(Autor login1) {
-		
+
 		while(true) {
 		System.out.println("1- Submeter obra para Revisão \n2- Estado da Revisão \n3- Inserir Obra \n4- Pedido Remover Conta");
 		System.out.println("5- Listar Pedidos Revisao das minhas obras");
@@ -56,22 +56,22 @@ public static void menuAutor(Autor login1) {
 		System.out.println("9- Pesquisar Obras");
 		System.out.println("10- Listar todas as revisões associadas ao utilizador");
 		System.out.println("11- Sair");
-		
+
 		int opcao = lerDadosInt("Escolha uma das seguintes opções: ");
-		
+
 		executaOpcao(opcao, login1);
-		
+
 	}
-	
+
 }
 
 public static void executaOpcao(int aOpcao, Autor user){
-	
-	
+
+
 	switch(aOpcao) {
 	case 1: submeterObraRevisao(user.getLogin()); break;
 	case 2: estadoRevisao(); break;
-	case 3: Cliente.inserirNovaObra(user); break; 
+	case 3: Cliente.inserirNovaObra(user); break;
 	case 4: GestorContas.pedidoRemoverConta(user.getLogin()); break;
 	case 5: listarPedidosRevisao(user); break;
 	case 6: Cliente.listarTodasObrasAutor(user); break;
@@ -97,7 +97,7 @@ static void listarObras(Autor user) {
 			actualList.add(obr);
 		}
 	}
-	
+
 	Main.SelectionarObjetoMenu(list);
 }
 static void listarPedidosRevisao(Autor user) {
@@ -105,7 +105,7 @@ static void listarPedidosRevisao(Autor user) {
 	while(!(choice.contains("d") || choice.contains("n"))) {
 		choice = Main.lerDados("Ordenar por Data de criacao(d) ou Numero de serie(n): ");
 	}
-	
+
 	Revisao[] list = BDDriver.listarRevisoes();
 	ArrayList<Revisao> actualList = new ArrayList<Revisao>();
 	for(var rev : list) {
@@ -115,38 +115,38 @@ static void listarPedidosRevisao(Autor user) {
 		}
 	}
 	Main.SelectionarObjetoMenu(actualList.toArray(new Revisao[0]));
-	
+
 }
 private static void submeterObraRevisao(String login1) {
 	//BDDriver.listarObras();
 	int tamanhoArray;
-		
+
 	tamanhoArray = BDDriver.listarObras().length;
 	Obra[] obrasBuffer = new Obra[tamanhoArray];
 	obrasBuffer = BDDriver.listarObras();
 	ArrayList<Obra> obraNovo = new ArrayList<Obra>();
-	
+
 	for(int i=0; i<tamanhoArray; i++) {
 		if(obrasBuffer[i].getAutor().contentEquals(login1) ) {
 			obraNovo.add(obrasBuffer[i]);
 		}
-		
-		
+
+
 	}
 	System.out.println("Escolha uma obra para revisão");
 	Obra obraN = Main.SelectionarObjetoMenu(obraNovo.toArray(new Obra[0]));
-	
+
 	int isbn1 =GestorContas.isbnUnico();
 	obraN.setIsbn(isbn1);
-	
+
 	int obraID = obraN.getObraId();
 	//obraN;
 	BDDriver.alterarISBN(isbn1, obraID);
 	BDDriver.adicionarRevisao(0, obraID, 0); //numero de Serie, idObra, idGestor
 	//Main.SelectionarObjetoMenu(BDDriver.listarRevisoes());
-	
-	System.out.println("Obra submetida para revisão com sucesso!");		
-	
+
+	System.out.println("Obra submetida para revisão com sucesso!");
+
 }
 
 //TODO
@@ -155,10 +155,10 @@ private static void inserirObra(String login1, Autor userAutor) {
 	while(true) {
 		String verify1 = lerDados("Deseja inserir uma obra(s/n): ");
 		if(verify1.contentEquals("s")) {
-			
-			
+
+
 			//BDDriver.adicionarObra(null);
-			
+
 			if(Cliente.inserirNovaObra(userAutor)==true) {
 				System.out.println("Obra inserida com sucesso!");
 			} else {
@@ -172,29 +172,29 @@ private static void inserirObra(String login1, Autor userAutor) {
 			System.out.println("Resposta inválida. Insira novamente (s-sim, n-não)");
 		}
 	}
-	
-	
-	
-	
-	
+
+
+
+
+
 }
 
 private static void estadoRevisao() {
-	
-	
+
+
 }
 
 
 
 
 private static void pedidoRemoverConta() {
-	
+
 }
 
 
 private static void sair(String login1) {
 	System.out.println("Adeus " + login1);
-	Main.main(null);							
+	Main.main(null);
 }
 
 private static void erro() {
@@ -209,7 +209,7 @@ private static void erro() {
 private static int lerDadosInt(String aMensagem){
 	System.out.println(aMensagem);
 	return(new Scanner(System.in)).nextInt();
-	
+
 }
 
 public static String lerDados(String aMensagem){

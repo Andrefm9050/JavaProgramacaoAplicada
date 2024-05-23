@@ -43,7 +43,7 @@ public enum EstadoConta {
 		case 5:
 			return desativos;
 		}
-		return null;
+		return por_registar;
 	}
 	
 	public static EstadoConta stringToEstado(String x) {

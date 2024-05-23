@@ -390,15 +390,16 @@ public class BDDriver {
 	        	String maill = rs2.getString(3);
 	        	int estado = rs2.getInt(5);
 	        	String nome = rs2.getString(7);
-	        	
 	        	String nif = rs2.getString(9);
 	        	String telefone = rs2.getString(10);
-	        	String data = rs2.getString(12);
+	        	Date data = rs2.getDate("datainicio");
+	        	int estilo = rs2.getInt("estilo_literario");
+	        	String morada = rs2.getString("morada");
 	        	
 	        	//System.out.println(idUser);
 	        	//if(user.equals(login1) && pass.equals(password1)) {
 	        		//System.out.println("Bem-vindo " + login1);
-	        	utilizadorNovo.add(new Autor(idAutor, idUser,user, pass, nome, EstadoConta.intToEstado(estado), maill, null, nif, null, null));
+	        	utilizadorNovo.add(new Autor(idAutor, idUser,user, pass, nome, EstadoConta.intToEstado(estado), maill, null, nif, telefone,morada ,data,EstiloLiterario.intToEstilo(estilo)));
 	        	//utilizadorBuffer[contador] = new Autor(0,user, pass, nome, EstadoConta.ativos, maill, null, nif, null, null);
 	        		//ps1.close();
 	        		//return utilizadorNovo;
@@ -424,12 +425,26 @@ public class BDDriver {
 	        	String maill = rs3.getString(3);
 	        	int estado = rs3.getInt(5);
 	        	String nome = rs3.getString(7);
-	        	
+	        	String formacao = rs3.getString("formacao_academica");
 	        	String nif = rs3.getString(9);
 	        	String telefone = rs3.getString(10);
+	        	String area = rs3.getString("especializacao");
+	        	String morada = rs3.getString("morada");
 	        	
 	        	//System.out.println(nif);
-	        	utilizadorNovo.add(new Revisor(idRevisor,idUserN,user, pass, nome, EstadoConta.intToEstado(estado), maill, null, nif, null, null));
+	        	utilizadorNovo.add(new Revisor(idRevisor,
+	        			idUserN,
+	        			user,
+	        			pass,
+	        			nome,
+	        			EstadoConta.intToEstado(estado),
+	        			maill,
+	        			null,
+	        			nif,
+	        			telefone,
+	        			morada,
+	        			formacao,
+	        			area));
 	        	//utilizadorBuffer[contador] = new Revisor(0,user, pass, nome, EstadoConta.ativos, maill, null, nif, null, null);
 	        	//if(user.equals(login1) && pass.equals(password1)) {
 	        		
@@ -664,6 +679,7 @@ public class BDDriver {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return 1;
 		}	
  		
  		
@@ -697,7 +713,7 @@ public class BDDriver {
 				String subTitulo = rs.getString(9);
 				String titulo = rs.getString(10);
 				String tipoPubli = rs.getString(11);
-				String estiloLiterario1 = rs.getString(12);
+				int estiloLiterario1 = rs.getInt("estilo_literario");
 				//System.out.println(estiloLiterario1);
 				String autorNome = null;
 				Utilizador[] utilizadorBuffer = listarUtilizadores();
@@ -710,7 +726,7 @@ public class BDDriver {
 					}
 					
 				}
-				obraNova.add(new Obra(idObra, autorNome,idAutor, titulo, subTitulo, EstiloLiterario.stringToEstilo(estiloLiterario1), 
+				obraNova.add(new Obra(idObra, autorNome,idAutor, titulo, subTitulo, EstiloLiterario.intToEstilo(estiloLiterario1), 
 						TipoPublicacao.stringToTipo(tipoPubli),
 						nPaginas, nPalavras, isbn, nEdicao, dataSubmissao, dataAprovacao));
 				
@@ -746,6 +762,30 @@ public class BDDriver {
 		}
  	}
  	
+ 	public static boolean editarUtilizador(int id,String user,String password, String nome, String email,EstadoConta estado, String nif, String telefone, String morada) {
+ 		
+ 		try {
+ 			PreparedStatement ps = conn.prepareStatement("CALL editar_utilizador(?,?,?,?,?,?,?,?,?)");
+ 			ps.setInt(1, id);
+ 			ps.setString(2, user);
+ 			ps.setString(3, password);
+ 			ps.setString(4, nome);
+ 			ps.setString(5, email);
+ 			ps.setInt(6, EstadoConta.estadoToInt(estado));
+ 			ps.setString(7, nif);
+ 			ps.setString(8, telefone);
+ 			ps.setString(9, morada);
+ 			
+ 			ps.execute();
+ 			ps.close();
+ 			return true;
+ 		}
+ 		catch(Exception e) {
+ 			e.printStackTrace();
+ 			return false;
+ 		}
+ 		
+ 	}
  	
  	public static void adicionarRevisao(int nSerie, int idObra, int idGestor ) {
  

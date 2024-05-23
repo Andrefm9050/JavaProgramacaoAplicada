@@ -40,4 +40,16 @@ public enum TipoPublicacao {
 		}
 		return null;
 	}
+	
+	public static TipoPublicacao intToTipo(int tipo) {
+		switch(tipo) {
+			case 0:
+				return capaDura;
+			case 1:
+				return deBolso;
+			case 2:
+				return ebook;
+		}
+		return null;
+	}
 }

@@ -46,6 +46,16 @@ public class GestorContas {
         return matcher.matches();
 	}
 	
+	public static Gestor pesquisarGestoresId(int ID) {
+		Gestor[] gestores = listarGestores();
+		
+		for(var gest : gestores) {
+			if(gest.getGestorID() == ID) {
+				return gest;
+			}
+		}
+		return null;
+	}
 	
 	
 	/**

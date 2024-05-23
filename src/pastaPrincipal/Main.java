@@ -14,8 +14,8 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.Scanner;
 import java.util.Vector;
-import java.net.InetAddress;  
-import java.net.UnknownHostException; 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import gestao.GestorLogs;
 
 import java.util.ArrayList;
@@ -37,52 +37,52 @@ import users.Revisor;
 import users.Utilizador;
 
 public class Main {
-	
-	
+
+
 	//Eu nao queria estar a meter isto aqui
 	//Mas nao funciona de outra forma já que o programa termina fora da função main
 	static long startmillis;
 	static long endmillis;
 
-	
+
 	public static void main(String [] args)  {
 		startmillis = System.currentTimeMillis();
-		
-		
-		try {  
-            InetAddress localhost = InetAddress.getLocalHost();  
-            System.out.println("Local IP Address: " + localhost.getHostAddress());  
-        } catch (UnknownHostException ex) {  
-            ex.printStackTrace();  
-        }  
-		
-		
+
+
+		try {
+            InetAddress localhost = InetAddress.getLocalHost();
+            System.out.println("Local IP Address: " + localhost.getHostAddress());
+        } catch (UnknownHostException ex) {
+            ex.printStackTrace();
+        }
+
+
 		if(Cliente.configurarConexao() == true) {
 			System.out.println("Conexão ok!");
 			}
-		
+
 
 		while(true) {
 			System.out.println("1-Registar \n2-Login \n3-Sair");
-			
+
 			int opcao = lerDadosInt("Escolha uma das seguintes opções: ");
-			
+
 			executaOpcao(opcao);
-			
-		}		
+
+		}
 	}
-	
-	
+
+
 	private static void executaOpcao(int aOpcao){
 		switch(aOpcao) {
-		case 1: 
+		case 1:
 			String tipoConta = "";
-			
+
 			while(!tipoConta.contentEquals("autor") && !tipoConta.contentEquals("revisor")) {
 				tipoConta = lerDados("Insira o tipo de conta(autor ou revisor): ");
 			}
-			registo(tipoConta,false); 
-			
+			registo(tipoConta,false);
+
 			break;
 		case 2: login(); break;
 		case 3: sair(); break;
@@ -93,41 +93,41 @@ public class Main {
 	public static void teste() {
 		Main.SelectionarObjetoMenu(BDDriver.listarRevisoes());
 	}
-	
-	
-	
+
+
+
 	private static void erro() {
 		System.out.println("Opção inválida!");
 	}
-	
+
 	private static void sair() {
-		
-		System.out.println("A encerrar aplicação!"); 
+
+		System.out.println("A encerrar aplicação!");
 		endmillis = System.currentTimeMillis();
-		
+
 		PrintTimeStats(startmillis,endmillis);
 		BDDriver.fecharConexao();
-		System.exit(0);								
+		System.exit(0);
 	}
-	
+
 	private static void PrintTimeStats(long start, long end) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE; yyyy-MM-dd HH:mm:ss",Locale.forLanguageTag("Pt"));
-		
+
 		System.out.println("Início do processo: " + dateFormat.format(new Date(start)));
 		System.out.println("Fim do processo: " + dateFormat.format(new Date(end)));
 		long diff = (end - start);
 		int segundos = (int)(diff/1000) % 60; //Só existem 60 segundos num minuto
 		int minutos = (int)((diff/(1000*60)) % 60); //Só existem 60 minutos numa hora
 		int horas = (int)((diff/(1000*60*60)) % 24); //Só existem 24 horas diferentes
-		
+
 		System.out.println("Tempo de execução: " + diff + " Milissegundos "+
 		"("+segundos+ " Segundos; "+minutos+" Minutos; "+horas+ " Horas)");
 	}
-	
+
 	private static void registo(String tipo1,boolean primeiraconta) {
-		
+
 		String login2;
-		
+
 		while(true) {
 			String login1 = lerDados("Insira o seu username: ");
 			Utilizador utiTeste = GestorContas.pesquisarUtilizadoresUserName(login1);
@@ -138,10 +138,10 @@ public class Main {
 				break;
 			}
 		}
-		
+
 		String password1 = lerDados("Insira a sua password: ");
 		String nome1 = lerDados("Insira o seu nome: ");
-		
+
 		String email2;
 		while(true) {
 		String email1 = lerDados("Insira o seu email(axzc@exmail.com): ");
@@ -157,38 +157,38 @@ public class Main {
 			break;
 		}
 		}
-		
+
 		Utilizador u1 = new Utilizador(0,login2, password1, nome1, primeiraconta ? EstadoConta.ativos : EstadoConta.por_registar, email2, tipo1); //<- Aqui nao ha problema o id=0 pois estamos a inserir
 		BDDriver.adicionarUtilizador(u1);
-		
+
 	}
-	
+
 	private static void login() {
-		
-		
-		
+
+
+
 		String login1 = lerDados("Insira o seu username: ");
 		String password1 = lerDados("Insira a sua password: ");
-		
+
 		if(Cliente.autenticacaoCliente(login1,password1)==true) {
 			System.out.println("Conexão ok");
 		} else {
 			System.out.println("Não foi feita conexão!");
 		}
-		
+
 		//Cliente.consultaDadosPessoaisCliente();
-			
+
 		//mandar mensagem com credenciais para o servidor
 		//verificar se é true or false
 		//caso seja true enviar mensagem info para servidor
 		Utilizador userLoginSEstado = Cliente.consultaDadosPessoaisCliente();
-		
-		//BDDriver.listarUtilizadores()[1].ge
-		
-		if(userLoginSEstado != null && (userLoginSEstado.getEstado().equals(EstadoConta.ativos) || userLoginSEstado.getEstado().equals(EstadoConta.por_remover))) {
-			//GestorLogs.adicionarLog(userLoginSEstado, userLoginSEstado.getNome() + " fez Login!");	
 
-			
+		//BDDriver.listarUtilizadores()[1].ge
+
+		if(userLoginSEstado != null && (userLoginSEstado.getEstado().equals(EstadoConta.ativos) || userLoginSEstado.getEstado().equals(EstadoConta.por_remover))) {
+			//GestorLogs.adicionarLog(userLoginSEstado, userLoginSEstado.getNome() + " fez Login!");
+
+
 			if(userLoginSEstado instanceof Gestor) {
 				System.out.println("Bem-vindo " + login1);
 				Gestor.menuGestor((Gestor)userLoginSEstado);
@@ -206,26 +206,26 @@ public class Main {
 			}
 		} else if(userLoginSEstado != null && userLoginSEstado.getEstado().equals(EstadoConta.rejeitado) ){
 			System.out.println("O seu pedido de registo foi Rejeitado!");
-			
+
 		} else {
 			System.out.println("Credenciais inválidas!");
 		}
-		
-		
+
+
 		//BDDriver.listarUtilizadores2(BDDriver.listarUtilizador(login1, password1), "gestores");
 		//BDDriver.listarUtilizador(login1, password1);
-		
+
 	}
-	
-	
+
+
 	//https://stackoverflow.com/questions/68532023/java-can-a-function-return-the-same-type-as-one-of-the-input-arguments
 	/**
-	 * 
+	 *
 	 * @param objlist - lista de variável de qualquer tipo genérico que tenha hierarquia de Comparable
 	 * @return Uma variável do mesmo tipo dado como argumento, null se cancelar a operação
 	 */
 	public static <T extends Comparable<T>> T SelectionarObjetoMenu(T[] objlist) {
-		
+
 		String termoPesquisa = "";
 		String ord = "Ascendente";
 		String escolha = "c";
@@ -234,9 +234,9 @@ public class Main {
 		List<T> fromlist = new ArrayList<T>();
 		for(var obj : objlist)
 			fromlist.add(obj);
-		
+
 		while(!escolha.contentEquals("s") || choice != null) {
-			
+
 			if(ord.equals("Ascendente")) {
 			Collections.sort(fromlist);
 			}
@@ -245,7 +245,7 @@ public class Main {
 			}
 			if(termoPesquisa != null && !termoPesquisa.equals(""))
 			System.out.println("Termo de pesquisa atual: " + termoPesquisa);
-			
+
 			System.out.println("Sair (s); Mudar termo Pesquisa (p); A seguir(n); Anterior (r); Mudar ordenação (o): " + ord + ";");
 			int starterindexdiff = indexdiff; //Ultimo index da listagem atual a partir do fromlist
 			boolean finished = true;
@@ -266,19 +266,19 @@ public class Main {
 					break;
 				}
 			}
-			
-			
-			
+
+
+
 			for(int i = 0; i< list.size(); i++) {
 				if(i == 0 || indexdiff % 10 != 0) { //If statement antigo, isto é redundante mas não quero fazer mais uma fase de testes
 					System.out.println(i + ": " + list.get(i).toString());
 					indexdiff++;
 				}
 			}
-			
-				
+
+
 				escolha = lerDados(":");
-				
+
 				if(isInt(escolha) && !escolha.equals("")) { //Escolha pode ser um objeto ou uma escolha extra
 					int index = Integer.parseInt(escolha);
 					try {
@@ -293,7 +293,7 @@ public class Main {
 				}
 				else {
 					switch(escolha) {
-					
+
 					case "n":
 						if(!finished) {
 							indexdiff = starterindexdiff; //O index não pode avançar mais
@@ -327,7 +327,7 @@ public class Main {
 		}
 		return choice;
 	}
-	
+
 	static boolean isInt(String mensagem) {
 		try {
 			Integer.parseInt(mensagem);
@@ -337,15 +337,15 @@ public class Main {
 			return false;
 		}
 	}
-	
+
 	public static int lerDadosInt(String aMensagem){
 		System.out.print(aMensagem);
 		return(new Scanner(System.in)).nextInt();
-		
+
 	}
 	public static String lerDados(String aMensagem){
 		System.out.print(aMensagem);
 		return(new Scanner(System.in)).nextLine();
 	}
-	
+
 }

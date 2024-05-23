@@ -6,7 +6,7 @@ public enum EspecializacaoArea {
 	ciências,
 	literatura,
 	artes;
-	
+
 
 
 public static EspecializacaoArea stringToEstilo(String estilo) {
