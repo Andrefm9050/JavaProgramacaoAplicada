@@ -10,7 +10,7 @@ import sistema.EstadoRevisao;
 import sistema.Revisao;
 
 public class Revisor extends UniqueUtilizador {
-	private String areaEspecializado;
+	private EspecializacaoArea areaEspecializado;
 	private String formacaoAcademica;
 	private int idRevisor;
 
@@ -25,7 +25,7 @@ public class Revisor extends UniqueUtilizador {
 	public String getFormacao() {
 		return formacaoAcademica;
 	}
-	public String getArea() {
+	public EspecializacaoArea getArea() {
 		return areaEspecializado;
 	}
 
