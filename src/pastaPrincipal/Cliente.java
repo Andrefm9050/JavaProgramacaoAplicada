@@ -196,7 +196,7 @@ public class Cliente {
 				String areaEspecializado = ack.split("<")[3].split(">")[0].split(",")[9];
 				String formacaoAcademica = ack.split("<")[3].split(">")[0].split(",")[10];
 				//int idRevisor, int idUser,String login, String password, String nome, EstadoConta estado, String email, String tipo, String nif, String telefone, String morada
-				Revisor novoRevisor = new Revisor(0, 0, userName, pass, nome, EstadoConta.stringToEstado(estadoConta), email, null, nif, telefone, morada, EspecializacaoArea.stringToEstilo(areaEspecializado), formacaoAcademica);
+				Revisor novoRevisor = new Revisor(0, 0, userName, pass, nome, EstadoConta.stringToEstado(estadoConta), email, null, nif, telefone, morada, areaEspecializado, formacaoAcademica);
 				return novoRevisor;
 			}
 			
