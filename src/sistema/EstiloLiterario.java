@@ -7,7 +7,8 @@ public enum EstiloLiterario {
 	lirico,
 	ficcao,
 	thriller,
-	drama;
+	drama,
+	sem_estilo;
 
 	/**
 	 * As execuções são contadas para cada execução de Login feita com sucesso, isto quer dizer que a mensagem tem que ter incluida "Login"
@@ -80,6 +81,20 @@ public enum EstiloLiterario {
 		}
 		return "sem estilo";
 	}
-
-
+	
+	public static EstiloLiterario intToEstilo(int x) {
+		switch(x) {
+		case 0:
+			return narrativo;
+		case 1:
+			return lirico;
+		case 2:
+			return drama;
+		case 3:
+			return ficcao;
+		case 4:
+			return thriller;
+		}
+		return sem_estilo;
+	}
 }
