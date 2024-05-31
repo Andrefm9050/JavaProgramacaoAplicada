@@ -702,7 +702,7 @@ public class BDDriver {
 		return false;
  	}
  	
- 	public static int adicionarObra(Obra obra) {
+ 	public static boolean adicionarObra(Obra obra) {
         
         
         try {
@@ -720,6 +720,8 @@ public class BDDriver {
             ps.setDate(11, null);
         	ps.execute();  
         	ps.close();
+        	
+        	return true;
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -727,7 +729,7 @@ public class BDDriver {
  		
  		
  		
- 		return 0;
+ 		return false;
  	}
  	
  	
