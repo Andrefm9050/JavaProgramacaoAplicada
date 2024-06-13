@@ -5,7 +5,14 @@ import java.sql.Date;
 public class GestorRevisoes {
 	
 	public boolean adicionarRevisao(Revisao rev) {
-		return false;
+		try {
+		BDDriver.adicionarRevisao(Integer.parseInt(rev.getNumeroSerie()), rev.getObraID(), rev.getGestorID());
+		}
+		catch(Exception e) {
+			return false;
+		}
+		
+		return true;
 	}
 	
 	public boolean adicionarAnotacaoRevisao(int revID, Anotacao anot) {

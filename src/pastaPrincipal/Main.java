@@ -21,6 +21,7 @@ import java.util.List;
 import java.sql.Timestamp;
 
 import sistema.BDDriver;
+import sistema.EmailHelper;
 import sistema.Obra;
 import users.Autor;
 //import ProjetoProgramacao.Gestor;
@@ -37,9 +38,15 @@ public class Main {
 	//Mas nao funciona de outra forma já que o programa termina fora da função main
 	static long startmillis;
 	static long endmillis;
+	
+	
+	
+
 
 	
 	public static void main(String [] args)  {
+		//EmailHelper senderMail = new EmailHelper(); <-Exemplo de mandar email
+		//senderMail.SendMailConfirmed(new Utilizador(0,"Teste","Woah123","andre",EstadoConta.ativos,"andrerioslol@outlook.com","hmm"));
 		startmillis = System.currentTimeMillis();
 		char choice = 'n';
 		System.out.println("Deseja configurar a configuração de base de dados? (s/n)");

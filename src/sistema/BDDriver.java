@@ -171,6 +171,7 @@ public class BDDriver {
 		   if(conn != null && !conn.isClosed()) conn.close();
 		conn = DriverManager.getConnection("jdbc:postgresql://"+BDDriver.link+":"+BDDriver.port+"/" + BDDriver.bd, BDDriver.username, BDDriver.password);
 	} catch (SQLException e) {
+		e.printStackTrace();
 		return false;
 	}
 	   return true;
