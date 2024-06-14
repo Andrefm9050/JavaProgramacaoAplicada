@@ -21,6 +21,7 @@ import java.util.List;
 import java.sql.Timestamp;
 
 import sistema.BDDriver;
+import sistema.InterfaceGrafica;
 import sistema.Obra;
 import users.Autor;
 //import ProjetoProgramacao.Gestor;
@@ -40,6 +41,8 @@ public class Main {
 
 	
 	public static void main(String [] args)  {
+		new InterfaceGrafica();
+		
 		startmillis = System.currentTimeMillis();
 		char choice = 'n';
 		System.out.println("Deseja configurar a configuração de base de dados? (s/n)");
