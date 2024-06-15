@@ -267,7 +267,7 @@ public class BDDriver {
             ps.setString(3, password1);  										    //
             ps.setInt(4, EstadoConta.estadoToInt(u1.getEstado()));
             ps.setString(5, login1);
-            ps.setBytes(6, Files.readAllBytes(new File("Images/happyhappyhappy.png").toPath()));
+            ps.setBytes(6, u1.getImageBytes());
             ResultSet rs = ps.executeQuery();
             rs.next();
             idUser = rs.getInt(1);      //recebe o id do utilizador proveniente da base de dados
@@ -422,9 +422,10 @@ public class BDDriver {
 	        	String user = rs.getString(6);
 	        	String nome = rs.getString(7);
 	        	
-	        	
+	        	Gestor u = new Gestor(idGestor,idUser,user, pass, nome, EstadoConta.intToEstado(estado), maill, null);
+	        	u.setImage(rs.getBytes("image"));
 	        	//String teste = rs.getString(7);w
-	        	utilizadorNovo.add(new Gestor(idGestor,idUser,user, pass, nome, EstadoConta.intToEstado(estado), maill, null));
+	        	utilizadorNovo.add(u);
 	        	//System.out.println(teste);
 	        	//utilizadorBuffer[contador] = new Utilizador(idUser,user, pass, nome, EstadoConta.ativos, maill, null);
 	        	//Utilizador utilizadorNovo = new Utilizador(idUser,user, pass, nome, EstadoConta.ativos, maill, null);
@@ -459,10 +460,13 @@ public class BDDriver {
 	        	String telefone = rs2.getString(10);
 	        	String data = rs2.getString(12);
 	        	
+	        	
+	        	Autor au = new Autor(idAutor, idUser,user, pass, nome, EstadoConta.intToEstado(estado), maill, null, nif, null, null);
+	        	au.setImage(rs2.getBytes("image"));
 	        	//System.out.println(idUser);
 	        	//if(user.equals(login1) && pass.equals(password1)) {
 	        		//System.out.println("Bem-vindo " + login1);
-	        	utilizadorNovo.add(new Autor(idAutor, idUser,user, pass, nome, EstadoConta.intToEstado(estado), maill, null, nif, null, null));
+	        	utilizadorNovo.add(au);
 	        	//utilizadorBuffer[contador] = new Autor(0,user, pass, nome, EstadoConta.ativos, maill, null, nif, null, null);
 	        		//ps1.close();
 	        		//return utilizadorNovo;
@@ -492,8 +496,12 @@ public class BDDriver {
 	        	String nif = rs3.getString(9);
 	        	String telefone = rs3.getString(10);
 	        	
+	        	
+	        	Revisor rev = new Revisor(idRevisor,idUserN,user, pass, nome, EstadoConta.intToEstado(estado), maill, null, nif, null, null);
+	        	rev.setImage(rs3.getBytes("image"));
+	        	
 	        	//System.out.println(nif);
-	        	utilizadorNovo.add(new Revisor(idRevisor,idUserN,user, pass, nome, EstadoConta.intToEstado(estado), maill, null, nif, null, null));
+	        	utilizadorNovo.add(rev);
 	        	//utilizadorBuffer[contador] = new Revisor(0,user, pass, nome, EstadoConta.ativos, maill, null, nif, null, null);
 	        	//if(user.equals(login1) && pass.equals(password1)) {
 	        		

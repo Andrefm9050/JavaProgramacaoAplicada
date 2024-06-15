@@ -1,5 +1,6 @@
 package ui;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import sistema.BDDriver;
@@ -7,6 +8,12 @@ import sistema.BDDriver;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
 
 public class InterfaceGrafica extends JFrame implements ActionListener,ObjectSelector {
 
@@ -36,12 +43,24 @@ public class InterfaceGrafica extends JFrame implements ActionListener,ObjectSel
 
 		add(jButton1);
 
-
 		jButton.addActionListener(this::teste);
 		//setVisible(true);
 
 
 	}
+	
+	/*
+	@Override
+	public void paint(Graphics g) { //<- Este código é o codigo teste para mostrar uma imagem
+		super.paint(g);
+			g.drawImage(new ImageIcon(BDDriver.listarUtilizadores()[0].getImage()).getImage(),
+					HEIGHT,
+					WIDTH,
+					120,
+					120,
+					this);	
+	}
+	*/
 
 	private void teste(ActionEvent actionEvent) {
 		

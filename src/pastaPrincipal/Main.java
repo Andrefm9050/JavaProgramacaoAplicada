@@ -49,7 +49,6 @@ public class Main {
 
 
 	public static void main(String [] args)  {
-		new InterfaceGrafica();
 		
 
 		//EmailHelper senderMail = new EmailHelper(); <-Exemplo de mandar email
@@ -79,6 +78,8 @@ public class Main {
 			} catch (InterruptedException e) {
 			}
 		}
+		
+		new InterfaceGrafica();
 
 		while(true) {
 			System.out.println("1-Registar \n2-Login \n3-Sair");

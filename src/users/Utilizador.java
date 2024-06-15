@@ -2,7 +2,9 @@ package users;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Comparator;
 
 import javax.imageio.ImageIO;
@@ -45,7 +47,16 @@ public class Utilizador implements Comparable<Utilizador> {
 	}
 	
 	public BufferedImage getImage() {
-		if(Image == null) return null;
+		if(Image == null) {
+			System.out.println("Returning DEFAULT");
+			ByteArrayInputStream bais;
+			try {
+				bais = new ByteArrayInputStream(Files.readAllBytes(new File("Images/happyhappyhappy.png").toPath()));
+				return ImageIO.read(bais);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 		ByteArrayInputStream bais = new ByteArrayInputStream(Image);
 		try {
 	        return ImageIO.read(bais);
