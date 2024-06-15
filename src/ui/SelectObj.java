@@ -13,13 +13,15 @@ import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
+import sistema.Obra;
+
 public class SelectObj extends JFrame implements ActionListener{
 
 	ObjectSelector o;
 	JButton teste = new JButton("Test");
 	JList<?> list;
 	
-	public SelectObj(ObjectSelector o) {
+	public <T> SelectObj(ObjectSelector o, Comparable<T>[] objects) {
 
 		setVisible(true);
 		setSize(800, 500);
@@ -27,7 +29,7 @@ public class SelectObj extends JFrame implements ActionListener{
 		setLayout(new FlowLayout());
 		
 		
-		String[] objects = {"Teste1","Teste2","Teste1","Teste2","Teste1","Teste2","Teste1","Teste2","Teste1","Teste2","Teste1","Teste2","Teste1","Teste2","Teste1","Teste2","Teste1","Teste2"};
+		
 		list = new JList(objects);
 		list.setVisibleRowCount(10);
 		JScrollPane jcp = new JScrollPane(list);

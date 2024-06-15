@@ -1,6 +1,9 @@
 package ui;
 
 import javax.swing.*;
+
+import sistema.BDDriver;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -41,6 +44,7 @@ public class InterfaceGrafica extends JFrame implements ActionListener,ObjectSel
 	}
 
 	private void teste(ActionEvent actionEvent) {
+		
 		getContentPane().removeAll();
 		revalidate();
 		repaint();
