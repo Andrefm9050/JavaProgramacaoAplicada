@@ -21,9 +21,9 @@ import java.util.List;
 import java.sql.Timestamp;
 
 import sistema.BDDriver;
-import sistema.InterfaceGrafica;
 import sistema.EmailHelper;
 import sistema.Obra;
+import ui.InterfaceGrafica;
 import users.Autor;
 //import ProjetoProgramacao.Gestor;
 import users.EstadoConta;

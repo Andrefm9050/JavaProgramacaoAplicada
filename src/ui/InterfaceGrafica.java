@@ -1,11 +1,11 @@
-package sistema;
+package ui;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class InterfaceGrafica extends JFrame implements ActionListener {
+public class InterfaceGrafica extends JFrame implements ActionListener,ObjectSelector {
 
 	public InterfaceGrafica() {
 		
@@ -61,5 +61,12 @@ public class InterfaceGrafica extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		JOptionPane.showMessageDialog(null,
 				"tudo certo");
+		
+	}
+
+	@Override
+	public void OnObjectSelected(SelectObj comp,Object object) {
+		JOptionPane.showMessageDialog(null,
+				object != null ? object : "null");
 	}
 }

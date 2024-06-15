@@ -2,6 +2,7 @@ package sistema;
 
 import java.util.Properties;
 
+import javax.mail.*;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
