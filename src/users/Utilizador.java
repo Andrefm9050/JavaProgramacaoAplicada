@@ -1,6 +1,11 @@
 package users;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.Comparator;
+
+import javax.imageio.ImageIO;
 
 public class Utilizador implements Comparable<Utilizador> {
 	private int idUser;
@@ -11,9 +16,9 @@ public class Utilizador implements Comparable<Utilizador> {
 	private EstadoConta estado;
 	private String tipo;
 	private String ordenacao;
+	private byte[] Image;
 	
-	
-	
+
 	public Utilizador(int idUser,String login, String password, String nome, EstadoConta estado, String email, String tipo) {
 		super();
 		this.idUser = idUser;
@@ -24,13 +29,30 @@ public class Utilizador implements Comparable<Utilizador> {
 		this.email = email;
 		this.tipo = tipo;
 		ordenacao = "";
+		Image = null;
 	}
 
 
 	public int getIdUser() {
 		return idUser;
 	}
-
+	
+	public void setImage(byte[] bytes) {
+		Image = bytes;
+	}
+	public byte[] getImageBytes() {
+		return Image;
+	}
+	
+	public BufferedImage getImage() {
+		if(Image == null) return null;
+		ByteArrayInputStream bais = new ByteArrayInputStream(Image);
+		try {
+	        return ImageIO.read(bais);
+	    } catch (IOException e) {
+	        return null;
+	    }	
+	}
 
 	public void setIdUser(int idUser) {
 		this.idUser = idUser;

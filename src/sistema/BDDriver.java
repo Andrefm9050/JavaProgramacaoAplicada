@@ -2,9 +2,11 @@ package sistema;
 
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -253,9 +255,10 @@ public class BDDriver {
          String password1 = u1.getPassword();   /// variaveis do Objeto Utilizador u1
          String login1 = u1.getLogin();
          String nome1 = u1.getNome();
+         byte[] image = u1.getImageBytes();
          int idUser;
          if (tipo1.equalsIgnoreCase("Gestor")) {
-            sqlQuery.append("SELECT * FROM criar_gestor(?, ? , ?, ? , ?)");  		// 4 era o 0
+            sqlQuery.append("SELECT * FROM criar_gestor(?, ? , ?, ? , ?,?)");  		// 4 era o 0
             PreparedStatement ps = conn.prepareStatement(sqlQuery.toString());		//
             //EstadoConta estado = EstadoConta.por_registar;
             ps.clearParameters();													//
@@ -264,6 +267,7 @@ public class BDDriver {
             ps.setString(3, password1);  										    //
             ps.setInt(4, EstadoConta.estadoToInt(u1.getEstado()));
             ps.setString(5, login1);
+            ps.setBytes(6, Files.readAllBytes(new File("Images/happyhappyhappy.png").toPath()));
             ResultSet rs = ps.executeQuery();
             rs.next();
             idUser = rs.getInt(1);      //recebe o id do utilizador proveniente da base de dados

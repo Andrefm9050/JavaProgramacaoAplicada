@@ -1,5 +1,8 @@
 package pastaPrincipal;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.sql.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -47,6 +50,7 @@ public class Main {
 
 	public static void main(String [] args)  {
 		new InterfaceGrafica();
+		
 
 		//EmailHelper senderMail = new EmailHelper(); <-Exemplo de mandar email
 		//senderMail.SendMailConfirmed(new Utilizador(0,"Teste","Woah123","andre",EstadoConta.ativos,"andrerioslol@outlook.com","hmm"));
