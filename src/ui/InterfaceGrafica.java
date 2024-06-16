@@ -38,7 +38,7 @@ public class InterfaceGrafica extends JFrame implements ActionListener,ObjectSel
 		jButton1.setBounds(230, 300, 130, 40);
 		jButton1.setFont(new Font("Arial", Font.BOLD,20));
 		jButton1.setForeground(new Color(255,255,255));
-		jButton1.setBackground(new Color(0,0,0));
+		jButton1.setBackground(new Color(0,0,0));		
 
 
 		add(jButton1);

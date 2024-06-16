@@ -26,6 +26,7 @@ import java.sql.Timestamp;
 import sistema.BDDriver;
 import sistema.EmailHelper;
 import sistema.Obra;
+import ui.ConfigurarBD;
 import ui.InterfaceGrafica;
 import users.Autor;
 //import ProjetoProgramacao.Gestor;
@@ -54,20 +55,20 @@ public class Main {
 		//EmailHelper senderMail = new EmailHelper(); <-Exemplo de mandar email
 		//senderMail.SendMailConfirmed(new Utilizador(0,"Teste","Woah123","andre",EstadoConta.ativos,"andrerioslol@outlook.com","hmm"));
 		startmillis = System.currentTimeMillis();
+		
+		/*
 		char choice = 'n';
 		System.out.println("Deseja configurar a configuração de base de dados? (s/n)");
 		choice = lerDados("").charAt(0);
 		if(choice == 's' || choice == 'S')
 			BDDriver.menuConfiguracao();
+		*/
+		
+		new ConfigurarBD();
+		
 
-
-		while(!BDDriver.configurarDriverPorFicheiro("Properties")) {
-			System.out.println("Erro ao connectar á base de dados... a tentar de novo");
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-			}
-		}
+		
+		/*
 
 		while(GestorContas.listarGestores().length == 0) {
 			System.out.println("Nao existe nenhuma conta de administrador, por favor insira uma nova");
@@ -79,7 +80,8 @@ public class Main {
 			}
 		}
 		
-		new InterfaceGrafica();
+		
+		
 
 		while(true) {
 			System.out.println("1-Registar \n2-Login \n3-Sair");
@@ -89,6 +91,7 @@ public class Main {
 			executaOpcao(opcao);
 
 		}
+		*/
 	}
 
 

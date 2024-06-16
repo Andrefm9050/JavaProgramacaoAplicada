@@ -42,51 +42,39 @@ public class BDDriver {
    /**
     * Esta funcao disponibiliza um menu para editar o ficheiro de Properties, se esse ficheiro nao existir um e criado
     */
-   public static void menuConfiguracao() {
+   public static String[] getConfigValores() {
 	   ManipulaFicheirosTexto fich = new ManipulaFicheirosTexto();
-	   
-	   System.out.println("Menu de configuracao BD");
-	   int index = 0;
-	   int input = 0;
-	   
-	   do {
-		   index = 0;
+
 		   if(!fich.abrirFicheiroLeitura("Properties")) {
 			   
 			   fich.abrirFicheiroEscrita("Properties",false);
 			   fich.escreverFicheiro(new String[]{"ip=","port=","bd=","login=","password="});
 			   fich.fecharFicheiroEscrita();
-			   index = -1;
-			   continue;
 		   }
-		   System.out.println("Selectione uma propriedade com o seu numero:");
+
 		   String[] linhas = fich.lerFicheiro();
+		   ArrayList<String> result = new ArrayList<String>();
+		   
 		   for(var linha : linhas) {
+			   //conts[0] + "=" + (conts.length == 2 ? conts[1] : ""
 			   String[] conts = linha.split("=");
-			   System.out.println(index + "- " + conts[0] + "=" + (conts.length == 2 ? conts[1] : ""));
-			   index++;
-		   }
-		   System.out.println(index + "- Sair");
-		   input = Main.lerDadosInt(":");
-		   try {
-			   linhas[input] = linhas[input].split("=")[0] + "=" + Main.lerDados("Novo Valor: ");
-		   }
-		   catch(Exception e) {
-			   input = index;
-		   }
-		   finally {
-			   fich.fecharFicheiroLeitura();
-		   }
-		   if(input != index) {
-			   fich.abrirFicheiroEscrita("Properties", false);
-			   fich.escreverFicheiro(linhas);
-			   fich.fecharFicheiroEscrita();
+			   result.add(conts.length == 2 ? conts[1] : "");
 		   }
 		   
-	   }while(input != index);
-	   
-	   
+		   fich.fecharFicheiroLeitura();
+		   
+		   
+		   return result.toArray(new String[0]);
+}
+   
+   public static void saveConfigValues(String link,String port,String username,String password,String bd) {
+	   ManipulaFicheirosTexto fich = new ManipulaFicheirosTexto();
+	   fich.abrirFicheiroEscrita("Properties",false);
+	   fich.escreverFicheiro(new String[]{"ip="+link,"port="+port,"bd="+bd,"login="+username,"password="+password});
+	   fich.fecharFicheiroEscrita();
    }
+	   
+	   
 
    /**
     * 
@@ -149,6 +137,10 @@ public class BDDriver {
 			
 		   }
 	   }
+	   
+	   fich.abrirFicheiroEscrita("Properties", false);
+	   fich.escreverFicheiro(fich.lerFicheiro());
+	   fich.fecharFicheiroEscrita();
 	   
 	   return configurarDriver(ip,port,login,password,bd);
    }
