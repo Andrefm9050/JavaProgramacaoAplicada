@@ -43,21 +43,20 @@ public class Utilizador implements Comparable<Utilizador> {
 		Image = bytes;
 	}
 	public byte[] getImageBytes() {
+		if(Image == null) {
+			try {
+				Image = Files.readAllBytes(new File("Images/Default.png").toPath());
+			} catch (IOException e) {
+				//e.printStackTrace();
+			}
+		}
+		
+		
 		return Image;
 	}
 	
 	public BufferedImage getImage() {
-		if(Image == null) {
-			System.out.println("Returning DEFAULT");
-			ByteArrayInputStream bais;
-			try {
-				bais = new ByteArrayInputStream(Files.readAllBytes(new File("Images/happyhappyhappy.png").toPath()));
-				return ImageIO.read(bais);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		ByteArrayInputStream bais = new ByteArrayInputStream(Image);
+		ByteArrayInputStream bais = new ByteArrayInputStream(getImageBytes());
 		try {
 	        return ImageIO.read(bais);
 	    } catch (IOException e) {
