@@ -303,6 +303,7 @@ public class InterfaceGrafica extends JFrame implements ActionListener,ObjectSel
 		jButton1.setBackground(new Color(0,0,0));
 		jButton1.setToolTipText("Confirmar registo");
 		add(jButton1);
+	
 
 		//text.getText();
 		//text1.getText();

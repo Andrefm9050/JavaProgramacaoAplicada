@@ -23,7 +23,7 @@ public class Main extends JFrame{
 
 	public static void main(String [] args)  {
 
-
+		
 		//EmailHelper senderMail = new EmailHelper(); <-Exemplo de mandar email
 		//senderMail.SendMailConfirmed(new Utilizador(0,"Teste","Woah123","andre",EstadoConta.ativos,"andrerioslol@outlook.com","hmm"));
 		startmillis = System.currentTimeMillis();
