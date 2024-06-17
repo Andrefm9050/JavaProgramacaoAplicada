@@ -1,5 +1,7 @@
 package pastaPrincipal;
 
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -12,6 +14,10 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.Scanner;
 import java.util.Vector;
+
+import javax.print.PrintService;
+import javax.print.PrintServiceLookup;
+import javax.swing.JTextArea;
 
 import gestao.GestorLogs;
 
@@ -50,7 +56,6 @@ public class Main {
 
 
 	public static void main(String [] args)  {
-		
 
 		//EmailHelper senderMail = new EmailHelper(); <-Exemplo de mandar email
 		//senderMail.SendMailConfirmed(new Utilizador(0,"Teste","Woah123","andre",EstadoConta.ativos,"andrerioslol@outlook.com","hmm"));

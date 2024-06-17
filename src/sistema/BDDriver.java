@@ -320,7 +320,7 @@ public class BDDriver {
             LocalDate date = LocalDate.parse(formacao, formatter);
             Date completedDate = Date.valueOf(date);
             String estiloLiterario = lerDados("Insira o seu estilo literário(ex: drama, ficção, thriller): ");
-            sqlQuery.append("SELECT * FROM criar_autor(?, ?, ? , ? , ?, ?, ?, ?, ?, ?)");
+            sqlQuery.append("SELECT * FROM criar_autor(?, ?, ? , ? , ?, ?, ?, ?, ?, ?,?)");
             PreparedStatement ps = conn.prepareStatement(sqlQuery.toString());
             ps.clearParameters();
             ps.setString(1, nome1);
@@ -333,6 +333,7 @@ public class BDDriver {
             ps.setString(8, telefone1);
             ps.setDate(9, completedDate);
             ps.setInt(10, EstiloLiterario.estiloToInt(estiloLiterario));
+            ps.setBytes(11, image);
             ResultSet rs = ps.executeQuery();
             rs.next();
             idUser = rs.getInt(1);
@@ -367,7 +368,7 @@ public class BDDriver {
             }
             formacao = lerDados("Insira a sua formacao academica: ");
             String area = lerDados("Insira a sua area de especializacao: ");
-            sqlQuery.append("SELECT * FROM criar_revisor(?, ? , ?, ? , ?, ?, ?, ?, ?, ?)");
+            sqlQuery.append("SELECT * FROM criar_revisor(?, ? , ?, ? , ?, ?, ?, ?, ?, ?,?)");
             PreparedStatement ps = conn.prepareStatement(sqlQuery.toString());
             ps.clearParameters();
             ps.setString(1, nome1);
@@ -380,6 +381,7 @@ public class BDDriver {
             ps.setString(8, telefone1);
             ps.setString(9, formacao);
             ps.setString(10, area);
+            ps.setBytes(11, image);
             ResultSet rs = ps.executeQuery();
             rs.next();
             idUser = rs.getInt(1);
@@ -648,9 +650,9 @@ public class BDDriver {
 	    localps.setInt(1, revisaoID);
 	    localrs = localps.executeQuery();
 	    
-	    ArrayList<String> observacoes = new ArrayList<String>();
+	    ArrayList<Observacao> observacoes = new ArrayList<Observacao>();
 	    while(localrs.next()) {
-	    	observacoes.add(localrs.getString(3));
+	    	observacoes.add(new Observacao(localrs.getString(3),localrs.getDate("data"),localrs.getInt("id_revisor")));
 	    }
 	    rev.setObservacoes(observacoes.toArray(new String[0]));
 	    localps.close();
@@ -913,10 +915,46 @@ public class BDDriver {
  		return false;
  	}
  	
+ 	static void registarRevisaoEvento(int idRevisao, int idConta, String descricao) {
+ 		try {
+			PreparedStatement ps = conn.prepareStatement("CALL registar_revisao_evento(?,?,?)");
+			ps.setInt(1, idRevisao);
+			ps.setInt(2, idConta);
+			ps.setString(3, descricao);
+			ps.execute();
+			ps.close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+ 		
+ 	}
  	
+ 	public static String[] listarEventosRevisao(int idRevisao) {
+ 		try {
+ 			PreparedStatement ps = conn.prepareStatement("SELECT * FROM listar_eventos_revisao(?)");
+ 			ps.setInt(1, idRevisao);
+ 			ResultSet rs = ps.executeQuery();
+ 			ArrayList<String> result = new ArrayList<String>();
+ 			while(rs.next()) {
+ 				String message = "O utilizador com ID " + rs.getInt("id_user") + " fez a seguinte ação: " + rs.getString("descricao") + " na hora " + rs.getDate("data");
+ 				result.add(message);
+ 			}
+ 			
+ 			
+ 			return result.toArray(new String[0]);
+ 			
+ 		} catch(SQLException e) {
+ 			e.printStackTrace();
+ 		}
+ 		
+ 		return new String[0];
+ 	}
  	
  	public static boolean definirRevisorResponsavel(int idRevisao, int idRevisor) {
+
  		try {
+ 			
  			PreparedStatement ps = conn.prepareStatement("SELECT * FROM definir_revisor_revisao(?,?)");
  			ps.setInt(1, idRevisao);
  			ps.setInt(2, idRevisor);

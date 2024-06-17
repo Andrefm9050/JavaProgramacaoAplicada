@@ -17,6 +17,10 @@ public class GestorLogs {
 		 u = session;
 	}
 	
+	public static Utilizador getUser() {
+		return session;
+	}
+	
 	/**
 	 * 
 	 * @param u - Utilizador Responsavel pelo log
