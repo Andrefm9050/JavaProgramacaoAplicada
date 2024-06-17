@@ -21,8 +21,10 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import sistema.BDDriver;
+import users.EstadoConta;
+import users.Utilizador;
 
-public class ConfigurarBD extends JFrame implements ActionListener{
+public class ConfigurarBD extends JFrame implements ActionListener,ObjectSelector{
 
 	JLabel error;
 	
@@ -143,13 +145,19 @@ public class ConfigurarBD extends JFrame implements ActionListener{
 		      
 		    }
 		});
+		
+
         
 	}
 	
 	void AceitarBtnEvent(ActionEvent event) {
 		BDDriver.saveConfigValues(ipField.getText(),portField.getText(),loginField.getText(),passwordField.getText(),bdField.getText());
 		if(BDDriver.configurarDriver(ipField.getText(),portField.getText(),loginField.getText(),passwordField.getText(),bdField.getText())) {
-			new InterfaceGrafica();
+			Utilizador[] list = new Utilizador[2];
+			list[0] = new Utilizador(1,"abc","adsa","abc",EstadoConta.ativos,"sda","asd");
+			list[1] = new Utilizador(2,"bca","adsa","bca",EstadoConta.ativos,"sda","asd");
+			
+			new SelectObj(this,list);
 			dispose();
 		}
 		else {
@@ -170,6 +178,12 @@ public class ConfigurarBD extends JFrame implements ActionListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void OnObjectSelected(SelectObj component, Object object) {
 		// TODO Auto-generated method stub
 		
 	}

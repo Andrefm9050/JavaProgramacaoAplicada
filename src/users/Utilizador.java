@@ -9,7 +9,7 @@ import java.util.Comparator;
 
 import javax.imageio.ImageIO;
 
-public class Utilizador implements Comparable<Utilizador> {
+public class Utilizador implements Listable<Utilizador>{
 	private int idUser;
 	private String login;
 	private String nome; 
@@ -127,6 +127,7 @@ public class Utilizador implements Comparable<Utilizador> {
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
+	
 
 	public void setOrdenacao(String ordenacao) {
 		this.ordenacao = ordenacao;
@@ -158,6 +159,19 @@ public class Utilizador implements Comparable<Utilizador> {
 				+ ", email=" + getEmail()
 				+ ", estado=" + getEstado()
 				+ "]";
+	}
+
+
+
+	public String[][] filtragensDisponiveis() {
+		String[][] options = new String[2][2];
+		options[0][0] = "default";
+		options[0][1] = "";
+		options[1][0] = "nome";
+		options[1][1] = "nome";
+		
+		
+		return options;
 	}
 	
 	
