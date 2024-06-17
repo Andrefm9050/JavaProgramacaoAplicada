@@ -1,12 +1,13 @@
 package users;
 
-import java.util.ArrayList;
-import java.util.Scanner;
-
 import pastaPrincipal.Main;
 import sistema.BDDriver;
 import sistema.EstadoRevisao;
 import sistema.Revisao;
+import ui.InterfaceRevisor;
+
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Revisor extends UniqueUtilizador {
 	private EspecializacaoArea areaEspecializado;
@@ -21,15 +22,16 @@ public class Revisor extends UniqueUtilizador {
 	
 public static void menuRevisor(Revisor login1) {
 		
-		while(true) {
-		System.out.println("1-Notificações de Revisão \n2-Revisões \n3-Pedido Remover Conta");
-		System.out.println("4-Listar meus pedidos de revisao");
-		System.out.println("5-Sair");
-		int opcao = lerDadosInt("Escolha uma das seguintes opções: ");
+		//while(true) {
+		//System.out.println("1-Notificações de Revisão \n2-Revisões \n3-Pedido Remover Conta");
+		//System.out.println("4-Listar meus pedidos de revisao");
+		//System.out.println("5-Sair");
+		//int opcao = lerDadosInt("Escolha uma das seguintes opções: ");
 		
-		executaOpcao(opcao, login1);
+		//executaOpcao(opcao, login1);
 		
-	}
+	//}
+	new InterfaceRevisor();
 	
 }
 

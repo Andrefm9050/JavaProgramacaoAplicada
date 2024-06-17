@@ -1,6 +1,11 @@
 package sistema;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import gestao.GestorLogs;
+import users.Revisor;
 
 import gestao.GestorLogs;
 import users.Revisor;
@@ -109,35 +114,101 @@ public class GestorRevisoes {
 		return BDDriver.listarRevisoes();
 	}
 	public Revisao[] listarRevisoesPorData() {
-		return null;
+		ArrayList<Revisao> result = new ArrayList<Revisao>();
+		Revisao[] list = listarRevisoes();
+		for(var res : list) {
+			res.setOrdenacao("d");
+			result.add(res);
+		}
+
+		Collections.sort(result);
+		return result.toArray(new Revisao[0]);
 	}
 	
 	public Revisao[] listarRevisoesPorTitulo() {
-		return null;
+		ArrayList<Revisao> result = new ArrayList<Revisao>();
+		Revisao[] list = listarRevisoes();
+		for(var res : list) {
+			res.setOrdenacao("t");
+			result.add(res);
+		}
+
+		Collections.sort(result);
+		return result.toArray(new Revisao[0]);
 	}
 	public Revisao[] listarRevisoesPorAutor() {
-		return null;
+		ArrayList<Revisao> result = new ArrayList<Revisao>();
+		Revisao[] list = listarRevisoes();
+		for(var res : list) {
+			res.setOrdenacao("a");
+			result.add(res);
+		}
+
+		Collections.sort(result);
+		return result.toArray(new Revisao[0]);
 	}
 	public Revisao[] pesquisarRevisoesEstado(EstadoRevisao estado) {
-		return null;
+		ArrayList<Revisao> result = new ArrayList<Revisao>();
+		Revisao[] list = listarRevisoes();
+		for(var res : list) {
+			if(res.getEstado() == estado)
+				result.add(res);
+		}
+
+		return result.toArray(new Revisao[0]);
 	}
-	public Revisao[] pesquisarRevisoesISBN(int ISBN) {
-		return null;
+	public Revisao[] pesquisarRevisoesISBN(String ISBN) {
+		ArrayList<Revisao> result = new ArrayList<Revisao>();
+		Revisao[] list = listarRevisoes();
+		for(var res : list) {
+			if(res.getNumeroSerie() == ISBN)
+				result.add(res);
+		}
+
+		return result.toArray(new Revisao[0]);
 	}
 
 	public Revisao[] pesquisarRevisoesAutor(String autor) {
-		return null;
+		ArrayList<Revisao> result = new ArrayList<Revisao>();
+		Revisao[] list = listarRevisoes();
+		for(var res : list) {
+			if(res.getObra().getAutor() == autor)
+				result.add(res);
+		}
+
+		return result.toArray(new Revisao[0]);
 	}
 	
 	public Revisao[] pesquisarRevisoesEntre(Date primeira, Date segunda) {
-		return null;
+		ArrayList<Revisao> result = new ArrayList<Revisao>();
+		Revisao[] list = listarRevisoes();
+		for(var res : list) {
+			if(res.getDataRealizacao().after(primeira) && res.getDataRealizacao().before(segunda))
+				result.add(res);
+		}
+
+		return result.toArray(new Revisao[0]);
 	}
 	
 	public Revisao[] pesquisarRevisoesCriacao(Date criacao) {
-		return null;
+		ArrayList<Revisao> result = new ArrayList<Revisao>();
+		Revisao[] list = listarRevisoes();
+		for(var res : list) {
+			if(res.getDataRealizacao().equals(criacao))
+				result.add(res);
+		}
+
+		return result.toArray(new Revisao[0]);
 	}
 	public Revisao[] pesquisarRevisoesObra(int obraID) {
-		return null;
+		ArrayList<Revisao> result = new ArrayList<Revisao>();
+		Revisao[] list = listarRevisoes();
+		for(var res : list) {
+			if(res.getObra().getObraId() == obraID)
+				result.add(res);
+		}
+
+		return result.toArray(new Revisao[0]);
 	}
 	
 	

@@ -1,16 +1,14 @@
 package users;
 
+import pastaPrincipal.Main;
+import sistema.BDDriver;
+import sistema.Obra;
+import sistema.Revisao;
+import ui.InterfaceAutor;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
-
-import pastaPrincipal.Main;
-import sistema.BDDriver;
-import sistema.EstiloLiterario;
-import sistema.Obra;
-import sistema.Revisao;
-
-import java.util.Random;
 
 public class Autor extends UniqueUtilizador{
 	private String estilo;
@@ -38,18 +36,19 @@ public int getIdAutor() {
 
 
 public static void menuAutor(Autor login1) {
+		new InterfaceAutor();
+		//while(true) {
+		//System.out.println("1-Submeter obra para Revisão \n2-Estado da Revisão \n3-Inserir Obra \n4-Pedido Remover Conta");
+		//System.out.println("5- Listar Pedidos Revisao das minhas obras");
+		//System.out.println("6- Listar as minhas obras");
+		//System.out.println("7- Sair");
 		
-		while(true) {
-		System.out.println("1-Submeter obra para Revisão \n2-Estado da Revisão \n3-Inserir Obra \n4-Pedido Remover Conta");
-		System.out.println("5- Listar Pedidos Revisao das minhas obras");
-		System.out.println("6- Listar as minhas obras");
-		System.out.println("7- Sair");
+		//int opcao = lerDadosInt("Escolha uma das seguintes opções: ");
 		
-		int opcao = lerDadosInt("Escolha uma das seguintes opções: ");
+		//executaOpcao(opcao, login1);
 		
-		executaOpcao(opcao, login1);
-		
-	}
+	//}
+
 	
 }
 
