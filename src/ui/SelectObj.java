@@ -24,6 +24,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.ListModel;
 
 import sistema.Obra;
@@ -84,9 +85,16 @@ public class SelectObj extends JFrame implements ActionListener{
 		
 		ButtonGroup group = new ButtonGroup();
 		JPanel filtragem = new JPanel();
-		filtragem.setLayout(new GridLayout(objects[0].filtragensDisponiveis().length,1));
+		filtragem.setLayout(new GridLayout(objects[0].filtragensDisponiveis().length + 2,1));
 		String[][] filtragens = objects[0].filtragensDisponiveis();
+		JPanel pesquisapanel = new JPanel();
+		pesquisapanel.setLayout(new FlowLayout());
+		pesquisapanel.add(new JLabel("Termo pesquisa"));
+		pesquisa = new JTextField(16);
+		pesquisa.addActionListener(this::termoPesquisaMudado);
+		pesquisapanel.add(pesquisa);
 		
+		filtragem.add(pesquisapanel);
 		for(int x = 0; x<filtragens.length; x++) {
 			
 			JRadioButtonCustom btn = new JRadioButtonCustom(filtragens[x][0]);
@@ -113,6 +121,12 @@ public class SelectObj extends JFrame implements ActionListener{
 	}
 	JCheckBox sortOrder;
 	JRadioButtonCustom lastRadio;
+	JTextField pesquisa;
+	
+	void termoPesquisaMudado(ActionEvent e) {
+		sort(lastRadio,sortOrder.isSelected());
+	}
+	
 	void sortOrder(ActionEvent e) {
 		sort(lastRadio,((JCheckBox)e.getSource()).isSelected());
 	}
@@ -123,10 +137,20 @@ public class SelectObj extends JFrame implements ActionListener{
 		
 		ListModel model = list.getModel();
 		List<Listable> data_ = new ArrayList<Listable>();
-		for(int i=0;i<model.getSize();i++) {
-			data_.add((Listable)model.getElementAt(i));
+		for(int i=0;i<data.size();i++) {
+			
+			Listable item = (Listable)data.get(i);
+			
+			if(pesquisa.getText() != "") {
+				if(item.toString().contains(pesquisa.getText())) {
+					data_.add(item);
+				}
+			}
+			else {	
+			data_.add(item);
+			}
 
-			((Listable)model.getElementAt(i)).setOrdenacao(selected.valor);
+			item.setOrdenacao(selected.valor);
 		}
 
 		if(val)
