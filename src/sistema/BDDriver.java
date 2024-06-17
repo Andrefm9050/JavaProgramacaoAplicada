@@ -597,7 +597,7 @@ public class BDDriver {
 	    		rs.getInt(9),
 	    		null,
 	    		null,
-	    		rs.getDouble(1),
+	    		rs.getFloat(1),
 	    		null,
 	    		null,
 	    		null,
@@ -702,6 +702,9 @@ public class BDDriver {
 	    }
 	    rev.setLicensas(licensas.toArray(new Licensa[0]));
 	    localps.close();
+	    
+	    String[] eventos = listarEventosRevisao(rev.getRevisaoID());
+	    rev.setEventos(eventos);
 	    
 	    revisoes.add(rev);
 	    
@@ -937,7 +940,7 @@ public class BDDriver {
  			ResultSet rs = ps.executeQuery();
  			ArrayList<String> result = new ArrayList<String>();
  			while(rs.next()) {
- 				String message = "O utilizador com ID " + rs.getInt("id_user") + " fez a seguinte ação: " + rs.getString("descricao") + " na hora " + rs.getDate("data");
+ 				String message = "O utilizador com ID " + rs.getInt("id_user") + " fez a seguinte ação: " + rs.getString("descricao") + " na hora " + rs.getTimestamp("data");
  				result.add(message);
  			}
  			

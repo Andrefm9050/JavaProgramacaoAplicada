@@ -8,6 +8,7 @@ import javax.print.PrintServiceLookup;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
 
+import java.awt.Font;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.sql.Date;
@@ -194,12 +195,18 @@ public class Revisao implements Comparable<Revisao>{
 	public void ImprimirExtracto() {
 		JTextArea texto = new JTextArea();
 		
+		
 		String textoFinal = " Estrato para revisao com ID: " + revisaoID;
+		int maxsize = textoFinal.length();
 		for(var evento : eventos) {
 			textoFinal += "\n " + evento;
+			if(evento.length() > maxsize) {
+				maxsize = evento.length();
+			}
 		}
 		try {
 			texto.setText(textoFinal);
+			texto.setFont(new Font("Arial",Font.PLAIN,(960/maxsize))); //Dependendo da maior linha definimos a fonte de acordo a que nenhum conteudo esteja cortado
 			texto.print();
 		} catch (PrinterException e) {
 			e.printStackTrace();
