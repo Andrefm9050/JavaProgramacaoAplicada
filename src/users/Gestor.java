@@ -1,15 +1,14 @@
 package users;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Scanner;
-
 import pastaPrincipal.Main;
 import sistema.BDDriver;
 import sistema.EstadoRevisao;
 import sistema.Obra;
 import sistema.Revisao;
+import ui.InterfaceGestor;
+
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Gestor extends Utilizador{
 	
@@ -27,23 +26,22 @@ public class Gestor extends Utilizador{
 		return idGestor;
 	}
 	public static void menuGestor(Gestor user) {
-		
-		while(true) {
-		System.out.println("1-Aprovar/Rejeitar Pedidos de Registo \n2-Criar conta Gestor \n3-Ativar/Inativar Conta \n4-Pedido Remover Conta "
-				+ "\n5-Pedidos Remoção Contas Conta \n6-Pedidos Revisao");
-		System.out.println("7-Listar Utilizadores");
-		System.out.println("8-Listar Pedidos Revisao");
-		System.out.println("9-Listar Pedidos Revisao nao finalizados por data");
-		System.out.println("10-Listar Pedidos Revisao de Obra");
-		System.out.println("11-Sair");
-		int opcao = lerDadosInt("Escolha uma das seguintes opções: ");
-		
-		executaOpcao(opcao, user);
-		
-	}
 
-	
-	
+		new InterfaceGestor();
+
+		//while(true) {
+		//System.out.println("1-Aprovar/Rejeitar Pedidos de Registo \n2-Criar conta Gestor \n3-Ativar/Inativar Conta \n4-Pedido Remover Conta "
+		//		+ "\n5-Pedidos Remoção Contas Conta \n6-Pedidos Revisao");
+		//System.out.println("7-Listar Utilizadores");
+		//System.out.println("8-Listar Pedidos Revisao");
+		//System.out.println("9-Listar Pedidos Revisao nao finalizados por data");
+		//System.out.println("10-Listar Pedidos Revisao de Obra");
+		//System.out.println("11-Sair");
+		//int opcao = lerDadosInt("Escolha uma das seguintes opções: ");
+		
+		//executaOpcao(opcao, user);
+		
+	//}
 }
 	
 	public static void executaOpcao(int aOpcao, Gestor user){
@@ -186,7 +184,7 @@ public class Gestor extends Utilizador{
 		Utilizador u1 = new Utilizador(0,login2, password1, nome1, EstadoConta.por_registar, email2, "Gestor");
 		
 		
-		BDDriver.adicionarUtilizador(u1);
+		//BDDriver.adicionarUtilizador(u1);
 		
 	}
 	
@@ -309,10 +307,10 @@ public class Gestor extends Utilizador{
 	
 	@Override
 	public String toString() {
-		return "Gestor [idGestor=" + idGestor + ", getGestorID()=" + getGestorID() + ", getIdUser()=" + getIdUser()
-				+ ", getLogin()=" + getLogin() + ", getNome()=" + getNome() + 
-				", getEmail()=" + getEmail() + ", getEstado()=" + getEstado() + ", getTipo()=" + getTipo()
-				+ ", toString()=" + super.toString() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
+		return "[Gestor, IDUser=" + getIdUser()
+				+ ", login=" + getLogin()
+				+ ", email=" + getEmail()
+				+ ", estado=" + getEstado()
 				+ "]";
 	}
 

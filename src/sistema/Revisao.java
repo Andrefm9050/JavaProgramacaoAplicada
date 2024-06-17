@@ -2,6 +2,15 @@ package sistema;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import javax.print.PrintService;
+import javax.print.PrintServiceLookup;
+import javax.swing.JLabel;
+import javax.swing.JTextArea;
+
+import java.awt.Font;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.sql.Date;
 
 import users.Gestor;
@@ -25,6 +34,7 @@ public class Revisao implements Comparable<Revisao>{
 	private EstadoRevisao estado;
 	private Licensa[] licensas;
 	private String ordenacao;
+	private String[] eventos;
 	
 /**
  * 
@@ -64,6 +74,9 @@ public class Revisao implements Comparable<Revisao>{
 		this.revisoresConfirmados = revisoresConfirmados;
 		this.revisoresNaoConfirmados = revisoresNaoConfirmados;
 		ordenacao = "";
+	}
+	public void setEventos(String[] ev) {
+		eventos = ev;
 	}
 	public void setAnotacoes(Anotacao[] an) {
 		anotacoes = an;
@@ -176,6 +189,29 @@ public class Revisao implements Comparable<Revisao>{
 		//a - autor
 		//n - numero serie
 		this.ordenacao = ordenacao;
+		
+	}
+	
+	public void ImprimirExtracto() {
+		JTextArea texto = new JTextArea();
+		
+		
+		String textoFinal = " Estrato para revisao com ID: " + revisaoID;
+		int maxsize = textoFinal.length();
+		for(var evento : eventos) {
+			textoFinal += "\n " + evento;
+			if(evento.length() > maxsize) {
+				maxsize = evento.length();
+			}
+		}
+		try {
+			texto.setText(textoFinal);
+			texto.setFont(new Font("Arial",Font.PLAIN,(960/maxsize))); //Dependendo da maior linha definimos a fonte de acordo a que nenhum conteudo esteja cortado
+			texto.print();
+		} catch (PrinterException e) {
+			e.printStackTrace();
+		}
+
 		
 	}
 	@Override

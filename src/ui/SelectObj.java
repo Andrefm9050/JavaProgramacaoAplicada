@@ -1,8 +1,10 @@
 package ui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -10,6 +12,7 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
@@ -25,22 +28,23 @@ public class SelectObj extends JFrame implements ActionListener{
 
 		setVisible(true);
 		setSize(800, 500);
-		setTitle("Teste");
-		setLayout(new FlowLayout());
+		setTitle("Selecionar Objeto");
+		setLayout(new BorderLayout());
 		
+		JLabel label = new JLabel("Selecionar Objeto do tipo: " + objects[0].getClass().getSimpleName());
 		
+		add(label,BorderLayout.NORTH);
 		
 		list = new JList(objects);
 		list.setVisibleRowCount(10);
 		JScrollPane jcp = new JScrollPane(list);
-		add(jcp);
+		add(jcp,BorderLayout.CENTER);
 		
 		this.o = o;
-		teste.setBounds(430, 300, 130, 40);
 		teste.setFont(new Font("Arial", Font.BOLD,20));
-		teste.setForeground(new Color(255,255,255));
-		teste.setBackground(new Color(0,0,0));
-		add(teste);
+		teste.setSize(130,40);
+
+		add(teste,BorderLayout.SOUTH);
 		teste.addActionListener(this::selecionado);
 		SelectObj comp = this;
 		addWindowListener(new WindowAdapter()

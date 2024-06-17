@@ -1,19 +1,16 @@
 package sistema;
 
-import java.util.Properties;
+import users.Utilizador;
 
-import javax.mail.*;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-
-import users.Utilizador;
+import java.util.Properties;
 
 public class EmailHelper {
 	Session newSession;
@@ -66,6 +63,5 @@ public class EmailHelper {
 		
 		
 	}
-	
 	
 }

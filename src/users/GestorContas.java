@@ -10,6 +10,7 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import sistema.BDDriver;
+import sistema.EmailHelper;
 import sistema.Obra;
 
 
@@ -149,6 +150,21 @@ public class GestorContas {
 		}
 		return revisores.toArray(new Revisor[0]);
 	}
+	
+	public static void definirEstadoUtilizador(String login1,EstadoConta estado) {
+		
+		Utilizador u = pesquisarUtilizadoresUserName(login1);
+		
+		boolean result = BDDriver.setUtilizadorEstado(u.getIdUser(), EstadoConta.estadoToInt(estado));
+		if(u != null) {
+			
+			if(u.getEstado() == EstadoConta.por_registar && estado == EstadoConta.ativos && result) {
+				EmailHelper helper = new EmailHelper();
+				helper.SendMailConfirmed(u);
+			}
+		}
+	}
+	
 	
 	
 public static void pedidoRemoverConta(String login1) {

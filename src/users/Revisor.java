@@ -1,12 +1,13 @@
 package users;
 
-import java.util.ArrayList;
-import java.util.Scanner;
-
 import pastaPrincipal.Main;
 import sistema.BDDriver;
 import sistema.EstadoRevisao;
 import sistema.Revisao;
+import ui.InterfaceRevisor;
+
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Revisor extends UniqueUtilizador {
 	private EspecializacaoArea areaEspecializado;
@@ -21,15 +22,16 @@ public class Revisor extends UniqueUtilizador {
 	
 public static void menuRevisor(Revisor login1) {
 		
-		while(true) {
-		System.out.println("1-Notificações de Revisão \n2-Revisões \n3-Pedido Remover Conta");
-		System.out.println("4-Listar meus pedidos de revisao");
-		System.out.println("5-Sair");
-		int opcao = lerDadosInt("Escolha uma das seguintes opções: ");
+		//while(true) {
+		//System.out.println("1-Notificações de Revisão \n2-Revisões \n3-Pedido Remover Conta");
+		//System.out.println("4-Listar meus pedidos de revisao");
+		//System.out.println("5-Sair");
+		//int opcao = lerDadosInt("Escolha uma das seguintes opções: ");
 		
-		executaOpcao(opcao, login1);
+		//executaOpcao(opcao, login1);
 		
-	}
+	//}
+	new InterfaceRevisor();
 	
 }
 
@@ -178,13 +180,11 @@ private static void pedidoRemoverConta() {
 
 @Override
 public String toString() {
-	return "Revisor [areaEspecializado=" + areaEspecializado + ", formacaoAcademica=" + formacaoAcademica
-			+ ", idRevisor=" + idRevisor + ", telefone=" + telefone + ", getIdRevisor()=" + getIdRevisor()
-			+ ", getNif()=" + getNif() + ", getTelefone()=" + getTelefone() + ", getMorada()=" + getMorada()
-			+ ", getIdUser()=" + getIdUser() + ", getLogin()=" + getLogin() + ", getNome()=" + getNome()
-			+ ", getPassword()=" + getPassword() + ", getEmail()=" + getEmail() + ", getEstado()=" + getEstado()
-			+ ", getTipo()=" + getTipo() + ", toString()=" + super.toString() + ", getClass()=" + getClass()
-			+ ", hashCode()=" + hashCode() + "]";
+	return "[Revisor, IDUser=" + getIdUser()
+			+ ", login=" + getLogin()
+			+ ", email=" + getEmail()
+			+ ", estado=" + getEstado()
+			+ "]";
 }
 
 public int getIdRevisor() {

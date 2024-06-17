@@ -1,5 +1,10 @@
 package pastaPrincipal;
 
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.sql.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,29 +15,23 @@ import java.util.Locale;
 import java.util.Scanner;
 import java.util.Vector;
 
+import javax.print.PrintService;
+import javax.print.PrintServiceLookup;
+import javax.swing.JTextArea;
+
 import gestao.GestorLogs;
-
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.sql.Timestamp;
-
 import sistema.BDDriver;
 import sistema.EmailHelper;
 import sistema.Obra;
+import ui.ConfigurarBD;
 import ui.InterfaceGrafica;
-import users.Autor;
-//import ProjetoProgramacao.Gestor;
-import users.EstadoConta;
-import users.Gestor;
-import users.GestorContas;
-import users.Revisor;
-import users.Utilizador;
+import users.*;
 
-public class Main {
+import javax.swing.*;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+public class Main extends JFrame{
 
 	//
 	//Eu nao queria estar a meter isto aqui
@@ -46,29 +45,31 @@ public class Main {
 
 
 	public static void main(String [] args)  {
-		new InterfaceGrafica();
+
+
 
 		//EmailHelper senderMail = new EmailHelper(); <-Exemplo de mandar email
 		//senderMail.SendMailConfirmed(new Utilizador(0,"Teste","Woah123","andre",EstadoConta.ativos,"andrerioslol@outlook.com","hmm"));
 		startmillis = System.currentTimeMillis();
+
+		/*
 		char choice = 'n';
 		System.out.println("Deseja configurar a configuração de base de dados? (s/n)");
 		choice = lerDados("").charAt(0);
 		if(choice == 's' || choice == 'S')
 			BDDriver.menuConfiguracao();
+		*/
+
+		new ConfigurarBD();
 
 
-		while(!BDDriver.configurarDriverPorFicheiro("Properties")) {
-			System.out.println("Erro ao connectar á base de dados... a tentar de novo");
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-			}
-		}
+
+		/*
 
 		while(GestorContas.listarGestores().length == 0) {
 			System.out.println("Nao existe nenhuma conta de administrador, por favor insira uma nova");
-			registo("Gestor",true);
+			//adicionar aqui a inserção de dados de utilizador
+			//registo("Gestor",true);
 			System.out.println("Obrigado! Agora pode se registar com uma conta diferente ou fazer login com a mesma conta");
 			try {
 				Thread.sleep(500);
@@ -76,34 +77,42 @@ public class Main {
 			}
 		}
 
-		while(true) {
-			System.out.println("1-Registar \n2-Login \n3-Sair");
 
-			int opcao = lerDadosInt("Escolha uma das seguintes opções: ");
 
-			executaOpcao(opcao);
+
+		new InterfaceGrafica();
+
+		//while(true) {
+			//System.out.println("1-Registar \n2-Login \n3-Sair");
+
+			//int opcao = lerDadosInt("Escolha uma das seguintes opcoes: ");
 
 		}
+		*/
+			//executaOpcao(opcao);
+
+		//}
 	}
 
 
-	private static void executaOpcao(int aOpcao){
-		switch(aOpcao) {
-		case 1:
-			String tipoConta = "";
+	//private static void executaOpcao(int aOpcao){
+		//switch(aOpcao) {
+		//case 1:
+			//String tipoConta = "";
 
-			while(!tipoConta.contentEquals("autor") && !tipoConta.contentEquals("revisor")) {
-				tipoConta = lerDados("Insira o tipo de conta(autor ou revisor): ");
-			}
-			registo(tipoConta,false);
+			//while(!tipoConta.contentEquals("autor") && !tipoConta.contentEquals("revisor")) {
+				//tipoConta = lerDados("Insira o tipo de conta(autor ou revisor): ");
+			//}
+			//registo(tipoConta,false);
 
-			break;
-		case 2: login(); break;
-		case 3: sair(); break;
-		case 4: teste(); break;
-		default: erro();
-		}
-	}
+			//break;
+		//case 2: login(); break;
+		//case 3: sair(); break;
+		//case 4: teste(); break;
+		//default: erro();
+		//}
+	//}
+
 	public static void teste() {
 		Main.SelectionarObjetoMenu(BDDriver.listarRevisoes());
 	}
@@ -138,72 +147,76 @@ public class Main {
 		"("+segundos+ " Segundos; "+minutos+" Minutos; "+horas+ " Horas)");
 	}
 
-	private static void registo(String tipo1,boolean primeiraconta) {
+	public static void registo(String tipo1, boolean primeiraconta, String login1, String password1, String nome1, String email1, String morada1, String nif1, String telefone1, String formacao, String area, String estiloLiterario) {
 
+		String login2 = null;
 
-		String login2;
-
-		while(true) {
-			String login1 = lerDados("Insira o seu username: ");
+		//while(true) {
+			//String login1 = lerDados("Insira o seu username: ");
 			Utilizador utiTeste = GestorContas.pesquisarUtilizadoresUserName(login1);
 			if(utiTeste != null) {
+
 				System.out.println("Username já existe! Insira outro username.");		//verifica se o username é único
 			}else {
 				login2 = login1;
-				break;
+				//break;
 			}
-		}
+		//}
 
-		String password1 = lerDados("Insira a sua password: ");
-		String nome1 = lerDados("Insira o seu nome: ");
+		//String password1 = lerDados("Insira a sua password: ");
+		//String nome1 = lerDados("Insira o seu nome: ");
 
-		String email2;
-		while(true) {
-		String email1 = lerDados("Insira o seu email(axzc@exmail.com): ");
+		String email2 = null;
+		//while(true) {
+		//String email1 = lerDados("Insira o seu email(axzc@exmail.com): ");
 		if(GestorContas.validacaoEmail(email1)==false) {
 			System.out.println("Email com formato inválido! Insira no seguinte formato [designação]@[entidade].[dominio]");  //verifica se o email é unico e se está no formato pretendido
-			continue; //Este email está com o formato inválido... nao podemos avançar!
+			//continue; //Este email está com o formato inválido... nao podemos avançar!
 		}
 		if(GestorContas.pesquisarUtilizadoresEmail(email1)!=null) {
 			System.out.println("O Email inserido já existe! Insira outro email.");
-			continue; //Este email já existe... nao podemos avançar!
+			//continue; //Este email já existe... nao podemos avançar!
 		}else {
 			email2 = email1;
-			break;
+			//break;
 		}
-		}
+		//}
 
 
 
 		Utilizador u1 = new Utilizador(0,login2, password1, nome1, primeiraconta ? EstadoConta.ativos : EstadoConta.por_registar, email2, tipo1); //<- Aqui nao ha problema o id=0 pois estamos a inserir
-		BDDriver.adicionarUtilizador(u1);
+		BDDriver.adicionarUtilizador(u1, morada1, nif1, telefone1, formacao, area, estiloLiterario);
 
 	}
 
-	private static void login() {
-		String login1 = lerDados("Insira o seu username: ");
-		String password1 = lerDados("Insira a sua password: ");
+	public static void login(String login1, String password1) {
+		//String login1 = lerDados("Insira o seu username: ");
+		//String password1 = lerDados("Insira a sua password: ");
 
 		Utilizador userLoginSEstado = BDDriver.encontrarUtilizador(login1, password1);
 		//BDDriver.listarUtilizadores()[1].ge
-
+		int bufferInt = 0;
 		if(userLoginSEstado != null && (userLoginSEstado.getEstado().equals(EstadoConta.ativos) || userLoginSEstado.getEstado().equals(EstadoConta.por_remover))) {
-			GestorLogs.adicionarLog(userLoginSEstado, userLoginSEstado.getNome() + " fez Login!");
+			//GestorLogs.adicionarLog(userLoginSEstado, userLoginSEstado.getNome() + " fez Login!");
 
 
 			if(userLoginSEstado instanceof Gestor) {
 				System.out.println("Bem-vindo " + login1);
+
 				Gestor.menuGestor((Gestor)userLoginSEstado);
 			}
 			else if(userLoginSEstado instanceof Autor) {
 				System.out.println("Bem-vindo " + login1);
+				bufferInt = 2;
 				Autor.menuAutor((Autor)userLoginSEstado);
 			}
 			else if(userLoginSEstado instanceof Revisor) {
 				System.out.println("Bem-vindo " + login1);
+				bufferInt = 3;
 				Revisor.menuRevisor((Revisor)userLoginSEstado);
 			}
 			else {
+				bufferInt = 4;
 				System.out.println("Credenciais inválidas!");
 			}
 		} else if(userLoginSEstado != null && userLoginSEstado.getEstado().equals(EstadoConta.rejeitado) ){

@@ -1,6 +1,13 @@
 package users;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Comparator;
+
+import javax.imageio.ImageIO;
 
 public class Utilizador implements Comparable<Utilizador> {
 	private int idUser;
@@ -11,9 +18,9 @@ public class Utilizador implements Comparable<Utilizador> {
 	private EstadoConta estado;
 	private String tipo;
 	private String ordenacao;
+	private byte[] Image;
 	
-	
-	
+
 	public Utilizador(int idUser,String login, String password, String nome, EstadoConta estado, String email, String tipo) {
 		super();
 		this.idUser = idUser;
@@ -24,13 +31,38 @@ public class Utilizador implements Comparable<Utilizador> {
 		this.email = email;
 		this.tipo = tipo;
 		ordenacao = "";
+		Image = null;
 	}
 
 
 	public int getIdUser() {
 		return idUser;
 	}
-
+	
+	public void setImage(byte[] bytes) {
+		Image = bytes;
+	}
+	public byte[] getImageBytes() {
+		if(Image == null) {
+			try {
+				Image = Files.readAllBytes(new File("Images/Default.png").toPath());
+			} catch (IOException e) {
+				//e.printStackTrace();
+			}
+		}
+		
+		
+		return Image;
+	}
+	
+	public BufferedImage getImage() {
+		ByteArrayInputStream bais = new ByteArrayInputStream(getImageBytes());
+		try {
+	        return ImageIO.read(bais);
+	    } catch (IOException e) {
+	        return null;
+	    }	
+	}
 
 	public void setIdUser(int idUser) {
 		this.idUser = idUser;
@@ -121,10 +153,10 @@ public class Utilizador implements Comparable<Utilizador> {
 	
 	@Override
 	public String toString() {
-		return "Utilizador [idUser=" + idUser + ", getUserID()=" + getIdUser() + ", getIdUser()=" + getIdUser()
-				+ ", getLogin()=" + getLogin() + ", getNome()=" + getNome() + 
-				", getEmail()=" + getEmail() + ", getEstado()=" + getEstado() + ", getTipo()=" + getTipo()
-				+ ", toString()=" + super.toString() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
+		return "[Utilizador, IDUser=" + getIdUser()
+				+ ", login=" + getLogin()
+				+ ", email=" + getEmail()
+				+ ", estado=" + getEstado()
 				+ "]";
 	}
 	
