@@ -1,18 +1,12 @@
 package ui;
 
-import javax.imageio.ImageIO;
+
 import pastaPrincipal.Main;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
 
 public class InterfaceGrafica extends JFrame implements ActionListener,ObjectSelector {
 
@@ -49,7 +43,7 @@ public class InterfaceGrafica extends JFrame implements ActionListener,ObjectSel
 		jButton1.setBounds(230, 300, 130, 40);
 		jButton1.setFont(new Font("Arial", Font.BOLD,20));
 		jButton1.setForeground(new Color(255,255,255));
-		jButton1.setBackground(new Color(0,0,0));
+		jButton1.setBackground(new Color(0,0,0));		
 
 		JLabel jLabel = new JLabel("Escolha uma das opções - Registo ou Login");
 		jLabel.setBounds(200, 10, 400, 400);
@@ -58,14 +52,42 @@ public class InterfaceGrafica extends JFrame implements ActionListener,ObjectSel
 		add(jLabel);
 		add(jButton1);
 
-		jButton.addActionListener(this::teste);
+
+		//jButton.addActionListener(this::teste);
 
 		jButton1.addActionListener(this::registo);
 		jButton.addActionListener(this::login);
+
 		//setVisible(true);
 
 
 	}
+	
+	/*
+	@Override
+	public void paint(Graphics g) { //<- Este código é o codigo teste para mostrar uma imagem
+		super.paint(g);
+			g.drawImage(new ImageIcon(BDDriver.listarUtilizadores()[0].getImage()).getImage(),
+					HEIGHT,
+					WIDTH,
+					120,
+					120,
+					this);	
+	}
+	*/
+
+	/*
+	@Override
+	public void paint(Graphics g) { //<- Este código é o codigo teste para mostrar uma imagem
+		super.paint(g);
+			g.drawImage(new ImageIcon(BDDriver.listarUtilizadores()[0].getImage()).getImage(),
+					HEIGHT,
+					WIDTH,
+					120,
+					120,
+					this);
+	}
+	*/
 
 	/*
 	@Override

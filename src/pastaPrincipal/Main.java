@@ -1,5 +1,10 @@
 package pastaPrincipal;
 
+<<<<<<< HEAD
+import sistema.BDDriver;
+import ui.ConfigurarBD;
+import users.*;
+=======
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.File;
@@ -20,12 +25,28 @@ import javax.print.PrintServiceLookup;
 import javax.swing.JTextArea;
 
 import gestao.GestorLogs;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+import java.sql.Timestamp;
+
 import sistema.BDDriver;
 import sistema.EmailHelper;
 import sistema.Obra;
 import ui.ConfigurarBD;
 import ui.InterfaceGrafica;
-import users.*;
+import users.Autor;
+//import ProjetoProgramacao.Gestor;
+import users.EstadoConta;
+import users.Gestor;
+import users.GestorContas;
+import users.Revisor;
+import users.Utilizador;
+>>>>>>> 8b44779a2c88dbaefe0d8703382c9ddb83362628
 
 import javax.swing.*;
 import java.text.SimpleDateFormat;
@@ -45,13 +66,19 @@ public class Main extends JFrame{
 
 
 	public static void main(String [] args)  {
-
-
+<<<<<<< HEAD
 
 		//EmailHelper senderMail = new EmailHelper(); <-Exemplo de mandar email
 		//senderMail.SendMailConfirmed(new Utilizador(0,"Teste","Woah123","andre",EstadoConta.ativos,"andrerioslol@outlook.com","hmm"));
 		startmillis = System.currentTimeMillis();
 
+=======
+		
+		//EmailHelper senderMail = new EmailHelper(); <-Exemplo de mandar email
+		//senderMail.SendMailConfirmed(new Utilizador(0,"Teste","Woah123","andre",EstadoConta.ativos,"andrerioslol@outlook.com","hmm"));
+		startmillis = System.currentTimeMillis();
+		
+>>>>>>> 8b44779a2c88dbaefe0d8703382c9ddb83362628
 		/*
 		char choice = 'n';
 		System.out.println("Deseja configurar a configuração de base de dados? (s/n)");
@@ -59,11 +86,19 @@ public class Main extends JFrame{
 		if(choice == 's' || choice == 'S')
 			BDDriver.menuConfiguracao();
 		*/
+<<<<<<< HEAD
 
 		new ConfigurarBD();
 
 
 
+=======
+		
+		new ConfigurarBD();
+		
+
+		
+>>>>>>> 8b44779a2c88dbaefe0d8703382c9ddb83362628
 		/*
 
 		while(GestorContas.listarGestores().length == 0) {
@@ -76,6 +111,12 @@ public class Main extends JFrame{
 			} catch (InterruptedException e) {
 			}
 		}
+		
+		
+		
+
+
+
 
 
 
@@ -89,9 +130,6 @@ public class Main extends JFrame{
 
 		}
 		*/
-			//executaOpcao(opcao);
-
-		//}
 	}
 
 

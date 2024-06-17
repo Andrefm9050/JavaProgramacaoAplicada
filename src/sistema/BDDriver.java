@@ -1,26 +1,8 @@
 package sistema;
 
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.file.Files;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Scanner;
-
 import gestao.Log;
 import gestao.Notificacao;
-import pastaPrincipal.Main;
 import users.*;
 
 import java.sql.*;
@@ -58,11 +40,13 @@ public class BDDriver {
 			   result.add(conts.length == 2 ? conts[1] : "");
 		   }
 
+		   
 		   fich.fecharFicheiroLeitura();
-
-
+		   
+		   
 		   return result.toArray(new String[0]);
 }
+   
 
    public static void saveConfigValues(String link,String port,String username,String password,String bd) {
 	   ManipulaFicheirosTexto fich = new ManipulaFicheirosTexto();
@@ -70,6 +54,10 @@ public class BDDriver {
 	   fich.escreverFicheiro(new String[]{"ip="+link,"port="+port,"bd="+bd,"login="+username,"password="+password});
 	   fich.fecharFicheiroEscrita();
    }
+	   
+	   
+
+
 
 
 
@@ -135,6 +123,7 @@ public class BDDriver {
 		   }
 	   }
 
+	   
 	   fich.abrirFicheiroEscrita("Properties", false);
 	   fich.escreverFicheiro(fich.lerFicheiro());
 	   fich.fecharFicheiroEscrita();
@@ -232,6 +221,8 @@ public class BDDriver {
 	   return false;
    }
 
+
+
    public static boolean setNotificacaoLida(int notID, boolean val) {
 	   try {
 		   PreparedStatement ps = conn.prepareStatement("CALL definir_lido_notificacao(?,?)");
@@ -247,6 +238,9 @@ public class BDDriver {
 
 	   return true;
    }
+
+
+
 
 
 
@@ -317,7 +311,9 @@ public class BDDriver {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate date = LocalDate.parse(formacao, formatter);
             Date completedDate = Date.valueOf(date);
-            String estiloLiterario = lerDados("Insira o seu estilo literário(ex: drama, ficção, thriller): ");
+
+            //String estiloLiterario = lerDados("Insira o seu estilo literário(ex: drama, ficção, thriller): ");
+
             sqlQuery.append("SELECT * FROM criar_autor(?, ?, ? , ? , ?, ?, ?, ?, ?, ?,?)");
             PreparedStatement ps = conn.prepareStatement(sqlQuery.toString());
             ps.clearParameters();
@@ -365,8 +361,10 @@ public class BDDriver {
             	}
 
             }
-            formacao = lerDados("Insira a sua formacao academica: ");
-            String area = lerDados("Insira a sua area de especializacao: ");
+
+            //formacao = lerDados("Insira a sua formacao academica: ");
+            //String area = lerDados("Insira a sua area de especializacao: ");
+
             sqlQuery.append("SELECT * FROM criar_revisor(?, ? , ?, ? , ?, ?, ?, ?, ?, ?,?)");
             PreparedStatement ps = conn.prepareStatement(sqlQuery.toString());
             ps.clearParameters();
@@ -471,7 +469,6 @@ public class BDDriver {
 	        	String telefone = rs2.getString(10);
 	        	String data = rs2.getString(12);
 
-
 	        	Autor au = new Autor(idAutor, idUser,user, pass, nome, EstadoConta.intToEstado(estado), maill, null, nif, null, null);
 	        	au.setImage(rs2.getBytes("image"));
 	        	//System.out.println(idUser);
@@ -507,9 +504,11 @@ public class BDDriver {
 	        	String nif = rs3.getString(9);
 	        	String telefone = rs3.getString(10);
 
-
+	        	
+	        	
 	        	Revisor rev = new Revisor(idRevisor,idUserN,user, pass, nome, EstadoConta.intToEstado(estado), maill, null, nif, null, null);
 	        	rev.setImage(rs3.getBytes("image"));
+	        	
 
 	        	//System.out.println(nif);
 	        	utilizadorNovo.add(rev);
@@ -663,8 +662,6 @@ public class BDDriver {
 	    localps.setInt(1, revisaoID);
 	    localrs = localps.executeQuery();
 
-
-
 	    ArrayList<Anotacao> anotacoes = new ArrayList<Anotacao>();
 	    while(localrs.next()) {
 	    	Revisor revResp = null;
@@ -704,8 +701,10 @@ public class BDDriver {
 	    rev.setLicensas(licensas.toArray(new Licensa[0]));
 	    localps.close();
 
+	    
 	    String[] eventos = listarEventosRevisao(rev.getRevisaoID());
 	    rev.setEventos(eventos);
+	    
 
 	    revisoes.add(rev);
 
@@ -876,9 +875,11 @@ public class BDDriver {
 
  	}
 
+ 	
  	public static boolean adicionarAnotacaoRevisao(Revisor revisor,int rev,Anotacao a) {
-
+ 		
  		try {
+ 			
 
  			PreparedStatement ps = conn.prepareStatement("SELECT * FROM criar_anotacao(?,?,?,?,?)");
  			ps.setInt(1, revisor.getIdRevisor());
@@ -899,6 +900,7 @@ public class BDDriver {
  		return false;
  	}
 
+ 	
  	public static boolean adicionarObservacaoRevisao(Revisor revisor, int revID, String obs) {
 
  		try {
@@ -919,6 +921,8 @@ public class BDDriver {
  		return false;
  	}
 
+
+ 	
  	static void registarRevisaoEvento(int idRevisao, int idConta, String descricao) {
  		try {
 			PreparedStatement ps = conn.prepareStatement("CALL registar_revisao_evento(?,?,?)");
@@ -927,13 +931,13 @@ public class BDDriver {
 			ps.setString(3, descricao);
 			ps.execute();
 			ps.close();
-
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
+ 		
  	}
-
+ 	
  	public static String[] listarEventosRevisao(int idRevisao) {
  		try {
  			PreparedStatement ps = conn.prepareStatement("SELECT * FROM listar_eventos_revisao(?)");
@@ -944,17 +948,17 @@ public class BDDriver {
  				String message = "O utilizador com ID " + rs.getInt("id_user") + " fez a seguinte ação: " + rs.getString("descricao") + " na hora " + rs.getTimestamp("data");
  				result.add(message);
  			}
-
-
+ 			
+ 			
  			return result.toArray(new String[0]);
-
+ 			
  		} catch(SQLException e) {
  			e.printStackTrace();
  		}
-
+ 		
  		return new String[0];
  	}
-
+ 	
  	public static boolean definirRevisorResponsavel(int idRevisao, int idRevisor) {
 
  		try {
@@ -989,8 +993,10 @@ public class BDDriver {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
+
 		}
  	}
+
 
  	public static boolean confirmarRevisorNormal(int idRevisao,int idRevisor, boolean confirm) {
  		try {
@@ -1051,7 +1057,6 @@ public class BDDriver {
  		return false;
  	}
 
-
  	public static boolean adicionarRevisor(int idRevisao, int idRevisor) {
  		try {
         	//Revisao revisao = (Autor) GestorContas.pesquisarUtilizadoresUserName(user);
@@ -1072,9 +1077,9 @@ public class BDDriver {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
+
 		}
  	}
-
 
  	public static boolean atualizarEstadoRevisao(int idRevisao, int estado) {
  		try {
@@ -1096,7 +1101,9 @@ public class BDDriver {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
-		}
+
+		}	
+
  	}
 
 
