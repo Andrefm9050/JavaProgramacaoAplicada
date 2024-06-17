@@ -9,6 +9,7 @@ public class GestorRevisoes {
 	
 	public boolean adicionarRevisao(Revisao rev) {
 		try {
+			GestorLogs.adicionarLog(" registou uma nova revisao para a obra: " + rev.getObraID());
 		BDDriver.adicionarRevisao(Integer.parseInt(rev.getNumeroSerie()), rev.getObraID(), rev.getGestorID());
 		}
 		catch(Exception e) {
