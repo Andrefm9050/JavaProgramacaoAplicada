@@ -21,6 +21,9 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import sistema.BDDriver;
+import sistema.EstiloLiterario;
+import sistema.Obra;
+import sistema.TipoPublicacao;
 import users.EstadoConta;
 import users.Utilizador;
 
@@ -153,11 +156,11 @@ public class ConfigurarBD extends JFrame implements ActionListener,ObjectSelecto
 	void AceitarBtnEvent(ActionEvent event) {
 		BDDriver.saveConfigValues(ipField.getText(),portField.getText(),loginField.getText(),passwordField.getText(),bdField.getText());
 		if(BDDriver.configurarDriver(ipField.getText(),portField.getText(),loginField.getText(),passwordField.getText(),bdField.getText())) {
-			Utilizador[] list = new Utilizador[2];
-			list[0] = new Utilizador(1,"abc","adsa","abc",EstadoConta.ativos,"sda","asd");
-			list[1] = new Utilizador(2,"bca","adsa","bca",EstadoConta.ativos,"sda","asd");
+			//Obra[] list = new Obra[2];
+			//list[0] = new Obra(1,"autor",2,"titulo","sub",EstiloLiterario.drama,TipoPublicacao.capaDura,);
+			//list[1] = new Obra();
 			
-			new SelectObj(this,list);
+			//new SelectObj(this,list);
 			dispose();
 		}
 		else {

@@ -3,13 +3,14 @@ package sistema;
 import java.util.Date;
 
 import users.Autor;
+import users.Listable;
 
 
 /**
  * Classe responsavel por guardar informacao relevante sobre uma obra
  * @author Andre Rios, Andre Martins
  */
-public class Obra implements Comparable<Obra>{
+public class Obra implements Listable<Obra>{
 	private int obraId;
 	private String autor;
 	private int autorID;
@@ -157,6 +158,19 @@ public class Obra implements Comparable<Obra>{
 		}
 		
 		return 0;
+	}
+	
+	public String[][] filtragensDisponiveis() {
+		String[][] options = new String[2][2];
+		options[0][0] = "default";
+		options[0][1] = "";
+		options[1][0] = "Titulo";
+		options[1][1] = "t";
+		options[2][0] = "Data";
+		options[2][1] = "d";
+		
+		
+		return options;
 	}
 	
 }

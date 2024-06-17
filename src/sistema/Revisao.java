@@ -14,9 +14,10 @@ import java.awt.print.PrinterJob;
 import java.sql.Date;
 
 import users.Gestor;
+import users.Listable;
 import users.Revisor;
 
-public class Revisao implements Comparable<Revisao>{
+public class Revisao implements Listable<Revisao>{
 	private int revisaoID;
 	private Obra obra;
 	//private Autor autor; <- Ja temos um autor a partir da obra
@@ -241,5 +242,26 @@ public class Revisao implements Comparable<Revisao>{
         
 		return 0;
     }
+	
+	public String[][] filtragensDisponiveis() {
+		String[][] options = new String[2][2];
+		options[0][0] = "default";
+		options[0][1] = "";
+		
+		options[1][0] = "Data";
+		options[1][1] = "d";
+		
+		options[2][0] = "Titulo";
+		options[2][1] = "t";
+		
+		options[3][0] = "Autor";
+		options[3][1] = "a";
+		
+		options[4][0] = "Numero Serie";
+		options[4][1] = "n";
+		
+		
+		return options;
+	}
 
 }

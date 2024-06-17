@@ -2,11 +2,13 @@ package gestao;
 
 import java.sql.Date;
 
+import users.Listable;
+
 /**
  * Classe Log usada para representar um log feito por um utilizador
  * @author Andre Rios
  */
-public class Log implements Comparable<Log>{
+public class Log implements Listable<Log>{
 	private int idUser;
 	private String mensagem;
 	private Date hora;
@@ -34,5 +36,17 @@ public class Log implements Comparable<Log>{
 	@Override
 	public int compareTo(Log o) {
 		return hora.compareTo(o.hora);
+	}
+	public String[][] filtragensDisponiveis() {
+		String[][] options = new String[2][2];
+		options[0][0] = "default";
+		options[0][1] = "";
+		
+		return options;
+	}
+	@Override
+	public void setOrdenacao(String ordenacao) {
+		// TODO Auto-generated method stub
+		
 	}
 }

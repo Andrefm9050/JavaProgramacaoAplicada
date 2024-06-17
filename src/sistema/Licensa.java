@@ -2,12 +2,14 @@ package sistema;
 
 import java.sql.Date;
 
+import users.Listable;
+
 
 /**
  * Classe responsavel por guardar dados relevantes sobre uma licensa
  * @author Andre Rios
  */
-public class Licensa implements Comparable<Licensa>{
+public class Licensa implements Listable<Licensa>{
 	private int idLicensa;
 	private int idRevisao;
 	private String nomeLicensa;
@@ -34,6 +36,15 @@ public class Licensa implements Comparable<Licensa>{
 		return expiracao.compareTo(o.expiracao);
 	}
 	
+	public String[][] filtragensDisponiveis() {
+		String[][] options = new String[2][2];
+		options[0][0] = "default";
+		options[0][1] = "";
+		
+		
+		return options;
+	}
+	
 	
 	public Date getExpiracao() {
 		return expiracao;
@@ -43,6 +54,11 @@ public class Licensa implements Comparable<Licensa>{
 	}
 	public int getNumeroSerie() {
 		return numeroSerie;
+	}
+
+	@Override
+	public void setOrdenacao(String ordenacao) {
+		
 	}
 	
 }
