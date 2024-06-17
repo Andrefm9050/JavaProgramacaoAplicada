@@ -17,6 +17,7 @@ import java.util.List;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -85,40 +86,63 @@ public class SelectObj extends JFrame implements ActionListener{
 		JPanel filtragem = new JPanel();
 		filtragem.setLayout(new GridLayout(objects[0].filtragensDisponiveis().length,1));
 		String[][] filtragens = objects[0].filtragensDisponiveis();
+		
 		for(int x = 0; x<filtragens.length; x++) {
 			
 			JRadioButtonCustom btn = new JRadioButtonCustom(filtragens[x][0]);
+			if(x == 0) {
+				lastRadio = btn;
+				btn.setSelected(true);
+			}
 			group.add(btn);
+			
+			
+			
 			btn.valor = filtragens[x][1];
 			filtragem.add(btn);
 			btn.addActionListener(this::radioboxsel);
 			
 		}
+		sortOrder = new JCheckBox("Ordem crescente");
+		sortOrder.addActionListener(this::sortOrder);
+		filtragem.add(sortOrder);
+		
 		add(filtragem,BorderLayout.EAST);
 		
 		
 	}
+	JCheckBox sortOrder;
+	JRadioButtonCustom lastRadio;
+	void sortOrder(ActionEvent e) {
+		sort(lastRadio,((JCheckBox)e.getSource()).isSelected());
+	}
+	
+	void sort(JRadioButtonCustom filter,boolean val) {
+		JRadioButtonCustom selected = (JRadioButtonCustom)filter;
+		//System.out.println(data);
+		
+		ListModel model = list.getModel();
+		List<Listable> data_ = new ArrayList<Listable>();
+		for(int i=0;i<model.getSize();i++) {
+			data_.add((Listable)model.getElementAt(i));
+
+			((Listable)model.getElementAt(i)).setOrdenacao(selected.valor);
+		}
+
+		if(val)
+		Collections.sort(data_);
+		else
+			Collections.sort(data_,Collections.reverseOrder());
+		
+		list.setListData(data_.toArray(new Listable[0]));
+		
+		System.out.println(data_);
+	}
 	
 	void radioboxsel(ActionEvent e) {
 		if(e.getSource() instanceof JRadioButtonCustom) {
-			JRadioButtonCustom selected = (JRadioButtonCustom)e.getSource();
-			for(var obj : data) {
-				obj.setOrdenacao(selected.valor);
-			}
-			System.out.println(data);
-			
-			ListModel model = list.getModel();
-			List<Listable> data_ = new ArrayList<Listable>();
-			for(int i=0;i<model.getSize();i++) {
-				data_.add((Listable)model.getElementAt(i));
-			}
-	
-			Collections.sort(data_,Collections.reverseOrder());
-			
-			list.setListData(data_.toArray(new Listable[0]));
-			
-			System.out.println(data_);
-			
+			lastRadio = (JRadioButtonCustom)e.getSource();
+			sort((JRadioButtonCustom)e.getSource(),sortOrder.isSelected());
 		}
 	}
 	

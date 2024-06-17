@@ -161,7 +161,7 @@ public class Obra implements Listable<Obra>{
 	}
 	
 	public String[][] filtragensDisponiveis() {
-		String[][] options = new String[2][2];
+		String[][] options = new String[3][2];
 		options[0][0] = "default";
 		options[0][1] = "";
 		options[1][0] = "Titulo";

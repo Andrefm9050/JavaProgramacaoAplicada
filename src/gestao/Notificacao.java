@@ -1,5 +1,6 @@
 package gestao;
 
+import users.Listable;
 import users.Utilizador;
 
 /**
@@ -7,7 +8,7 @@ import users.Utilizador;
  * @author Andre Rios
  */
 
-public class Notificacao implements Comparable<Notificacao>{
+public class Notificacao implements Listable<Notificacao>{
 	private int notID;
 	private int utilizadorID;
 	private String descricao;
@@ -37,6 +38,20 @@ public class Notificacao implements Comparable<Notificacao>{
 	}
 	public boolean getLida() {
 		return lida;
+	}
+
+	public String[][] filtragensDisponiveis() {
+		String[][] options = new String[1][2];
+		options[0][0] = "default";
+		options[0][1] = "";
+		
+		
+		return options;
+	}
+	@Override
+	public void setOrdenacao(String ordenacao) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

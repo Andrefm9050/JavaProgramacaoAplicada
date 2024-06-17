@@ -37,7 +37,7 @@ public class Licensa implements Listable<Licensa>{
 	}
 	
 	public String[][] filtragensDisponiveis() {
-		String[][] options = new String[2][2];
+		String[][] options = new String[1][2];
 		options[0][0] = "default";
 		options[0][1] = "";
 		

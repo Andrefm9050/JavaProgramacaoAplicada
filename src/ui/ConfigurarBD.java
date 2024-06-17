@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.Date;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
@@ -157,10 +158,13 @@ public class ConfigurarBD extends JFrame implements ActionListener,ObjectSelecto
 		BDDriver.saveConfigValues(ipField.getText(),portField.getText(),loginField.getText(),passwordField.getText(),bdField.getText());
 		if(BDDriver.configurarDriver(ipField.getText(),portField.getText(),loginField.getText(),passwordField.getText(),bdField.getText())) {
 			//Obra[] list = new Obra[2];
-			//list[0] = new Obra(1,"autor",2,"titulo","sub",EstiloLiterario.drama,TipoPublicacao.capaDura,);
-			//list[1] = new Obra();
+			//list[0] = new Obra(1,"autor",2,"titulo","sub",EstiloLiterario.drama,TipoPublicacao.capaDura,5,6,2,6,new Date(100), new Date(200));
+			//list[1] = new Obra(12,"autorB",2,"tituloB","sub",EstiloLiterario.drama,TipoPublicacao.capaDura,5,6,2,6,new Date(25000), new Date(25000));
 			
 			//new SelectObj(this,list);
+			
+			new InterfaceGrafica();
+			
 			dispose();
 		}
 		else {

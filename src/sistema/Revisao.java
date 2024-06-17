@@ -244,7 +244,7 @@ public class Revisao implements Listable<Revisao>{
     }
 	
 	public String[][] filtragensDisponiveis() {
-		String[][] options = new String[2][2];
+		String[][] options = new String[5][2];
 		options[0][0] = "default";
 		options[0][1] = "";
 		
