@@ -5,6 +5,8 @@ import ui.ConfigurarBD;
 import users.*;
 
 import javax.swing.*;
+
+import java.awt.image.BufferedImage;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -129,7 +131,7 @@ public class Main extends JFrame{
 		"("+segundos+ " Segundos; "+minutos+" Minutos; "+horas+ " Horas)");
 	}
 
-	public static void registo(String tipo1, boolean primeiraconta, String login1, String password1, String nome1, String email1, String morada1, String nif1, String telefone1, String formacao, String area, String estiloLiterario) {
+	public static void registo(String tipo1, boolean primeiraconta, String login1, String password1, String nome1, String email1, String morada1, String nif1, String telefone1, String formacao, String area, String estiloLiterario,byte[] image) {
 
 		String login2 = null;
 
@@ -167,6 +169,7 @@ public class Main extends JFrame{
 
 
 		Utilizador u1 = new Utilizador(0,login2, password1, nome1, primeiraconta ? EstadoConta.ativos : EstadoConta.por_registar, email2, tipo1); //<- Aqui nao ha problema o id=0 pois estamos a inserir
+		u1.setImage(image);
 		BDDriver.adicionarUtilizador(u1, morada1, nif1, telefone1, formacao, area, estiloLiterario);
 
 	}

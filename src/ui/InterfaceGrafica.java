@@ -3,10 +3,15 @@ package ui;
 
 import pastaPrincipal.Main;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 
 public class InterfaceGrafica extends JFrame implements ActionListener,ObjectSelector {
 
@@ -303,7 +308,23 @@ public class InterfaceGrafica extends JFrame implements ActionListener,ObjectSel
 		jButton1.setBackground(new Color(0,0,0));
 		jButton1.setToolTipText("Confirmar registo");
 		add(jButton1);
-	
+		
+		JButton imagem = new JButton("Selecionar Imagem");
+		imagem.setBounds(400, 350, 130, 40);
+		imagem.setFont(new Font("Arial", Font.BOLD,10));
+		imagem.setForeground(new Color(255,255,255));
+		imagem.setBackground(new Color(0,0,0));
+		imagem.setToolTipText("Confirmar registo");
+		imagem.addActionListener(this::SelectImage);
+		add(imagem);
+		
+		try {
+			pic = new JLabel(new ImageIcon(ImageIO.read(new File("Images/Default.png")).getScaledInstance(100, 100, Image.SCALE_FAST)));
+			pic.setBounds(300, 350, 100, 100);
+			add(pic);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		//text.getText();
 		//text1.getText();
@@ -318,9 +339,32 @@ public class InterfaceGrafica extends JFrame implements ActionListener,ObjectSel
 		//Main.registo("Revisor", false, text1.getText(), text2.getText(), text3.getText(), text4.getText(), text5.getText(), text6.getText(),text7.getText(), text8.getText(), text9.getText(), text10.getText());
 
 	}
+	JLabel pic;
+	byte[] imageSelected;
+	void SelectImage(ActionEvent e) {
+		JFileChooser fileChooser = new JFileChooser();
+		int response = fileChooser.showOpenDialog(null);
+		
+		if(response == JFileChooser.APPROVE_OPTION) {
+			File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
+			try {
+				BufferedImage img = ImageIO.read(file);
+				if(img != null) {
+					//Imagem!
+					//System.out.println("Image!");
+					imageSelected = Files.readAllBytes(file.toPath());
+					pic.setIcon(new ImageIcon(img.getScaledInstance(100, 100, Image.SCALE_FAST)));
+					super.update(getGraphics());
+
+				}
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		}
+	}
 
 	private void realizarRegisto1(ActionEvent actionEvent) {
-		Main.registo("Revisor", false, text1.getText(),text2.getText(), text3.getText(), text4.getText(), text5.getText(), text6.getText(),text7.getText(), text8.getText(), text9.getText(), null);
+		Main.registo("Revisor", false, text1.getText(),text2.getText(), text3.getText(), text4.getText(), text5.getText(), text6.getText(),text7.getText(), text8.getText(), text9.getText(),null, imageSelected);
 		getContentPane().removeAll();
 		revalidate();
 		repaint();
@@ -464,6 +508,23 @@ public class InterfaceGrafica extends JFrame implements ActionListener,ObjectSel
 		jButton1.setBackground(new Color(0,0,0));
 		jButton.setToolTipText("Confirmar registo");
 		add(jButton1);
+		
+		JButton imagem = new JButton("Selecionar Imagem");
+		imagem.setBounds(400, 350, 130, 40);
+		imagem.setFont(new Font("Arial", Font.BOLD,10));
+		imagem.setForeground(new Color(255,255,255));
+		imagem.setBackground(new Color(0,0,0));
+		imagem.setToolTipText("Confirmar registo");
+		imagem.addActionListener(this::SelectImage);
+		add(imagem);
+		
+		try {
+			pic = new JLabel(new ImageIcon(ImageIO.read(new File("Images/Default.png")).getScaledInstance(100, 100, Image.SCALE_FAST)));
+			pic.setBounds(300, 350, 100, 100);
+			add(pic);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		//text.getText();
 		//text1.getText();
@@ -480,7 +541,7 @@ public class InterfaceGrafica extends JFrame implements ActionListener,ObjectSel
 	}
 
 	private void realizarRegisto(ActionEvent actionEvent) {
-		Main.registo("Autor", false, text1.getText(),text2.getText(), text3.getText(), text4.getText(), text5.getText(), text6.getText(),text7.getText(), text8.getText(), null, text10.getText());
+		Main.registo("Autor", false, text1.getText(),text2.getText(), text3.getText(), text4.getText(), text5.getText(), text6.getText(),text7.getText(), text8.getText(), null, text10.getText(),imageSelected);
 		//Main.registo("Revisor", false, text1.getText(),text2.getText(), text3.getText(), text4.getText(), text5.getText(), text6.getText(),text7.getText(), text8.getText(), text9.getText(), null);
 		getContentPane().removeAll();
 		revalidate();

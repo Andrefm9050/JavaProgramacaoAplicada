@@ -37,6 +37,9 @@ public class SelectObj extends JFrame implements ActionListener{
 	JList<Listable> list;
 	ListModel lista;
 	ArrayList<Listable> data;
+	JCheckBox sortOrder;
+	JRadioButtonCustom lastRadio;
+	JTextField pesquisa;
 	
 	public SelectObj(ObjectSelector o, Listable[] objects) {
 		
@@ -119,9 +122,6 @@ public class SelectObj extends JFrame implements ActionListener{
 		
 		
 	}
-	JCheckBox sortOrder;
-	JRadioButtonCustom lastRadio;
-	JTextField pesquisa;
 	
 	void termoPesquisaMudado(ActionEvent e) {
 		sort(lastRadio,sortOrder.isSelected());
