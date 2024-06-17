@@ -37,13 +37,15 @@ public class InterfaceGrafica extends JFrame implements ActionListener,ObjectSel
 		jButton.setFont(new Font("Arial", Font.BOLD,20));
 		jButton.setForeground(new Color(255,255,255));
 		jButton.setBackground(new Color(0,0,0));
+		jButton.setToolTipText("Ao pressionar o botão Login irá ser redirecionado para página de Login");
 		add(jButton);
 
 		JButton jButton1 = new JButton("Registo");
 		jButton1.setBounds(230, 300, 130, 40);
 		jButton1.setFont(new Font("Arial", Font.BOLD,20));
 		jButton1.setForeground(new Color(255,255,255));
-		jButton1.setBackground(new Color(0,0,0));		
+		jButton1.setBackground(new Color(0,0,0));
+		jButton1.setToolTipText("Ao pressionar o botão Registo irá ser redirecionado  para página de Registo");
 
 		JLabel jLabel = new JLabel("Escolha uma das opções - Registo ou Login");
 		jLabel.setBounds(200, 10, 400, 400);
@@ -131,6 +133,7 @@ public class InterfaceGrafica extends JFrame implements ActionListener,ObjectSel
 		jButton.setFont(new Font("Arial", Font.BOLD,20));
 		jButton.setForeground(new Color(255,255,255));
 		jButton.setBackground(new Color(0,0,0));
+		jButton.setToolTipText("Escolher tipo de conta Autor");
 		add(jButton);
 
 		JButton jButton1 = new JButton("Revisor");
@@ -138,6 +141,7 @@ public class InterfaceGrafica extends JFrame implements ActionListener,ObjectSel
 		jButton1.setFont(new Font("Arial", Font.BOLD,20));
 		jButton1.setForeground(new Color(255,255,255));
 		jButton1.setBackground(new Color(0,0,0));
+		jButton1.setToolTipText("Escolher tipo de conta Revisor");
 		add(jButton1);
 
 		JButton jButton2 = new JButton("Back");
@@ -145,6 +149,7 @@ public class InterfaceGrafica extends JFrame implements ActionListener,ObjectSel
 		jButton2.setFont(new Font("Arial", Font.BOLD,20));
 		jButton2.setForeground(new Color(255,255,255));
 		jButton2.setBackground(new Color(0,0,0));
+		jButton2.setToolTipText("Voltar para página principal");
 		add(jButton2);
 
 		//text.getText();
@@ -192,6 +197,7 @@ public class InterfaceGrafica extends JFrame implements ActionListener,ObjectSel
 		text1 = new JTextField("username");
 		text1.setBounds(400, 70, 140, 20);
 		text1.setFont(new Font("Arial", Font.ROMAN_BASELINE, 13));
+		text1.setToolTipText("Insira o seu username");
 		add(text1);
 
 		JLabel jLabel3 = new JLabel("Password: ");
@@ -202,6 +208,7 @@ public class InterfaceGrafica extends JFrame implements ActionListener,ObjectSel
 		text2 = new JTextField("password");
 		text2.setBounds(400, 90, 140, 20);
 		text2.setFont(new Font("Arial", Font.ROMAN_BASELINE, 13));
+		text2.setToolTipText("Insira a sua password");
 		add(text2);
 
 		JLabel jLabel4 = new JLabel("Nome: ");
@@ -212,6 +219,7 @@ public class InterfaceGrafica extends JFrame implements ActionListener,ObjectSel
 		text3 = new JTextField("nome");
 		text3.setBounds(400, 110, 140, 20);
 		text3.setFont(new Font("Arial", Font.ROMAN_BASELINE, 13));
+		text3.setToolTipText("Insira o seu nome");
 		add(text3);
 
 		JLabel jLabel5 = new JLabel("Email: ");
@@ -222,6 +230,7 @@ public class InterfaceGrafica extends JFrame implements ActionListener,ObjectSel
 		text4 = new JTextField("email");
 		text4.setBounds(400, 130, 140, 20);
 		text4.setFont(new Font("Arial", Font.ROMAN_BASELINE, 13));
+		text4.setToolTipText("Insira o seu email no formato axzc@exmail.com");
 		add(text4);
 
 		JLabel jLabel6 = new JLabel("Morada: ");
@@ -232,6 +241,7 @@ public class InterfaceGrafica extends JFrame implements ActionListener,ObjectSel
 		text5 = new JTextField("morada");
 		text5.setBounds(400, 150, 140, 20);
 		text5.setFont(new Font("Arial", Font.ROMAN_BASELINE, 13));
+		text5.setToolTipText("Insira a sua morada");
 		add(text5);
 
 		JLabel jLabel7 = new JLabel("NIF: ");
@@ -242,6 +252,7 @@ public class InterfaceGrafica extends JFrame implements ActionListener,ObjectSel
 		text6 = new JTextField("nif");
 		text6.setBounds(400, 170, 140, 20);
 		text6.setFont(new Font("Arial", Font.ROMAN_BASELINE, 13));
+		text6.setToolTipText("Insira o seu numero nif, deverá ter 9 algarismos");
 		add(text6);
 
 		JLabel jLabel8 = new JLabel("Telefone: ");
@@ -252,6 +263,7 @@ public class InterfaceGrafica extends JFrame implements ActionListener,ObjectSel
 		text7 = new JTextField("telefone");
 		text7.setBounds(400, 190, 140, 20);
 		text7.setFont(new Font("Arial", Font.ROMAN_BASELINE, 13));
+		text7.setToolTipText("Insira o seu numero de telefone, deverá começar por 9, 2 ou 3 e ter 9 algarismos");
 		add(text7);
 
 		JLabel jLabel9 = new JLabel("Formacao: ");
@@ -262,16 +274,18 @@ public class InterfaceGrafica extends JFrame implements ActionListener,ObjectSel
 		text8 = new JTextField("formacao");
 		text8.setBounds(400, 210, 140, 20);
 		text8.setFont(new Font("Arial", Font.ROMAN_BASELINE, 13));
+		text8.setToolTipText("Insira a sua formacao");
 		add(text8);
 
 		JLabel jLabel11 = new JLabel("Area: ");
-		jLabel11.setBounds(275, 210, 300, 100);
+		jLabel11.setBounds(350, 190, 300, 100);
 		jLabel11.setFont(new Font("Arial", Font.PLAIN, 18));
 		add(jLabel11);
 
 		text9 = new JTextField("area especializacao");
-		text9.setBounds(400, 250, 140, 20);
+		text9.setBounds(400, 230, 140, 20);
 		text9.setFont(new Font("Arial", Font.ROMAN_BASELINE, 13));
+		text9.setToolTipText("Insira a sua area de especializacao");
 		add(text9);
 
 		JButton jButton = new JButton("Back");
@@ -279,6 +293,7 @@ public class InterfaceGrafica extends JFrame implements ActionListener,ObjectSel
 		jButton.setFont(new Font("Arial", Font.BOLD,20));
 		jButton.setForeground(new Color(255,255,255));
 		jButton.setBackground(new Color(0,0,0));
+		jButton.setToolTipText("Voltar para página principal");
 		add(jButton);
 
 		JButton jButton1 = new JButton("Ok");
@@ -286,6 +301,7 @@ public class InterfaceGrafica extends JFrame implements ActionListener,ObjectSel
 		jButton1.setFont(new Font("Arial", Font.BOLD,20));
 		jButton1.setForeground(new Color(255,255,255));
 		jButton1.setBackground(new Color(0,0,0));
+		jButton1.setToolTipText("Confirmar registo");
 		add(jButton1);
 
 		//text.getText();
@@ -338,6 +354,7 @@ public class InterfaceGrafica extends JFrame implements ActionListener,ObjectSel
 		text1 = new JTextField("username");
 		text1.setBounds(400, 70, 140, 20);
 		text1.setFont(new Font("Arial", Font.ROMAN_BASELINE, 13));
+		text1.setToolTipText("Insira o seu username");
 		add(text1);
 
 		JLabel jLabel3 = new JLabel("Password: ");
@@ -348,6 +365,7 @@ public class InterfaceGrafica extends JFrame implements ActionListener,ObjectSel
 		text2 = new JTextField("password");
 		text2.setBounds(400, 90, 140, 20);
 		text2.setFont(new Font("Arial", Font.ROMAN_BASELINE, 13));
+		text2.setToolTipText("Insira a sua password");
 		add(text2);
 
 		JLabel jLabel4 = new JLabel("Nome: ");
@@ -358,6 +376,7 @@ public class InterfaceGrafica extends JFrame implements ActionListener,ObjectSel
 		text3 = new JTextField("nome");
 		text3.setBounds(400, 110, 140, 20);
 		text3.setFont(new Font("Arial", Font.ROMAN_BASELINE, 13));
+		text3.setToolTipText("Insira o seu nome");
 		add(text3);
 
 		JLabel jLabel5 = new JLabel("Email: ");
@@ -368,6 +387,7 @@ public class InterfaceGrafica extends JFrame implements ActionListener,ObjectSel
 		text4 = new JTextField("email");
 		text4.setBounds(400, 130, 140, 20);
 		text4.setFont(new Font("Arial", Font.ROMAN_BASELINE, 13));
+		text4.setToolTipText("Insira o seu email no formato axzc@exmail.com");
 		add(text4);
 
 		JLabel jLabel6 = new JLabel("Morada: ");
@@ -378,6 +398,7 @@ public class InterfaceGrafica extends JFrame implements ActionListener,ObjectSel
 		text5 = new JTextField("morada");
 		text5.setBounds(400, 150, 140, 20);
 		text5.setFont(new Font("Arial", Font.ROMAN_BASELINE, 13));
+		text5.setToolTipText("Insira a sua morada");
 		add(text5);
 
 		JLabel jLabel7 = new JLabel("NIF: ");
@@ -388,6 +409,7 @@ public class InterfaceGrafica extends JFrame implements ActionListener,ObjectSel
 		text6 = new JTextField("nif");
 		text6.setBounds(400, 170, 140, 20);
 		text6.setFont(new Font("Arial", Font.ROMAN_BASELINE, 13));
+		text6.setToolTipText("Insira o seu numero nif, deverá ter 9 algarismos");
 		add(text6);
 
 		JLabel jLabel8 = new JLabel("Telefone: ");
@@ -398,26 +420,29 @@ public class InterfaceGrafica extends JFrame implements ActionListener,ObjectSel
 		text7 = new JTextField("telefone");
 		text7.setBounds(400, 190, 140, 20);
 		text7.setFont(new Font("Arial", Font.ROMAN_BASELINE, 13));
+		text7.setToolTipText("Insira o seu numero de telefone, deverá começar por 9, 2 ou 3 e ter 9 algarismos");
 		add(text7);
 
 		JLabel jLabel9 = new JLabel("Data Inicio Atividade: ");
-		jLabel9.setBounds(305, 170, 300, 100);
+		jLabel9.setBounds(225, 170, 300, 100);
 		jLabel9.setFont(new Font("Arial", Font.PLAIN, 18));
 		add(jLabel9);
 
 		text8 = new JTextField("aaaa-mm-dd");
 		text8.setBounds(400, 210, 140, 20);
 		text8.setFont(new Font("Arial", Font.ROMAN_BASELINE, 13));
+		text8.setToolTipText("Insira a data de inicio de atividade no formato aaaa-mm-dd");
 		add(text8);
 
 		JLabel jLabel11 = new JLabel("Estilo Literario: ");
-		jLabel11.setBounds(275, 210, 300, 100);
+		jLabel11.setBounds(275, 190, 300, 100);
 		jLabel11.setFont(new Font("Arial", Font.PLAIN, 18));
 		add(jLabel11);
 
 		text10 = new JTextField("estilo literario");
-		text10.setBounds(400, 250, 140, 20);
+		text10.setBounds(400, 230, 140, 20);
 		text10.setFont(new Font("Arial", Font.ROMAN_BASELINE, 13));
+		text10.setToolTipText("Insira o seu estilo literario");
 		add(text10);
 
 
@@ -426,6 +451,7 @@ public class InterfaceGrafica extends JFrame implements ActionListener,ObjectSel
 		jButton.setFont(new Font("Arial", Font.BOLD,20));
 		jButton.setForeground(new Color(255,255,255));
 		jButton.setBackground(new Color(0,0,0));
+		jButton.setToolTipText("Voltar para página principal");
 		add(jButton);
 
 
@@ -435,6 +461,7 @@ public class InterfaceGrafica extends JFrame implements ActionListener,ObjectSel
 		jButton1.setFont(new Font("Arial", Font.BOLD,20));
 		jButton1.setForeground(new Color(255,255,255));
 		jButton1.setBackground(new Color(0,0,0));
+		jButton.setToolTipText("Confirmar registo");
 		add(jButton1);
 
 		//text.getText();
@@ -481,12 +508,14 @@ public class InterfaceGrafica extends JFrame implements ActionListener,ObjectSel
 		jButton.setFont(new Font("Arial", Font.BOLD,20));
 		jButton.setForeground(new Color(255,255,255));
 		jButton.setBackground(new Color(0,0,0));
+		jButton.setToolTipText("Confirmar Login");
 
 		JButton jButton1 = new JButton("Back");
 		jButton1.setBounds(240, 240, 130, 40);
 		jButton1.setFont(new Font("Arial", Font.BOLD,20));
 		jButton1.setForeground(new Color(255,255,255));
 		jButton1.setBackground(new Color(0,0,0));
+		jButton1.setToolTipText("Voltar para página principal");
 
 
 		JLabel jLabel = new JLabel("Username: ");
@@ -496,6 +525,7 @@ public class InterfaceGrafica extends JFrame implements ActionListener,ObjectSel
 		text = new JTextField("username");
 		text.setBounds(380, 152, 100, 17);
 		text.setFont(new Font("Arial", Font.ROMAN_BASELINE, 13));
+		text.setToolTipText("Insira o seu username");
 
 
 		JLabel jLabel1 = new JLabel("Password:");
@@ -505,6 +535,7 @@ public class InterfaceGrafica extends JFrame implements ActionListener,ObjectSel
 		text1 = new JTextField("password");
 		text1.setBounds(380, 190, 100, 17);
 		text1.setFont(new Font("Arial", Font.ROMAN_BASELINE, 13));
+		text1.setToolTipText("Insira a sua password");
 
 
 		//text.getText();

@@ -26,6 +26,7 @@ public class InterfaceRevisor extends JFrame implements ActionListener,ObjectSel
         jButton1.setFont(new Font("Arial", Font.BOLD,16));
         jButton1.setForeground(new Color(255,255,255));
         jButton1.setBackground(new Color(0,0,0));
+        jButton1.setToolTipText("Visualizar notificações de revisões");
         add(jButton1);
 
         JButton jButton2 = new JButton("Revisões");
@@ -33,6 +34,7 @@ public class InterfaceRevisor extends JFrame implements ActionListener,ObjectSel
         jButton2.setFont(new Font("Arial", Font.BOLD,16));
         jButton2.setForeground(new Color(255,255,255));
         jButton2.setBackground(new Color(0,0,0));
+        jButton2.setToolTipText("Visualizar todas as revisões");
         add(jButton2);
 
         JButton jButton3 = new JButton("Pedido Remover Conta");
@@ -40,6 +42,7 @@ public class InterfaceRevisor extends JFrame implements ActionListener,ObjectSel
         jButton3.setFont(new Font("Arial", Font.BOLD,16));
         jButton3.setForeground(new Color(255,255,255));
         jButton3.setBackground(new Color(0,0,0));
+        jButton3.setToolTipText("Realizar pedido de remoção de conta");
         add(jButton3);
 
         JButton jButton4 = new JButton("Listar meus pedidos de revisao");
@@ -47,6 +50,7 @@ public class InterfaceRevisor extends JFrame implements ActionListener,ObjectSel
         jButton4.setFont(new Font("Arial", Font.BOLD,16));
         jButton4.setForeground(new Color(255,255,255));
         jButton4.setBackground(new Color(0,0,0));
+        jButton4.setToolTipText("Visualizar os pedidos feitos pela conta logada");
         add(jButton4);
 
         JButton jButton5 = new JButton("Sair");
@@ -54,6 +58,7 @@ public class InterfaceRevisor extends JFrame implements ActionListener,ObjectSel
         jButton5.setFont(new Font("Arial", Font.BOLD,16));
         jButton5.setForeground(new Color(255,255,255));
         jButton5.setBackground(new Color(0,0,0));
+        jButton5.setToolTipText("Voltar para a página principal");
         add(jButton5);
 
 

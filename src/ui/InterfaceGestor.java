@@ -27,6 +27,7 @@ public class InterfaceGestor extends JFrame implements ActionListener,ObjectSele
         jButton1.setFont(new Font("Arial", Font.BOLD,16));
         jButton1.setForeground(new Color(255,255,255));
         jButton1.setBackground(new Color(0,0,0));
+        jButton1.setToolTipText("Aprovar/Reprovar pedidos de registo de utilizadores");
         add(jButton1);
 
         JButton jButton2 = new JButton("Criar conta Gestor");
@@ -34,6 +35,7 @@ public class InterfaceGestor extends JFrame implements ActionListener,ObjectSele
         jButton2.setFont(new Font("Arial", Font.BOLD,16));
         jButton2.setForeground(new Color(255,255,255));
         jButton2.setBackground(new Color(0,0,0));
+        jButton2.setToolTipText("Criar uma conta do tipo gestor");
         add(jButton2);
 
         JButton jButton3 = new JButton("Ativar/Inativar Conta");
@@ -41,6 +43,7 @@ public class InterfaceGestor extends JFrame implements ActionListener,ObjectSele
         jButton3.setFont(new Font("Arial", Font.BOLD,16));
         jButton3.setForeground(new Color(255,255,255));
         jButton3.setBackground(new Color(0,0,0));
+        jButton3.setToolTipText("Ativar/Inativar uma conta de qualquer tipo");
         add(jButton3);
 
         JButton jButton4 = new JButton("Pedido Remover Conta");
@@ -48,13 +51,15 @@ public class InterfaceGestor extends JFrame implements ActionListener,ObjectSele
         jButton4.setFont(new Font("Arial", Font.BOLD,16));
         jButton4.setForeground(new Color(255,255,255));
         jButton4.setBackground(new Color(0,0,0));
+        jButton4.setToolTipText("Fazer um pedido de remoção de conta (conta logada)");
         add(jButton4);
 
-        JButton jButton5 = new JButton("Pedidos  Remoção Conta");
+        JButton jButton5 = new JButton("Pedidos Remoção Conta");
         jButton5.setBounds(245, 220, 302, 40);
         jButton5.setFont(new Font("Arial", Font.BOLD,16));
         jButton5.setForeground(new Color(255,255,255));
         jButton5.setBackground(new Color(0,0,0));
+        jButton5.setToolTipText("Aprovar/Reprovar pedidos de registo de utilizadores");
         add(jButton5);
 
         JButton jButton6 = new JButton("Pedidos Revisao");
@@ -62,6 +67,7 @@ public class InterfaceGestor extends JFrame implements ActionListener,ObjectSele
         jButton6.setFont(new Font("Arial", Font.BOLD,16));
         jButton6.setForeground(new Color(255,255,255));
         jButton6.setBackground(new Color(0,0,0));
+        jButton6.setToolTipText("Visualizar pedidos de revisao");
         add(jButton6);
 
 
@@ -70,6 +76,7 @@ public class InterfaceGestor extends JFrame implements ActionListener,ObjectSele
         jButton7.setFont(new Font("Arial", Font.BOLD,16));
         jButton7.setForeground(new Color(255,255,255));
         jButton7.setBackground(new Color(0,0,0));
+        jButton7.setToolTipText("Visualizar todos os utilizadores");
         add(jButton7);
 
         JButton jButton8 = new JButton("Listar Pedidos Revisao");
@@ -77,6 +84,7 @@ public class InterfaceGestor extends JFrame implements ActionListener,ObjectSele
         jButton8.setFont(new Font("Arial", Font.BOLD,16));
         jButton8.setForeground(new Color(255,250,255));
         jButton8.setBackground(new Color(0,0,0));
+        jButton8.setToolTipText("Visualizar todos os pedidos de revisao de obra");
         add(jButton8);
 
 
@@ -85,6 +93,7 @@ public class InterfaceGestor extends JFrame implements ActionListener,ObjectSele
         jButton9.setFont(new Font("Arial", Font.BOLD,16));
         jButton9.setForeground(new Color(255,255,255));
         jButton9.setBackground(new Color(0,0,0));
+        jButton9.setToolTipText("Visualizar todos os pedidos de revisao por finalizar por data");
         add(jButton9);
 
 
@@ -93,6 +102,7 @@ public class InterfaceGestor extends JFrame implements ActionListener,ObjectSele
         jButton10.setFont(new Font("Arial", Font.BOLD,16));
         jButton10.setForeground(new Color(255,255,255));
         jButton10.setBackground(new Color(0,0,0));
+        jButton10.setToolTipText("Visualizar pedidos de revisao de uma obra");
         add(jButton10);
 
 
@@ -101,6 +111,7 @@ public class InterfaceGestor extends JFrame implements ActionListener,ObjectSele
         jButton11.setFont(new Font("Arial", Font.BOLD,16));
         jButton11.setForeground(new Color(255,255,255));
         jButton11.setBackground(new Color(0,0,0));
+        jButton11.setToolTipText("Volta para a pagina principal");
         add(jButton11);
     }
 
