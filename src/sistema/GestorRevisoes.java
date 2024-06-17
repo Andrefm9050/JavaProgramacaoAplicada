@@ -16,37 +16,37 @@ public class GestorRevisoes {
 	}
 	
 	public boolean adicionarAnotacaoRevisao(int revID, Anotacao anot) {
-		return false;
+		return BDDriver.adicionarAnotacaoRevisao(revID, anot);
 	}
 	
 	public boolean adicionarObservacaoRevisao(int revID, String obs) {
-		return false;
+		return BDDriver.adicionarObservacaoRevisao(revID, obs);
 	}
 	
-	public boolean adicionarLicensaRevisao(int revID, int licID) {
-		return false;
+	public boolean adicionarLicensaRevisao(int revID, Licensa lic) {
+		return BDDriver.adicionarLicensaRevisao(lic, revID);
 	}
 	
 	public boolean setRevisaoEstado(int revID, EstadoRevisao estado) {
-		return false;
+		return BDDriver.atualizarEstadoRevisao(revID, EstadoRevisao.estadoToInt(estado));
 	}
 	
 	public boolean setPagarRevisao(int revID, float valor) {
-		return false;
+		return BDDriver.setPagarRevisao(revID, valor);
 	}
 	public boolean setAdicionarTempoRevisao(int revID, int minutes) {
-		return false;
+		return BDDriver.setAdicionarTempoRevisao(revID, minutes);
 	}
 	public boolean setRevisorResponsavelRevisao(int revID, int revisorID) {
-		return false;
+		return BDDriver.definirRevisorResponsavel(revID, revisorID);
 	}
 	
 	public boolean setRevisorResponsavelConfirmarRevisao(int revID, boolean valor) {
-		return false;
+		return BDDriver.confirmarRevisorResponsavel(revID, valor);
 	}
 	
 	public Revisao[] listarRevisoes() {
-		return null;
+		return BDDriver.listarRevisoes();
 	}
 	public Revisao[] listarRevisoesPorData() {
 		return null;

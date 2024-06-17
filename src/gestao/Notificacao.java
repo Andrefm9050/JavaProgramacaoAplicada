@@ -35,5 +35,8 @@ public class Notificacao implements Comparable<Notificacao>{
 	public String getDescricao() {
 		return descricao;
 	}
+	public boolean getLida() {
+		return lida;
+	}
 	
 }

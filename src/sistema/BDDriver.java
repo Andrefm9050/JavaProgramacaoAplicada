@@ -196,10 +196,10 @@ public class BDDriver {
 	   return logslist.toArray(new Log[0]);
    }
    
-   public static boolean adicionarLicensaRevisao(Licensa l, Revisao r) {
+   public static boolean adicionarLicensaRevisao(Licensa l, int r) {
 	   try {
 		PreparedStatement ps = conn.prepareStatement("SELECT * FROM criar_licensa_numa_revisao(?,?,?,?)");
-		ps.setInt(1, r.getRevisaoID());
+		ps.setInt(1, r);
 		ps.setString(2,l.getNomeLicensa());
 		ps.setInt(3, l.getNumeroSerie());
 		ps.setDate(4, l.getExpiracao());
@@ -233,6 +233,22 @@ public class BDDriver {
 	   
 	   
 	   return false;
+   }
+   
+   public static boolean setNotificacaoLida(int notID, boolean val) {
+	   try {
+		   PreparedStatement ps = conn.prepareStatement("CALL definir_lido_notificacao(?,?)");
+		   ps.setInt(1, notID);
+		   ps.setBoolean(2, val);
+		   ps.execute();
+		   ps.close();
+	   }
+	   catch (SQLException e) {
+		   e.printStackTrace();
+		   return false;
+	   }
+	   
+	   return true;
    }
    
 
@@ -843,12 +859,12 @@ public class BDDriver {
  	
  	}
  	
- 	public static boolean adicionarAnotacaoRevisao(Revisao rev,Anotacao a) {
+ 	public static boolean adicionarAnotacaoRevisao(int rev,Anotacao a) {
  		
  		try {
  			
  			PreparedStatement ps = conn.prepareStatement("SELECT * FROM criar_anotacao(?,?,?,?)");
- 			ps.setInt(1, rev.getRevisaoID());
+ 			ps.setInt(1, rev);
  			ps.setString(2,a.getDescricao());
  			ps.setInt(3,a.getPagina());
  			ps.setInt(4, a.getParagrafo());
@@ -900,7 +916,7 @@ public class BDDriver {
  		}
  	}
  	
- 	public static void confirmarRevisorResponsavel(int idRevisao, boolean confirm) {
+ 	public static boolean confirmarRevisorResponsavel(int idRevisao, boolean confirm) {
  		try {
         	//Revisao revisao = (Autor) GestorContas.pesquisarUtilizadoresUserName(user);
         	
@@ -912,11 +928,12 @@ public class BDDriver {
 	            ps.setBoolean(2, confirm); //isbn
 	          ps.execute();  
 	          ps.close();
-	         
+	         return true;
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}	
  	}
  	
@@ -1002,7 +1019,7 @@ public class BDDriver {
  	}
  	
  	
- 	public static void atualizarEstadoRevisao(int idRevisao, int estado) {
+ 	public static boolean atualizarEstadoRevisao(int idRevisao, int estado) {
  		try {
         	//Revisao revisao = (Autor) GestorContas.pesquisarUtilizadoresUserName(user);
         	
@@ -1016,11 +1033,12 @@ public class BDDriver {
 	            ResultSet rs = ps.executeQuery();
 	            rs.next();
 	          ps.close();
-	         
+	         return true;
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}	
  	}
  	
