@@ -309,10 +309,10 @@ public class Gestor extends Utilizador{
 	
 	@Override
 	public String toString() {
-		return "Gestor [idGestor=" + idGestor + ", getGestorID()=" + getGestorID() + ", getIdUser()=" + getIdUser()
-				+ ", getLogin()=" + getLogin() + ", getNome()=" + getNome() + 
-				", getEmail()=" + getEmail() + ", getEstado()=" + getEstado() + ", getTipo()=" + getTipo()
-				+ ", toString()=" + super.toString() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
+		return "[Gestor, IDUser=" + getIdUser()
+				+ ", login=" + getLogin()
+				+ ", email=" + getEmail()
+				+ ", estado=" + getEstado()
 				+ "]";
 	}
 

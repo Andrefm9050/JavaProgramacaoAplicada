@@ -660,14 +660,25 @@ public class BDDriver {
 	    localps.setInt(1, revisaoID);
 	    localrs = localps.executeQuery();
 	    
+
+	    
 	    ArrayList<Anotacao> anotacoes = new ArrayList<Anotacao>();
 	    while(localrs.next()) {
+	    	Revisor revResp = null;
+		    for(Revisor rev4 : revisores) {
+		    	if(revResp.getIdRevisor() == localrs.getInt("id_revisor")) {
+		    		revResp = rev4;
+		    	}
+		    }
+		    
+		    if(revResp != null)
 	    	anotacoes.add(new Anotacao(
 	    			localrs.getInt(1),
 	    			localrs.getString(4),
 	    			localrs.getInt(5),
 	    			localrs.getInt(6),
-	    			localrs.getDate(3)
+	    			localrs.getDate(3),
+	    			revResp
 	    			));
 	    }
 	    rev.setAnotacoes(anotacoes.toArray(new Anotacao[0]));
@@ -859,15 +870,16 @@ public class BDDriver {
  	
  	}
  	
- 	public static boolean adicionarAnotacaoRevisao(int rev,Anotacao a) {
+ 	public static boolean adicionarAnotacaoRevisao(Revisor revisor,int rev,Anotacao a) {
  		
  		try {
  			
- 			PreparedStatement ps = conn.prepareStatement("SELECT * FROM criar_anotacao(?,?,?,?)");
- 			ps.setInt(1, rev);
- 			ps.setString(2,a.getDescricao());
- 			ps.setInt(3,a.getPagina());
- 			ps.setInt(4, a.getParagrafo());
+ 			PreparedStatement ps = conn.prepareStatement("SELECT * FROM criar_anotacao(?,?,?,?,?)");
+ 			ps.setInt(1, revisor.getIdRevisor());
+ 			ps.setInt(2, rev);
+ 			ps.setString(3,a.getDescricao());
+ 			ps.setInt(4,a.getPagina());
+ 			ps.setInt(5, a.getParagrafo());
  			
  			ps.execute();
  			ps.close();
@@ -881,12 +893,13 @@ public class BDDriver {
  		return false;
  	}
  	
- 	public static boolean adicionarObservacaoRevisao(int revID, String obs) {
+ 	public static boolean adicionarObservacaoRevisao(Revisor revisor, int revID, String obs) {
  		
  		try {
-			PreparedStatement ps = conn.prepareStatement("SELECT * FROM criar_observacao(?,?)");
-			ps.setInt(1,revID);
-			ps.setString(2, obs);
+			PreparedStatement ps = conn.prepareStatement("SELECT * FROM criar_observacao(?,?,?)");
+			ps.setInt(1, revisor.getIdRevisor());
+			ps.setInt(2,revID);
+			ps.setString(3, obs);
 			ps.execute();
 			ps.close();
 			
@@ -937,7 +950,7 @@ public class BDDriver {
 		}	
  	}
  	
- 	public static void confirmarRevisorNormal(int idRevisao,int idRevisor, boolean confirm) {
+ 	public static boolean confirmarRevisorNormal(int idRevisao,int idRevisor, boolean confirm) {
  		try {
         	//Revisao revisao = (Autor) GestorContas.pesquisarUtilizadoresUserName(user);
         	
@@ -950,11 +963,12 @@ public class BDDriver {
 	            ps.setBoolean(3, confirm); //isbn
 	          ps.execute();  
 	          ps.close();
-	         
+	         return true;
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}
  	}
  	
@@ -996,7 +1010,7 @@ public class BDDriver {
  	}
  	
  	
- 	public static void adicionarRevisor(int idRevisao, int idRevisor) {
+ 	public static boolean adicionarRevisor(int idRevisao, int idRevisor) {
  		try {
         	//Revisao revisao = (Autor) GestorContas.pesquisarUtilizadoresUserName(user);
         	
@@ -1010,11 +1024,12 @@ public class BDDriver {
 	            ResultSet rs = ps.executeQuery();
 	            rs.next();
 	          ps.close();
-	         
+	         return true;
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}	
  	}
  	

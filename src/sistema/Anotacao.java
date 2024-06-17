@@ -2,6 +2,8 @@ package sistema;
 
 import java.util.Date;
 
+import users.Revisor;
+
 /**
  * Classe responsavel por guardar dados relevantes de uma anotacao, normalmente dados deste tipo so sao acessiveis a partir da sua revisao
  * @author Andre Rios, Andre Martins
@@ -12,6 +14,7 @@ public class Anotacao implements Comparable<Anotacao> {
 	private int pagina;
 	private int paragrafo;
 	private Date data;
+	private Revisor revisor;
 	
 	/**
 	 * @param anotID - ID da anotacao
@@ -20,12 +23,13 @@ public class Anotacao implements Comparable<Anotacao> {
 	 * @param paragrafo - Paragrafo onde esta descricao e aplicada
 	 * @param data - Data de quando esta anotacao foi criada
 	 */
-	public Anotacao(int anotID, String descricao, int pagina, int paragrafo, Date data) {
+	public Anotacao(int anotID, String descricao, int pagina, int paragrafo, Date data,Revisor rev) {
 		this.anotID = anotID;
 		this.descricao = descricao;
 		this.pagina = pagina;
 		this.paragrafo = paragrafo;
 		this.data = data;
+		this.revisor = rev;
 	}
 
 	@Override
@@ -47,5 +51,8 @@ public class Anotacao implements Comparable<Anotacao> {
 
 	public int getParagrafo() {
 		return paragrafo;
+	}
+	public Revisor getRevisor() {
+		return revisor;
 	}
 }

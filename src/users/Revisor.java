@@ -178,13 +178,11 @@ private static void pedidoRemoverConta() {
 
 @Override
 public String toString() {
-	return "Revisor [areaEspecializado=" + areaEspecializado + ", formacaoAcademica=" + formacaoAcademica
-			+ ", idRevisor=" + idRevisor + ", telefone=" + telefone + ", getIdRevisor()=" + getIdRevisor()
-			+ ", getNif()=" + getNif() + ", getTelefone()=" + getTelefone() + ", getMorada()=" + getMorada()
-			+ ", getIdUser()=" + getIdUser() + ", getLogin()=" + getLogin() + ", getNome()=" + getNome()
-			+ ", getPassword()=" + getPassword() + ", getEmail()=" + getEmail() + ", getEstado()=" + getEstado()
-			+ ", getTipo()=" + getTipo() + ", toString()=" + super.toString() + ", getClass()=" + getClass()
-			+ ", hashCode()=" + hashCode() + "]";
+	return "[Revisor, IDUser=" + getIdUser()
+			+ ", login=" + getLogin()
+			+ ", email=" + getEmail()
+			+ ", estado=" + getEstado()
+			+ "]";
 }
 
 public int getIdRevisor() {

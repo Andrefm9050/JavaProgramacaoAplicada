@@ -196,7 +196,7 @@ public class Main {
 		//BDDriver.listarUtilizadores()[1].ge
 
 		if(userLoginSEstado != null && (userLoginSEstado.getEstado().equals(EstadoConta.ativos) || userLoginSEstado.getEstado().equals(EstadoConta.por_remover))) {
-			GestorLogs.adicionarLog(userLoginSEstado, userLoginSEstado.getNome() + " fez Login!");
+			//GestorLogs.adicionarLog(userLoginSEstado, userLoginSEstado.getNome() + " fez Login!");
 
 
 			if(userLoginSEstado instanceof Gestor) {

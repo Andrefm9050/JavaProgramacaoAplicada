@@ -153,10 +153,10 @@ public class Utilizador implements Comparable<Utilizador> {
 	
 	@Override
 	public String toString() {
-		return "Utilizador [idUser=" + idUser + ", getUserID()=" + getIdUser() + ", getIdUser()=" + getIdUser()
-				+ ", getLogin()=" + getLogin() + ", getNome()=" + getNome() + 
-				", getEmail()=" + getEmail() + ", getEstado()=" + getEstado() + ", getTipo()=" + getTipo()
-				+ ", toString()=" + super.toString() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
+		return "[Utilizador, IDUser=" + getIdUser()
+				+ ", login=" + getLogin()
+				+ ", email=" + getEmail()
+				+ ", estado=" + getEstado()
 				+ "]";
 	}
 	

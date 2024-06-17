@@ -11,13 +11,22 @@ import users.Utilizador;
  */
 public class GestorLogs {
 	
+	static Utilizador session;
+	
+	public static void setUpLogger(Utilizador u) {
+		 u = session;
+	}
+	
 	/**
 	 * 
 	 * @param u - Utilizador Responsavel pelo log
 	 * @param mensagem - String Com a sua mensagem
 	 */
-	public static void adicionarLog(Utilizador u, String mensagem) {
-		BDDriver.adicionarLog(u,mensagem);
+	public static void adicionarLog(String mensagem) {
+		if(session != null)
+		BDDriver.adicionarLog(session,mensagem);
+		else
+			System.err.println("Nao foi possivel realizar logs pois o utilizador nao foi definido no GestorLogs.setUpLogger()");
 	}
 	
 	public static Log[] listarLogs() {
