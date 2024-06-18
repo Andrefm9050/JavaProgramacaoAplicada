@@ -153,7 +153,7 @@ public class InterfaceAutor extends JFrame implements ActionListener,ObjectSelec
      * @param e
      */
     void VerEstadoRevisao(ActionEvent e) {
-    	//estadoRevisao = new SelectObj(this,GestorRevisoes.listarRevisoes(userBuffer));
+    	estadoRevisao = new SelectObj(this,GestorRevisoes.listarRevisoes(userBuffer));
     }
     
     /***

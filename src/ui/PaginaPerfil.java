@@ -38,6 +38,13 @@ public class PaginaPerfil extends JFrame{
 	JTextField passInput;
 	JTextField userInput;
 	Utilizador uBuffer;
+	Gestor gestorMode;
+	
+	public PaginaPerfil(Gestor g, Utilizador u) {
+		this(u);
+		gestorMode = g;
+	}
+	
 	public PaginaPerfil(Utilizador u) {
 		uBuffer = u;
         setVisible(true);
@@ -94,6 +101,11 @@ public class PaginaPerfil extends JFrame{
 		    {
 		      if(alreadyclosing) return; //<- Nao queremos processar este dispose event
 		      //Se já estamos a fechar por outros meios
+		      
+		      if(gestorMode != null) {
+		    	  new InterfaceGestor(gestorMode);
+		    	  return;
+		      }
 
 				if(uBuffer instanceof Gestor) {
 					new InterfaceGestor((Gestor)uBuffer);
@@ -138,6 +150,13 @@ public class PaginaPerfil extends JFrame{
 	 */
 	void sair(ActionEvent e) {
 		alreadyclosing = true;
+		
+	      if(gestorMode != null) {
+	    	  new InterfaceGestor(gestorMode);
+	    	  dispose(); 
+	    	  return;
+	      }
+		
 		if(uBuffer instanceof Gestor) {
 			new InterfaceGestor((Gestor)uBuffer);
 		}

@@ -82,6 +82,7 @@ public class ConfigurarBD extends JFrame implements ActionListener,ObjectSelecto
 		ip.setFont(fontL);
 		ipField = new JTextField(9);
 		ipField.setText(valores[0]); //IP
+		ipField.setToolTipText("Endereço IP da base de dados (sem incluir porto)");
 
 		inputsIP.add(ip);
 		inputsIP.add(ipField);
@@ -93,6 +94,7 @@ public class ConfigurarBD extends JFrame implements ActionListener,ObjectSelecto
 		port.setFont(fontL);
 		portField = new JTextField(7);
 		portField.setText(valores[1]); //port
+		portField.setToolTipText("Porto da base de dados");
 		inputsPort.add(port);
 		inputsPort.add(portField);
 
@@ -103,6 +105,7 @@ public class ConfigurarBD extends JFrame implements ActionListener,ObjectSelecto
 		bd.setFont(fontL);
 		bdField = new JTextField(12);
 		bdField.setText(valores[2]);
+		bdField.setToolTipText("Nome da base de dados a usar");
 		inputsBD.add(bd);
 		inputsBD.add(bdField);
 
@@ -113,6 +116,7 @@ public class ConfigurarBD extends JFrame implements ActionListener,ObjectSelecto
 		login.setFont(fontL);
 		loginField = new JTextField(24);
 		loginField.setText(valores[3]);
+		loginField.setToolTipText("login da base de dados");
 		inputsLogin.add(login);
 		inputsLogin.add(loginField);
 
@@ -123,6 +127,7 @@ public class ConfigurarBD extends JFrame implements ActionListener,ObjectSelecto
 		password.setFont(fontL);
 		passwordField = new JTextField(24);
 		passwordField.setText(valores[4]);
+		passwordField.setToolTipText("password da conta da base de dados");
 		inputsPassword.add(password);
 		inputsPassword.add(passwordField);
 
@@ -140,8 +145,10 @@ public class ConfigurarBD extends JFrame implements ActionListener,ObjectSelecto
 		buttonsMenu.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
 		btnMudar = new JButton("Aceitar");
+		btnMudar.setToolTipText("Aceitar definições atuais e tentar conexão");
 		btnMudar.addActionListener(this::AceitarBtnEvent);
 		btnSair = new JButton("Sair (Fechar Aplicação)");
+		btnSair.setToolTipText("Sair da aplicação");
 		btnSair.addActionListener(this::SairAplicacao);
 
 		buttonsMenu.add(btnMudar);

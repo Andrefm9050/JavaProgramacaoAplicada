@@ -51,6 +51,7 @@ public class InterfaceInserirObra extends JFrame{
 		JLabel palavrasL = new JLabel("N Palavras");
 		palavrasPanel.add(palavrasL);
 		nPalavrasField = new JTextField(8);
+		nPalavrasField.setToolTipText("Numero de palavras da Obra");
 		palavrasPanel.add(nPalavrasField);
 		add(palavrasPanel);
 		
@@ -59,6 +60,7 @@ public class InterfaceInserirObra extends JFrame{
 		JLabel tituloL = new JLabel("Titulo");
 		tituloPanel.add(tituloL);
 		tituloField = new JTextField(8);
+		tituloField.setToolTipText("Titulo da Obra");
 		tituloPanel.add(tituloField);
 		add(tituloPanel);
 		
@@ -67,6 +69,7 @@ public class InterfaceInserirObra extends JFrame{
 		JLabel subTituloL = new JLabel("SubTitulo");
 		subtituloPanel.add(subTituloL);
 		subTituloField = new JTextField(8);
+		subTituloField.setToolTipText("Subtitulo da Obra");
 		subtituloPanel.add(subTituloField);
 		add(subtituloPanel);
 		
@@ -77,6 +80,7 @@ public class InterfaceInserirObra extends JFrame{
 		tipoField = new JComboBox(new String[] {TipoPublicacao.capaDura.toString(),
 				TipoPublicacao.deBolso.toString(),
 				TipoPublicacao.ebook.toString()});
+		tipoField.setToolTipText("Tipo da obra");
 		tipoPanel.add(tipoField);
 		add(tipoPanel);
 		
@@ -90,6 +94,7 @@ public class InterfaceInserirObra extends JFrame{
 				EstiloLiterario.narrativo.toString(),
 				EstiloLiterario.thriller.toString()
 		});
+		estiloField.setToolTipText("Estilo da Obra");
 		estiloPanel.add(estiloField);
 		add(estiloPanel);
 		
@@ -98,6 +103,7 @@ public class InterfaceInserirObra extends JFrame{
 		JLabel edicaoL = new JLabel("Edicao");
 		edicaoPanel.add(edicaoL);
 		nEdicaoField = new JTextField(8);
+		nEdicaoField.setToolTipText("Numero da edicao da obra");
 		edicaoPanel.add(nEdicaoField);
 		add(edicaoPanel);
 		
@@ -105,7 +111,9 @@ public class InterfaceInserirObra extends JFrame{
 		JPanel optionsPanel = new JPanel();
 		optionsPanel.setLayout(new FlowLayout());
 		JButton confirm = new JButton("Adicionar");
+		confirm.setToolTipText("Confirmar adição de Obra");
 		JButton cancelar = new JButton("Cancelar");
+		cancelar.setToolTipText("Cancelar e voltar para o menu anterior");
 		confirm.addActionListener(this::AdicionarEvento);
 		cancelar.addActionListener(this::CancelarEvento);
 		optionsPanel.add(confirm);

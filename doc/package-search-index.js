@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"m":"ProjetoProgramacaoAplicada","l":"gestao"},{"m":"ProjetoProgramacaoAplicada","l":"pastaPrincipal"},{"m":"ProjetoProgramacaoAplicada","l":"sistema"},{"m":"ProjetoProgramacaoAplicada","l":"users"}];updateSearchResults();

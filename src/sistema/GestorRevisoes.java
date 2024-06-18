@@ -224,16 +224,23 @@ public class GestorRevisoes {
 		ArrayList<Revisao> actualList = new ArrayList<Revisao>();
 		
 		for(var rev : list) {
-			if(rev.getRevisorResponsavel() != null && rev.getRevisorResponsavel().getIdRevisor() != user.getIdRevisor()) {
+			if(rev.getRevisorResponsavel() != null && rev.getRevisorResponsavel().getIdRevisor() == user.getIdRevisor()) {
+				actualList.add(rev);
+				continue;
+			}
+				
+				
 				for(var revisorConf :rev.getRevisoresConfirmados()) {
 					if(revisorConf.getIdRevisor() == user.getIdRevisor()) {
 						actualList.add(rev);
 					}
 				}
-			}
-			else if(rev.getRevisorResponsavel() != null) {
-				actualList.add(rev);
-			}
+				for(var revisorConf :rev.getRevisoresNaoConfirmados()) {
+					if(revisorConf.getIdRevisor() == user.getIdRevisor()) {
+						actualList.add(rev);
+					}
+				}
+
 		}
 		
 		return actualList.toArray(new Revisao[0]);

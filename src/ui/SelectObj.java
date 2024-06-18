@@ -19,7 +19,7 @@ import java.util.List;
 public class SelectObj extends JFrame implements ActionListener{
 
 	ObjectSelector o;
-	JButton teste = new JButton("Test");
+	JButton teste = new JButton("Selecionar");
 	JList<Listable> list;
 	ListModel lista;
 	ArrayList<Listable> data;
@@ -53,6 +53,7 @@ public class SelectObj extends JFrame implements ActionListener{
 		add(jcp,BorderLayout.CENTER);
 
 		this.o = o;
+		teste.setToolTipText("Confirmar seleção");
 		teste.setFont(new Font("Arial", Font.BOLD,20));
 		teste.setSize(130,40);
 
