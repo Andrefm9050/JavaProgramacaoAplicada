@@ -31,7 +31,7 @@ public static void menuRevisor(Revisor login1) {
 		//executaOpcao(opcao, login1);
 		
 	//}
-	new InterfaceRevisor();
+	new InterfaceRevisor(login1);
 	
 }
 
