@@ -1,13 +1,24 @@
 package ui;
 
 import javax.swing.*;
+
+import sistema.BDDriver;
+import sistema.GestorObras;
+import sistema.GestorRevisoes;
+import users.Autor;
+import users.GestorContas;
+import sistema.Obra;
+import sistema.Revisao;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class InterfaceAutor extends JFrame implements ActionListener,ObjectSelector{
 
-    public InterfaceAutor(){
+	Autor userBuffer;
+    public InterfaceAutor(Autor user){
+    	userBuffer = user;
         setVisible(true);
         setSize(800, 600);
         setTitle("Menu Autor");
@@ -27,6 +38,7 @@ public class InterfaceAutor extends JFrame implements ActionListener,ObjectSelec
         jButton1.setForeground(new Color(255,255,255));
         jButton1.setBackground(new Color(0,0,0));
         jButton1.setToolTipText("Realizar o processo de submeter uma obra para revisão");
+        jButton1.addActionListener(this::SubmeterObraRevisao);
         add(jButton1);
 
         JButton jButton2 = new JButton("Estado Da Revisão");
@@ -35,6 +47,7 @@ public class InterfaceAutor extends JFrame implements ActionListener,ObjectSelec
         jButton2.setForeground(new Color(255,255,255));
         jButton2.setBackground(new Color(0,0,0));
         jButton2.setToolTipText("Visualizar estado de uma revisão");
+        jButton2.addActionListener(this::VerEstadoRevisao);
         add(jButton2);
 
         JButton jButton3 = new JButton("Inserir Obra");
@@ -51,6 +64,7 @@ public class InterfaceAutor extends JFrame implements ActionListener,ObjectSelec
         jButton4.setForeground(new Color(255,255,255));
         jButton4.setBackground(new Color(0,0,0));
         jButton4.setToolTipText("Realizar o processo de pedido de remoção de conta");
+        jButton4.addActionListener(this::RemoverContaPopUp);
         add(jButton4);
 
         JButton jButton5 = new JButton("Listar Pedidos Revisao Minhas Obras");
@@ -89,7 +103,44 @@ public class InterfaceAutor extends JFrame implements ActionListener,ObjectSelec
         repaint();
         this.dispose();
         new InterfaceGrafica();
+        JButton perfil = new JButton("Perfil");
+        perfil.setBounds(800-150,0,150,150);
+        perfil.addActionListener(this::VerPerfil);
+        add(perfil);
+
+
     }
+
+    SelectObj estadoRevisao;
+
+    void VerEstadoRevisao(ActionEvent e) {
+    	estadoRevisao = new SelectObj(this,GestorRevisoes.listarRevisoes(userBuffer));
+    }
+
+    void RemoverContaPopUp(ActionEvent e) {
+    	int option = JOptionPane.showConfirmDialog(this, "Deseja mesmo pedir a remoção da sua conta?");
+    	if(option == 0) {
+    		GestorContas.pedidoRemoverConta(userBuffer.getLogin());
+    		JOptionPane.showMessageDialog(this, "Sucesso! Ainda pode aceder ao sistema até a remoçao ser confirmada");
+    	}
+    }
+
+    void SubmeterObraRevisao(ActionEvent e) {
+    	Obra[] list = GestorObras.listarObras();
+    	if(list.length > 0) {
+    		new SelectObj(this,GestorObras.listarObras(userBuffer));
+    	}
+    	else {
+    		JOptionPane.showMessageDialog(this, "Nao existe obras associadas a esta conta!");
+    	}
+
+    }
+
+    void VerPerfil(ActionEvent e) {
+    	new PaginaPerfil(userBuffer);
+    	dispose();
+    }
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -98,6 +149,22 @@ public class InterfaceAutor extends JFrame implements ActionListener,ObjectSelec
 
     @Override
     public void OnObjectSelected(SelectObj component, Object object) {
+    	if(component == estadoRevisao) {
+    		if(object != null)
+    		JOptionPane.showMessageDialog(this, "Esta revisão está no estado: " + ((Revisao)object).getEstado());
+    		else
+    			JOptionPane.showMessageDialog(this, "Opção cancelada");
 
+
+    		return;
+    	}
+    	int isbn1 =GestorContas.isbnUnico();
+    	((Obra)object).setIsbn(isbn1);
+
+    	int obraID = ((Obra)object).getObraId();
+    	//obraN;
+    	BDDriver.alterarISBN(isbn1, obraID);
+    	BDDriver.adicionarRevisao(0, obraID, 0);
+    	JOptionPane.showMessageDialog(this, "Sucesso!");
     }
 }

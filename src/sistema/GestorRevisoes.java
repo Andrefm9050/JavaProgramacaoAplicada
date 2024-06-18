@@ -5,11 +5,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import gestao.GestorLogs;
+import users.Autor;
 import users.Revisor;
 
 public class GestorRevisoes {
 	
-	public boolean adicionarRevisao(Revisao rev) {
+	public static boolean adicionarRevisao(Revisao rev) {
 		try {
 			GestorLogs.adicionarLog(" registou uma nova revisao para a obra: " + rev.getObraID());
 		BDDriver.adicionarRevisao(Integer.parseInt(rev.getNumeroSerie()), rev.getObraID(), rev.getGestorID());
@@ -21,7 +22,7 @@ public class GestorRevisoes {
 		return true;
 	}
 	
-	public boolean adicionarAnotacaoRevisao(Revisor revisor,int revisaoID, Anotacao anot) {		
+	public static boolean adicionarAnotacaoRevisao(Revisor revisor,int revisaoID, Anotacao anot) {		
 		
 		GestorLogs.adicionarLog(" adicionado Anotacao na revisao: " + revisaoID);
 		
@@ -30,7 +31,7 @@ public class GestorRevisoes {
 		return BDDriver.adicionarAnotacaoRevisao(revisor,revisaoID, anot);
 	}
 	
-	public boolean adicionarObservacaoRevisao(Revisor revisor,int revID, String obs) {
+	public static boolean adicionarObservacaoRevisao(Revisor revisor,int revID, String obs) {
 		
 		GestorLogs.adicionarLog(" adicionado Observacao na revisao: " + revID);
 		
@@ -39,7 +40,7 @@ public class GestorRevisoes {
 		return BDDriver.adicionarObservacaoRevisao(revisor,revID, obs);
 	}
 	
-	public boolean adicionarLicensaRevisao(Revisor revisor,int revID, Licensa lic) {
+	public static boolean adicionarLicensaRevisao(Revisor revisor,int revID, Licensa lic) {
 		
 		GestorLogs.adicionarLog(" adicionado Licensa na revisao: " + revID);
 		
@@ -48,7 +49,7 @@ public class GestorRevisoes {
 		return BDDriver.adicionarLicensaRevisao(lic, revID);
 	}
 	
-	public boolean setRevisaoEstado(int userID,int revID, EstadoRevisao estado) {
+	public static boolean setRevisaoEstado(int userID,int revID, EstadoRevisao estado) {
 		
 		GestorLogs.adicionarLog(" definiu estado "+ estado +" na revisao: " + revID);
 		
@@ -57,21 +58,21 @@ public class GestorRevisoes {
 		return BDDriver.atualizarEstadoRevisao(revID, EstadoRevisao.estadoToInt(estado));
 	}
 	
-	public boolean setPagarRevisao(int userID,int revID, float valor) {
+	public static boolean setPagarRevisao(int userID,int revID, float valor) {
 		GestorLogs.adicionarLog(" pagou "+ valor +"€ na revisao: " + revID);
 		
 		BDDriver.registarRevisaoEvento(revID,userID," pagou a revisao com o valor de " + valor);
 		
 		return BDDriver.setPagarRevisao(revID, valor);
 	}
-	public boolean setAdicionarTempoRevisao(int userID,int revID, int minutes) {
+	public static boolean setAdicionarTempoRevisao(int userID,int revID, int minutes) {
 		GestorLogs.adicionarLog(" adicionou "+ minutes + " minutos de tempo na revisao: " + revID);
 		
 		BDDriver.registarRevisaoEvento(revID,userID," adicionou " + minutes + " minutos ao tempo total");
 		
 		return BDDriver.setAdicionarTempoRevisao(revID, minutes);
 	}
-	public boolean setRevisorResponsavelRevisao(int userID,int revID, int revisorID) {
+	public static boolean setRevisorResponsavelRevisao(int userID,int revID, int revisorID) {
 		
 		GestorLogs.adicionarLog(" definiu o revisor com ID " + revID + " como responsavel na revisao: " + revisorID);
 		
@@ -82,7 +83,7 @@ public class GestorRevisoes {
 		return BDDriver.definirRevisorResponsavel(revID, revisorID);
 	}
 	
-	public boolean setRevisorResponsavelConfirmarRevisao(int userID,int revID, boolean valor) {
+	public static boolean setRevisorResponsavelConfirmarRevisao(int userID,int revID, boolean valor) {
 		GestorLogs.adicionarLog(" confirmou como revisor responsavel com resposta: "+ valor + "na revisao: " + revID);
 		
 		BDDriver.registarRevisaoEvento(revID,userID," confirmou como revisor responsavel");
@@ -90,7 +91,7 @@ public class GestorRevisoes {
 		return BDDriver.confirmarRevisorResponsavel(revID, valor);
 	}
 	
-	public boolean setAdicionarRevisorRevisao(int userID,int revID, int revisorID) {
+	public static boolean setAdicionarRevisorRevisao(int userID,int revID, int revisorID) {
 		GestorLogs.adicionarLog(" adicionou o revisor com ID " + revisorID + " na revisao: " + revID);
 		
 		BDDriver.registarRevisaoEvento(revID,userID," adicionou revisor com ID "+revisorID+" á revisão");
@@ -98,7 +99,7 @@ public class GestorRevisoes {
 		return BDDriver.adicionarRevisor(revID, revisorID);
 	}
 	
-	public boolean setRevisorConfirmarRevisao(int userID,int revID, int revisorID, boolean valor) {
+	public static boolean setRevisorConfirmarRevisao(int userID,int revID, int revisorID, boolean valor) {
 		GestorLogs.adicionarLog(" confirmou a sua presenca na revisao: " + revID + " com resposta: " + valor);
 		
 		BDDriver.registarRevisaoEvento(revID,userID," revisor com ID: "+revisorID+" confirmou a sua precensa como revisor");
@@ -107,10 +108,20 @@ public class GestorRevisoes {
 	}
 	
 	
-	public Revisao[] listarRevisoes() {
+	public static Revisao[] listarRevisoes() {
 		return BDDriver.listarRevisoes();
 	}
-	public Revisao[] listarRevisoesPorData() {
+	public static Revisao[] listarRevisoes(Autor a) {
+		Revisao[] list = listarRevisoes();
+		ArrayList<Revisao> result = new ArrayList<Revisao>();
+		for(var res : list) {
+			if(res.getObra().getAutorID() == a.getIdAutor()) {
+				result.add(res);
+			}
+		}
+		return result.toArray(new Revisao[0]);
+	}
+	public static Revisao[] listarRevisoesPorData() {
 		ArrayList<Revisao> result = new ArrayList<Revisao>();
 		Revisao[] list = listarRevisoes();
 		for(var res : list) {
@@ -122,7 +133,7 @@ public class GestorRevisoes {
 		return result.toArray(new Revisao[0]);
 	}
 	
-	public Revisao[] listarRevisoesPorTitulo() {
+	public static Revisao[] listarRevisoesPorTitulo() {
 		ArrayList<Revisao> result = new ArrayList<Revisao>();
 		Revisao[] list = listarRevisoes();
 		for(var res : list) {
@@ -133,7 +144,7 @@ public class GestorRevisoes {
 		Collections.sort(result);
 		return result.toArray(new Revisao[0]);
 	}
-	public Revisao[] listarRevisoesPorAutor() {
+	public static Revisao[] listarRevisoesPorAutor() {
 		ArrayList<Revisao> result = new ArrayList<Revisao>();
 		Revisao[] list = listarRevisoes();
 		for(var res : list) {
@@ -144,7 +155,7 @@ public class GestorRevisoes {
 		Collections.sort(result);
 		return result.toArray(new Revisao[0]);
 	}
-	public Revisao[] pesquisarRevisoesEstado(EstadoRevisao estado) {
+	public static Revisao[] pesquisarRevisoesEstado(EstadoRevisao estado) {
 		ArrayList<Revisao> result = new ArrayList<Revisao>();
 		Revisao[] list = listarRevisoes();
 		for(var res : list) {
@@ -154,7 +165,7 @@ public class GestorRevisoes {
 
 		return result.toArray(new Revisao[0]);
 	}
-	public Revisao[] pesquisarRevisoesISBN(String ISBN) {
+	public static Revisao[] pesquisarRevisoesISBN(String ISBN) {
 		ArrayList<Revisao> result = new ArrayList<Revisao>();
 		Revisao[] list = listarRevisoes();
 		for(var res : list) {
@@ -176,7 +187,7 @@ public class GestorRevisoes {
 		return result.toArray(new Revisao[0]);
 	}
 	
-	public Revisao[] pesquisarRevisoesEntre(Date primeira, Date segunda) {
+	public static Revisao[] pesquisarRevisoesEntre(Date primeira, Date segunda) {
 		ArrayList<Revisao> result = new ArrayList<Revisao>();
 		Revisao[] list = listarRevisoes();
 		for(var res : list) {
@@ -187,7 +198,7 @@ public class GestorRevisoes {
 		return result.toArray(new Revisao[0]);
 	}
 	
-	public Revisao[] pesquisarRevisoesCriacao(Date criacao) {
+	public static Revisao[] pesquisarRevisoesCriacao(Date criacao) {
 		ArrayList<Revisao> result = new ArrayList<Revisao>();
 		Revisao[] list = listarRevisoes();
 		for(var res : list) {
@@ -197,7 +208,7 @@ public class GestorRevisoes {
 
 		return result.toArray(new Revisao[0]);
 	}
-	public Revisao[] pesquisarRevisoesObra(int obraID) {
+	public static Revisao[] pesquisarRevisoesObra(int obraID) {
 		ArrayList<Revisao> result = new ArrayList<Revisao>();
 		Revisao[] list = listarRevisoes();
 		for(var res : list) {

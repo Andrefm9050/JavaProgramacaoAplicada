@@ -1193,6 +1193,25 @@ public class BDDriver {
 
  		return false;
  	}
+ 	
+ 	
+ 	public static boolean setUtilizadorImagem(int idUser, byte[] imagem) {
+ 		PreparedStatement ps;
+		try {
+			ps = conn.prepareStatement("CALL definir_imagem_utilizador(?,?)");
+			ps.setInt(1, idUser);
+			ps.setBytes(2, imagem);
+			ps.execute();
+			ps.close();
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+ 		
+ 		return false;
+ 	}
 
 
 

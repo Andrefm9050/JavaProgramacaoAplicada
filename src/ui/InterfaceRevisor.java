@@ -1,13 +1,19 @@
 package ui;
 
 import javax.swing.*;
+
+import users.Gestor;
+import users.Revisor;
+import users.Utilizador;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class InterfaceRevisor extends JFrame implements ActionListener,ObjectSelector{
-
-    public InterfaceRevisor(){
+	Revisor userBuffer;
+    public InterfaceRevisor(Revisor user){
+    	userBuffer = user;
         setVisible(true);
         setSize(800, 600);
         setTitle("Menu Revisor");
@@ -61,6 +67,13 @@ public class InterfaceRevisor extends JFrame implements ActionListener,ObjectSel
         jButton5.setToolTipText("Voltar para a página principal");
         add(jButton5);
 
+
+        JButton perfil = new JButton("Perfil");
+        perfil.setBounds(800-150,0,150,150);
+        perfil.addActionListener(this::VerPerfil);
+        add(perfil);
+
+
         jButton5.addActionListener(this::sair);
 
 
@@ -73,6 +86,12 @@ public class InterfaceRevisor extends JFrame implements ActionListener,ObjectSel
         this.dispose();
         new InterfaceGrafica();
     }
+
+    void VerPerfil(ActionEvent e) {
+    	new PaginaPerfil(userBuffer);
+    	dispose();
+    }
+
 
     @Override
     public void actionPerformed(ActionEvent e) {

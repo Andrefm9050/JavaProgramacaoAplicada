@@ -36,7 +36,7 @@ public int getIdAutor() {
 
 
 public static void menuAutor(Autor login1) {
-		new InterfaceAutor();
+		new InterfaceAutor(login1);
 		//while(true) {
 		//System.out.println("1-Submeter obra para Revisão \n2-Estado da Revisão \n3-Inserir Obra \n4-Pedido Remover Conta");
 		//System.out.println("5- Listar Pedidos Revisao das minhas obras");
