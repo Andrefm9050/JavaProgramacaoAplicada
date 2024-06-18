@@ -1,17 +1,15 @@
 package users;
-import java.util.regex.Pattern;
+
+import sistema.BDDriver;
+import sistema.EmailHelper;
+import sistema.Obra;
+
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.regex.Matcher;
-import sistema.BDDriver;
-import sistema.EmailHelper;
-import sistema.Obra;
+import java.util.regex.Pattern;
 
 
 /**
@@ -180,19 +178,19 @@ public class GestorContas {
 public static void pedidoRemoverConta(String login1) {
 		
 		
-		while(true) {
- 			String resposta = lerDados("Deseja fazer um pedido de remoção de conta(s/n): ");
- 			if(resposta.contentEquals("s")) {
- 				String respostaConfirm = lerDados("Tem mesmo a certeza que pretende fazer o pedido de remoção de conta(s/n): ");
- 				if(respostaConfirm.contentEquals("s")) {
- 					break;
- 				}
- 			}else if(resposta.contentEquals("n")) {
- 				break;
- 			}else {
- 				System.out.println("Resposta inválida! Insira s ou n como resposta. (s-sim, n-nao)");
- 			}
- 		}
+		//while(true) {
+ 			String resposta = "s";
+ 			//if(resposta.contentEquals("s")) {
+ 				//String respostaConfirm = lerDados("Tem mesmo a certeza que pretende fazer o pedido de remoção de conta(s/n): ");
+ 				//if(respostaConfirm.contentEquals("s")) {
+ 					//break;
+ 				//}
+ 			//}else if(resposta.contentEquals("n")) {
+ 				//break;
+ 			//}else {
+ 				//System.out.println("Resposta inválida! Insira s ou n como resposta. (s-sim, n-nao)");
+ 			//}
+ 		//}
 		Utilizador novoUti = GestorContas.pesquisarUtilizadoresUserName(login1);
 		
 		BDDriver.setUtilizadorEstado(novoUti.getIdUser(), 2);

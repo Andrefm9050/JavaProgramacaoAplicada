@@ -53,8 +53,8 @@ public class Gestor extends Utilizador{
 		
 		switch(aOpcao) {
 		case 1: aprovarRejeitarPedidosRegisto(); break;
-		case 2: criarGestor(); break;
-		case 3: ativarInativarConta(); break;
+		//case 2: criarGestor(); break;
+		//case 3: ativarInativarConta(); break;
 		case 4: GestorContas.pedidoRemoverConta(user.getLogin()); break;
 		case 5: pedidosRemocaoConta(); break;
 		case 6: pedidosRevisao(user); break;
@@ -152,13 +152,13 @@ public class Gestor extends Utilizador{
 	}
 	
 	
-	private static void criarGestor() {
+	private static void criarGestor(String login1, String password1, String nome1, String email1) {
 		System.out.println("Processo de criação de Conta tipo Gestor");
 		
 		String login2;
 		
 		while(true) {
-			String login1 = lerDados("Insira o seu username: ");
+			//String login1 = lerDados("Insira o seu username: ");
 			Utilizador utiTeste = GestorContas.pesquisarUtilizadoresUserName(login1);
 			if(utiTeste != null) {
 				System.out.println("Username já existe! Insira outro username.");		//verifica se o username é único
@@ -168,13 +168,13 @@ public class Gestor extends Utilizador{
 			}
 		}
 		
-		String password1 = lerDados("Insira a sua password: ");
-		String nome1 = lerDados("Insira o seu nome: ");
+		//String password1 = lerDados("Insira a sua password: ");
+		//String nome1 = lerDados("Insira o seu nome: ");
 		
 		
 		String email2;
 		while(true) {
-		String email1 = lerDados("Insira o seu email(axzc@exmail.com): ");
+		//String email1 = lerDados("Insira o seu email(axzc@exmail.com): ");
 		if(GestorContas.validacaoEmail(email1)==false) {
 			System.out.println("Email com formato inválido! Insira no seguinte formato [designação]@[entidade].[dominio]");  //verifica se o email é unico e se está no formato pretendido
 			continue; //Este email está com o formato inválido... nao podemos avançar!
@@ -194,7 +194,7 @@ public class Gestor extends Utilizador{
 		
 	}
 	
-	private static void ativarInativarConta() {
+	public static void ativarInativarConta(int idEscolha, String ativarInativar) {
 		int tamanhoArray;
  		
  		tamanhoArray = BDDriver.listarUtilizadores().length;
@@ -207,9 +207,9 @@ public class Gestor extends Utilizador{
  		}
  		
  		int ativarInativarN;
- 		int idEscolha = lerDadosInt("Insira o ID do utilizador que pretende ativar/Inativar:  ");
+ 		//int idEscolha = lerDadosInt("Insira o ID do utilizador que pretende ativar/Inativar:  ");
  		while(true) {
- 			String ativarInativar = lerDados("Pretende ativar(a) ou inativar(i) a conta(a/i): ");
+ 			//String ativarInativar = lerDados("Pretende ativar(a) ou inativar(i) a conta(a/i): ");
  			if(ativarInativar .contentEquals("a")) {
  				ativarInativarN = 4;
  				break;
@@ -225,7 +225,7 @@ public class Gestor extends Utilizador{
 	}
 	
 	
-	private static void pedidosRemocaoConta() {
+	public static void pedidosRemocaoConta() {
 		int tamanhoArray;
  		
  		tamanhoArray = BDDriver.listarUtilizadores().length;
@@ -240,19 +240,19 @@ public class Gestor extends Utilizador{
  	    	
  		}
  		//utilizadorNovo.toArray(new Utilizador[0])
- 		Utilizador utiliRemove = Main.SelectionarObjetoMenu(utilizadorNovo.toArray(new Utilizador[0]));
+ 		//Utilizador utiliRemove = Main.SelectionarObjetoMenu(utilizadorNovo.toArray(new Utilizador[0]));
  		
- 		while(true) {
- 			String verify = lerDados("Tem a certeza que deseja aceitar a remoção do utilizador selecionado(s/n): ");
- 			if(verify.contentEquals("s")) {
- 				BDDriver.setUtilizadorEstado(utiliRemove.getIdUser(), 3);
- 				break;
- 			} else if(verify.contentEquals("n")) {
- 				break;
- 			} else {
- 				System.out.println("Resposta inválida! Insira s ou n (s-sim, n-não)");
- 			}
- 		}
+ 		//while(true) {
+ 			//String verify = lerDados("Tem a certeza que deseja aceitar a remoção do utilizador selecionado(s/n): ");
+ 			//if(verify.contentEquals("s")) {
+ 			//	BDDriver.setUtilizadorEstado(utiliRemove.getIdUser(), 3);
+ 			//	break;
+ 			//} else if(verify.contentEquals("n")) {
+ 			//	break;
+ 			//} else {
+ 				//System.out.println("Resposta inválida! Insira s ou n (s-sim, n-não)");
+ 			//}
+ 		//}
  		
 	}
 	

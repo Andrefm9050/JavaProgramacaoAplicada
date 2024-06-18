@@ -12,22 +12,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.swing.ButtonGroup;
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.ListModel;
-
-import sistema.Obra;
-import users.Listable;
-
 public class SelectObj extends JFrame implements ActionListener{
 
 	ObjectSelector o;
@@ -120,6 +104,7 @@ public class SelectObj extends JFrame implements ActionListener{
 
 
 	}
+
 
 	void termoPesquisaMudado(ActionEvent e) {
 		sort(lastRadio,sortOrder.isSelected());

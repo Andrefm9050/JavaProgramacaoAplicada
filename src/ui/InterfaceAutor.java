@@ -1,15 +1,13 @@
 package ui;
 
-import javax.swing.*;
-
 import sistema.BDDriver;
 import sistema.GestorObras;
-import sistema.GestorRevisoes;
-import users.Autor;
-import users.GestorContas;
 import sistema.Obra;
 import sistema.Revisao;
+import users.Autor;
+import users.GestorContas;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -114,7 +112,7 @@ public class InterfaceAutor extends JFrame implements ActionListener,ObjectSelec
     SelectObj estadoRevisao;
 
     void VerEstadoRevisao(ActionEvent e) {
-    	estadoRevisao = new SelectObj(this,GestorRevisoes.listarRevisoes(userBuffer));
+    	//estadoRevisao = new SelectObj(this,GestorRevisoes.listarRevisoes(userBuffer));
     }
 
     void RemoverContaPopUp(ActionEvent e) {
