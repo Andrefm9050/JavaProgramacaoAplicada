@@ -668,8 +668,8 @@ public class InterfaceGestor extends JFrame implements ActionListener,ObjectSele
     }
 
     private void aprovaAtivacao(ActionEvent actionEvent) {
-        BDDriver.setUtilizadorEstado(novoBuffer.getIdUser(), 4);
-        //Gestor.ativarInativarConta(novoBuffer.getIdUser(), "a");
+        //BDDriver.setUtilizadorEstado(novoBuffer.getIdUser(), 4);
+        Gestor.ativarInativarConta(novoBuffer.getIdUser(), "a");
         getContentPane().removeAll();
         revalidate();
         repaint();
