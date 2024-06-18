@@ -54,6 +54,7 @@ public class InterfaceAutor extends JFrame implements ActionListener,ObjectSelec
         jButton3.setForeground(new Color(255,255,255));
         jButton3.setBackground(new Color(0,0,0));
         jButton3.setToolTipText("Realizar o processo de inserir uma nova obra");
+        jButton3.addActionListener(this::InserirObra);
         add(jButton3);
 
         JButton jButton4 = new JButton("Pedido Remover Conta");
@@ -71,6 +72,7 @@ public class InterfaceAutor extends JFrame implements ActionListener,ObjectSelec
         jButton5.setForeground(new Color(255,255,255));
         jButton5.setBackground(new Color(0,0,0));
         jButton5.setToolTipText("Visualizar todos os pedidos de revisao das obras da conta logada");
+        jButton5.addActionListener(this::ListarPedidosRevisao);
         add(jButton5);
 
         JButton jButton6 = new JButton("Listar Minhas Obras");
@@ -79,6 +81,7 @@ public class InterfaceAutor extends JFrame implements ActionListener,ObjectSelec
         jButton6.setForeground(new Color(255,255,255));
         jButton6.setBackground(new Color(0,0,0));
         jButton6.setToolTipText("Visualizar todas as obras da conta logada");
+        jButton6.addActionListener(this::ListarMinhasObras);
         add(jButton6);
 
         JButton jButton7 = new JButton("Sair");
@@ -87,12 +90,14 @@ public class InterfaceAutor extends JFrame implements ActionListener,ObjectSelec
         jButton7.setForeground(new Color(255,255,255));
         jButton7.setBackground(new Color(0,0,0));
         jButton7.setToolTipText("Volta para a página principal");
-        add(jButton7);
-
         jButton7.addActionListener(this::sair);
-
-
-
+        add(jButton7);
+        JButton perfil = new JButton("Perfil");
+        perfil.setBounds(800-150,0,150,150);
+        perfil.addActionListener(this::VerPerfil);
+        add(perfil);
+        
+        
     }
 
     private void sair(ActionEvent actionEvent) {
@@ -101,16 +106,24 @@ public class InterfaceAutor extends JFrame implements ActionListener,ObjectSelec
         repaint();
         this.dispose();
         new InterfaceGrafica();
-        JButton perfil = new JButton("Perfil");
-        perfil.setBounds(800-150,0,150,150);
-        perfil.addActionListener(this::VerPerfil);
-        add(perfil);
-
-
     }
-
+    
+    
     SelectObj estadoRevisao;
-
+    
+    void ListarPedidosRevisao(ActionEvent e) {
+    	new SelectObj(this,GestorRevisoes.listarRevisoes(userBuffer));
+    }
+    
+    void InserirObra(ActionEvent e) {
+    	new InterfaceInserirObra(userBuffer);
+    	dispose();
+    }
+    
+    void ListarMinhasObras(ActionEvent e) {
+    	new SelectObj(this,GestorObras.listarObras(userBuffer));
+    }
+    
     void VerEstadoRevisao(ActionEvent e) {
     	//estadoRevisao = new SelectObj(this,GestorRevisoes.listarRevisoes(userBuffer));
     }
@@ -122,11 +135,11 @@ public class InterfaceAutor extends JFrame implements ActionListener,ObjectSelec
     		JOptionPane.showMessageDialog(this, "Sucesso! Ainda pode aceder ao sistema até a remoçao ser confirmada");
     	}
     }
-
+    SelectObj submeterObra;
     void SubmeterObraRevisao(ActionEvent e) {
     	Obra[] list = GestorObras.listarObras();
     	if(list.length > 0) {
-    		new SelectObj(this,GestorObras.listarObras(userBuffer));
+    		submeterObra = new SelectObj(this,GestorObras.listarObras(userBuffer));
     	}
     	else {
     		JOptionPane.showMessageDialog(this, "Nao existe obras associadas a esta conta!");
@@ -156,13 +169,17 @@ public class InterfaceAutor extends JFrame implements ActionListener,ObjectSelec
 
     		return;
     	}
-    	int isbn1 =GestorContas.isbnUnico();
-    	((Obra)object).setIsbn(isbn1);
-
-    	int obraID = ((Obra)object).getObraId();
-    	//obraN;
-    	BDDriver.alterarISBN(isbn1, obraID);
-    	BDDriver.adicionarRevisao(0, obraID, 0);
-    	JOptionPane.showMessageDialog(this, "Sucesso!");
+    	if(component == submeterObra) {
+    		if(object != null) {
+	    	int isbn1 =GestorContas.isbnUnico();
+	    	((Obra)object).setIsbn(isbn1);
+	    	
+	    	int obraID = ((Obra)object).getObraId();
+	    	//obraN;
+	    	BDDriver.alterarISBN(isbn1, obraID);
+	    	BDDriver.adicionarRevisao(0, obraID, 0);
+	    	JOptionPane.showMessageDialog(this, "Sucesso!");
+    		}
+    	}
     }
 }

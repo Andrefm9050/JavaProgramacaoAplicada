@@ -20,11 +20,11 @@ public enum EstiloLiterario {
 			return 0;
 		case "lirico":
 			return 1;
-		case "drama":
+		case "ficcao":
 			return 2;
-		case "ficção":
-			return 3;
 		case "thriller":
+			return 3;
+		case "drama":
 			return 4;
 		}	
 		return 5;
@@ -37,11 +37,11 @@ public enum EstiloLiterario {
 			return 0;
 		case lirico:
 			return 1;
-		case drama:
-			return 2;
 		case ficcao:
-			return 3;
+			return 2;
 		case thriller:
+			return 3;
+		case drama:
 			return 4;
 		}	
 		return 5;
@@ -57,7 +57,7 @@ public enum EstiloLiterario {
 			return EstiloLiterario.lirico;
 		case "drama":
 			return EstiloLiterario.drama;
-		case "ficção":
+		case "ficcao":
 			return EstiloLiterario.ficcao;
 		case "thriller":
 			return EstiloLiterario.thriller;

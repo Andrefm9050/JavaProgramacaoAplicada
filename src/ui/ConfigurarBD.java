@@ -58,6 +58,7 @@ public class ConfigurarBD extends JFrame implements ActionListener,ObjectSelecto
 		String[] valores = BDDriver.getConfigValores();
 		setVisible(true);
 		setSize(800,500);
+		setLocationRelativeTo(null);
 		setTitle("Página Configuração");
 		Container cont = getContentPane();
 		cont.setLayout(new BorderLayout());
@@ -173,7 +174,6 @@ public class ConfigurarBD extends JFrame implements ActionListener,ObjectSelecto
 			new InterfaceGrafica();
 
 			dispose();
-			new InterfaceGrafica();
 		}
 		else {
 			error.setText("Erro, não foi possivel realizar uma conexão á BD configurada");

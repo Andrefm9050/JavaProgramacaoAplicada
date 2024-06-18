@@ -9,7 +9,7 @@ public enum TipoPublicacao {
 		switch(tipoPubli) {
 		case "capaDura":
 			return 0;
-		case "de bolso":
+		case "deBolso":
 			return 1;
 		case "ebook":
 			return 2;
@@ -20,9 +20,9 @@ public enum TipoPublicacao {
 	public static String tipoToString(TipoPublicacao tipo) {
 		switch(tipo) {
 		case capaDura:
-			return "capa dura";
+			return "capaDura";
 		case deBolso:
-			return "de bolso";
+			return "deBolso";
 		case ebook:
 			return "ebook";
 		}
@@ -31,9 +31,9 @@ public enum TipoPublicacao {
 	
 	public static TipoPublicacao stringToTipo(String tipo) {
 		switch(tipo) {
-		case "capa dura":
+		case "capaDura":
 			return capaDura;
-		case "de bolso":
+		case "deBolso":
 			return deBolso;
 		case "ebook":
 			return ebook;

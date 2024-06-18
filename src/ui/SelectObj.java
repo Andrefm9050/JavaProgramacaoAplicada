@@ -29,9 +29,9 @@ public class SelectObj extends JFrame implements ActionListener{
 		for(var obj : objects) {
 			data.add(obj);
 		}
-		System.out.println("Test");
 		setVisible(true);
 		setSize(800, 500);
+		setLocationRelativeTo(null);
 		setTitle("Selecionar Objeto");
 		setLayout(new BorderLayout());
 		JPanel panel = new JPanel();
@@ -143,7 +143,7 @@ public class SelectObj extends JFrame implements ActionListener{
 
 		list.setListData(data_.toArray(new Listable[0]));
 
-		System.out.println(data_);
+		//System.out.println(data_);
 	}
 
 	void radioboxsel(ActionEvent e) {
