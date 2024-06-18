@@ -48,6 +48,7 @@ public class SelectObj extends JFrame implements ActionListener{
 		System.out.println("Test");
 		setVisible(true);
 		setSize(800, 500);
+		setLocationRelativeTo(null);
 		setTitle("Selecionar Objeto");
 		setLayout(new BorderLayout());
 		JPanel panel = new JPanel();
