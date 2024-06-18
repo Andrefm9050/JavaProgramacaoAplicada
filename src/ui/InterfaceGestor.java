@@ -7,9 +7,6 @@ import users.Gestor;
 import users.Utilizador;
 
 import javax.swing.*;
-
-import users.Gestor;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,7 +30,7 @@ public class InterfaceGestor extends JFrame implements ActionListener,ObjectSele
 
 
 
-    	userBuffer = u;
+    	userBuffer = user;
         setVisible(true);
         setSize(800, 600);
         setTitle("Menu Gestor");
@@ -144,13 +141,6 @@ public class InterfaceGestor extends JFrame implements ActionListener,ObjectSele
         perfil.addActionListener(this::VerPerfil);
         add(perfil);
 
-
-    }
-
-    void VerPerfil(ActionEvent e) {
-    	new PaginaPerfil(userBuffer);
-    	dispose();
-
         loginBuffer = user.getLogin();
         passwordBuffer = user.getPassword();
         gestorOutro = user;
@@ -158,6 +148,12 @@ public class InterfaceGestor extends JFrame implements ActionListener,ObjectSele
         jButton1.addActionListener(this::aprovarPedido);
         jButton11.addActionListener(this::sair);
 
+
+    }
+
+    void VerPerfil(ActionEvent e) {
+    	new PaginaPerfil(userBuffer);
+    	dispose();
 
     }
 
