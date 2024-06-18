@@ -35,6 +35,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+
+
+/***
+ * Classe tipo JFrame responsável por configurar uma conexão com a base de dados antes de inicializar o sistema.
+ * @author Andre Rios
+ */
 public class ConfigurarBD extends JFrame implements ActionListener,ObjectSelector{
 
 	JLabel error;
@@ -162,6 +168,11 @@ public class ConfigurarBD extends JFrame implements ActionListener,ObjectSelecto
 
 	}
 
+	/***
+	 * Evento de confirmacao de parametros
+	 * Se for um sucesso a aplicacao começa, se não imprime um erro no ecra
+	 * @param event - Evento click
+	 */
 	void AceitarBtnEvent(ActionEvent event) {
 		BDDriver.saveConfigValues(ipField.getText(),portField.getText(),loginField.getText(),passwordField.getText(),bdField.getText());
 		if(BDDriver.configurarDriver(ipField.getText(),portField.getText(),loginField.getText(),passwordField.getText(),bdField.getText())) {
@@ -185,6 +196,10 @@ public class ConfigurarBD extends JFrame implements ActionListener,ObjectSelecto
 		}
 	}
 
+	/***
+	 * Evento ao clicar em Sair
+	 * @param event - Evento click
+	 */
 	void SairAplicacao(ActionEvent event) {
 		dispose();
 		System.exit(0);

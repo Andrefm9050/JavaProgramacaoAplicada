@@ -2,6 +2,7 @@ package ui;
 
 import sistema.BDDriver;
 import sistema.GestorObras;
+import sistema.GestorRevisoes;
 import sistema.Obra;
 import sistema.Revisao;
 import users.Autor;
@@ -12,9 +13,15 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Class tipo JFrame responsável por conter o menu de um utilizador tipo Autor
+ * @author Andre Rios / Andre Martins
+ *
+ */
 public class InterfaceAutor extends JFrame implements ActionListener,ObjectSelector{
 
 	Autor userBuffer;
+	
     public InterfaceAutor(Autor user){
     	userBuffer = user;
         setVisible(true);
@@ -100,6 +107,10 @@ public class InterfaceAutor extends JFrame implements ActionListener,ObjectSelec
         
     }
 
+    /***
+     * Evento ao clicar em Sair
+     * @param actionEvent
+     */
     private void sair(ActionEvent actionEvent) {
         getContentPane().removeAll();
         revalidate();
@@ -111,23 +122,44 @@ public class InterfaceAutor extends JFrame implements ActionListener,ObjectSelec
     
     SelectObj estadoRevisao;
     
+    /***
+     * Evento ao clicar "Listar Pedidos Revisao Minhas Obras"
+     * Abre um selectObj para listagem
+     * @param e
+     */
     void ListarPedidosRevisao(ActionEvent e) {
     	new SelectObj(this,GestorRevisoes.listarRevisoes(userBuffer));
     }
     
+    /***
+     * Evento ao clicar "Inserir Obra"
+     * redireciona para InterfaceInserirObra
+     * @param e
+     */
     void InserirObra(ActionEvent e) {
     	new InterfaceInserirObra(userBuffer);
     	dispose();
     }
-    
+    /***
+     * Evento ao clicar "Listar Minhas Obras"
+     * Abre um selectObj para listagem
+     * @param e
+     */
     void ListarMinhasObras(ActionEvent e) {
     	new SelectObj(this,GestorObras.listarObras(userBuffer));
     }
-    
+    /***
+     * Evento ao clicar "Estado Da Revisão"
+     * @param e
+     */
     void VerEstadoRevisao(ActionEvent e) {
     	//estadoRevisao = new SelectObj(this,GestorRevisoes.listarRevisoes(userBuffer));
     }
-
+    
+    /***
+     * Evento ao clicar "Pedido Remover Conta" 
+     * @param e
+     */
     void RemoverContaPopUp(ActionEvent e) {
     	int option = JOptionPane.showConfirmDialog(this, "Deseja mesmo pedir a remoção da sua conta?");
     	if(option == 0) {
@@ -136,6 +168,10 @@ public class InterfaceAutor extends JFrame implements ActionListener,ObjectSelec
     	}
     }
     SelectObj submeterObra;
+    /***
+     * Evento para submeter obra para revisao
+     * @param e
+     */
     void SubmeterObraRevisao(ActionEvent e) {
     	Obra[] list = GestorObras.listarObras();
     	if(list.length > 0) {
@@ -146,7 +182,11 @@ public class InterfaceAutor extends JFrame implements ActionListener,ObjectSelec
     	}
 
     }
-
+    
+    /**
+     * Evento para abrir uma página de perfil e fechar a atual
+     * @param e
+     */
     void VerPerfil(ActionEvent e) {
     	new PaginaPerfil(userBuffer);
     	dispose();
@@ -157,7 +197,7 @@ public class InterfaceAutor extends JFrame implements ActionListener,ObjectSelec
     public void actionPerformed(ActionEvent e) {
 
     }
-
+    
     @Override
     public void OnObjectSelected(SelectObj component, Object object) {
     	if(component == estadoRevisao) {
