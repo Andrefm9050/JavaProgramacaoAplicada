@@ -12,6 +12,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Classe tipo JFrame reponsável por oferecer uma interface facil para selecionar e devolver um objeto de uma lista
+ * @author Andre Rios
+ */
 public class SelectObj extends JFrame implements ActionListener{
 
 	ObjectSelector o;
@@ -105,15 +109,27 @@ public class SelectObj extends JFrame implements ActionListener{
 
 	}
 
-
+	/**
+	 * Evento quando o termo de pesquisa é atualizado
+	 * @param e
+	 */
 	void termoPesquisaMudado(ActionEvent e) {
 		sort(lastRadio,sortOrder.isSelected());
 	}
-
+	
+	/**
+	 * Evento quando a ordem de sorting muda
+	 * @param e
+	 */
 	void sortOrder(ActionEvent e) {
 		sort(lastRadio,((JCheckBox)e.getSource()).isSelected());
 	}
-
+	
+	/**
+	 * Funcao para atualizar a lista com as configuracoes atuais
+	 * @param filter
+	 * @param val
+	 */
 	void sort(JRadioButtonCustom filter,boolean val) {
 		JRadioButtonCustom selected = (JRadioButtonCustom)filter;
 		//System.out.println(data);
@@ -145,7 +161,11 @@ public class SelectObj extends JFrame implements ActionListener{
 
 		//System.out.println(data_);
 	}
-
+	
+	/**
+	 * Evento para quando um filtro é selecionado
+	 * @param e
+	 */
 	void radioboxsel(ActionEvent e) {
 		if(e.getSource() instanceof JRadioButtonCustom) {
 			lastRadio = (JRadioButtonCustom)e.getSource();
@@ -154,6 +174,10 @@ public class SelectObj extends JFrame implements ActionListener{
 	}
 
 	boolean alreadyclosing;
+	/**
+	 * Evento para quando um objeto é selecionado
+	 * @param e
+	 */
 	private void selecionado(ActionEvent e) {
 		alreadyclosing = true;
 		Object result;

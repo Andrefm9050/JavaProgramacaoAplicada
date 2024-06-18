@@ -16,6 +16,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+/**
+ * Classe tipo JFrame responsavel por ser o menu de um utilizador tipo Revisor
+ * @author Andre Rios / Andre Mendes
+ */
 public class InterfaceRevisor extends JFrame implements ActionListener,ObjectSelector{
 	Revisor userBuffer;
     public InterfaceRevisor(Revisor user){
@@ -80,7 +84,10 @@ public class InterfaceRevisor extends JFrame implements ActionListener,ObjectSel
 
 
     }
-
+    /**
+     * Evento para remover conta
+     * @param e
+     */
     void RemoverContaPopUp(ActionEvent e) {
     	int option = JOptionPane.showConfirmDialog(this, "Deseja mesmo pedir a remoção da sua conta?");
     	if(option == 0) {
@@ -89,6 +96,10 @@ public class InterfaceRevisor extends JFrame implements ActionListener,ObjectSel
     	}
     }
     
+    /**
+     * Evento para sair/logout
+     * @param actionEvent
+     */
     private void sair(ActionEvent actionEvent) {
         getContentPane().removeAll();
         revalidate();
@@ -96,7 +107,11 @@ public class InterfaceRevisor extends JFrame implements ActionListener,ObjectSel
         this.dispose();
         new InterfaceGrafica();
     }
-
+    
+    /**
+     * Evento para abrir página de perfil e fechar o atual
+     * @param e
+     */
     void VerPerfil(ActionEvent e) {
     	new PaginaPerfil(userBuffer);
     	dispose();
@@ -131,6 +146,10 @@ public class InterfaceRevisor extends JFrame implements ActionListener,ObjectSel
     	}
     }
     
+    /**
+     * Evento para listar revisoes do utilizador atual
+     * @param e
+     */
     void ListarRevisoes(ActionEvent e) {
     	Revisao[] lista = GestorRevisoes.listarRevisoes(userBuffer);
     	if(lista.length > 0)
@@ -141,7 +160,11 @@ public class InterfaceRevisor extends JFrame implements ActionListener,ObjectSel
     
     
     SelectObj aceitaRejeitar;
-
+    
+    /**
+     * Evento para aceitar revisao (se existir)
+     * @param actionevent1
+     */
 	private void AceitarRevisao(ActionEvent actionevent1) {
 		Revisor[] revisorBuffer = GestorContas.listarRevisores();
 		Revisor Revisor = null;

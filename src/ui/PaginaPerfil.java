@@ -5,6 +5,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -26,6 +28,11 @@ import users.GestorContas;
 import users.Revisor;
 import users.Utilizador;
 
+/**
+ * Classe tipo JFrame responsavel como página de perfil e configuração de 3 detalhes de conta de utilizador, ao sair da página, este é redirecionado para a pagina principal do utilizador
+ * @author andre
+ *
+ */
 public class PaginaPerfil extends JFrame{
 	JLabel currentImage;
 	JTextField passInput;
@@ -80,8 +87,34 @@ public class PaginaPerfil extends JFrame{
         sair.addActionListener(this::sair);
         add(sair);
         
+		addWindowListener(new WindowAdapter()
+		{
+		    @Override
+		    public void windowClosing(WindowEvent e)
+		    {
+		      if(alreadyclosing) return; //<- Nao queremos processar este dispose event
+		      //Se já estamos a fechar por outros meios
+
+				if(uBuffer instanceof Gestor) {
+					new InterfaceGestor((Gestor)uBuffer);
+				}
+				else if(uBuffer instanceof Autor) {
+					new InterfaceAutor((Autor)uBuffer);
+				}
+				else if(uBuffer instanceof Revisor) {
+					new InterfaceRevisor((Revisor)uBuffer);
+				}
+
+		    }
+		});
+        
 	}
+	boolean alreadyclosing;
 	
+	/**
+	 * Evento para confirmar a mudança de nome
+	 * @param e
+	 */
 	void mudarnome(ActionEvent e) {
 		if(GestorContas.definirNomeUtilizador(uBuffer.getIdUser(),userInput.getText())) {
 			uBuffer.setNome(userInput.getText());
@@ -89,14 +122,22 @@ public class PaginaPerfil extends JFrame{
 		}
 	}
 	
+	/**
+	 * Evento para confirmar a mudança de password
+	 * @param e
+	 */
 	void mudarpassword(ActionEvent e) {
 		if(GestorContas.definirPasswordUtilizador(uBuffer.getIdUser(),passInput.getText())) {
 			uBuffer.setPassword(passInput.getText());
 			JOptionPane.showMessageDialog(this, "Sucesso!");
 		}
 	}
-	
+	/**
+	 * Evento para sair da janela
+	 * @param e
+	 */
 	void sair(ActionEvent e) {
+		alreadyclosing = true;
 		if(uBuffer instanceof Gestor) {
 			new InterfaceGestor((Gestor)uBuffer);
 		}
@@ -108,6 +149,11 @@ public class PaginaPerfil extends JFrame{
 		}
 		dispose();
 	}
+	
+	/**
+	 * Evento para selecionar imagem
+	 * @param e
+	 */
 	void SelecionarImagem(ActionEvent e) {
 		JFileChooser fileChooser = new JFileChooser();
 		int response = fileChooser.showOpenDialog(null);
