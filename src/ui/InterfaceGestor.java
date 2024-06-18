@@ -171,8 +171,13 @@ public class InterfaceGestor extends JFrame implements ActionListener,ObjectSele
         jButton3.addActionListener(this::ativarConta);
         jButton4.addActionListener(this::pedidoRemoverConta);
         jButton5.addActionListener(this::pedidosRemocaoConta);
+        jButton6.addActionListener(this::listarPedidosRevisao);
         jButton11.addActionListener(this::sair);
 
+
+    }
+
+    private void listarPedidosRevisao(ActionEvent actionEvent) {
 
     }
 
@@ -312,7 +317,7 @@ public class InterfaceGestor extends JFrame implements ActionListener,ObjectSele
         imagem.setFont(new Font("Arial", Font.BOLD,10));
         imagem.setForeground(new Color(255,255,255));
         imagem.setBackground(new Color(0,0,0));
-        imagem.setToolTipText("Confirmar registo");
+        imagem.setToolTipText("Selecionar Imagem");
         imagem.addActionListener(this::SelectImage);
         add(imagem);
 
@@ -564,7 +569,7 @@ public class InterfaceGestor extends JFrame implements ActionListener,ObjectSele
         jButton1.setFont(new Font("Arial", Font.BOLD,16));
         jButton1.setForeground(new Color(255,255,255));
         jButton1.setBackground(new Color(0,0,0));
-        jButton1.setToolTipText("Reprova pedidos de registo do utilizador");
+        jButton1.setToolTipText("Reprova remocao de conta");
         add(jButton1);
 
         JButton jButton2 = new JButton("Sim");
@@ -572,7 +577,7 @@ public class InterfaceGestor extends JFrame implements ActionListener,ObjectSele
         jButton2.setFont(new Font("Arial", Font.BOLD,16));
         jButton2.setForeground(new Color(255,255,255));
         jButton2.setBackground(new Color(0,0,0));
-        jButton2.setToolTipText("Aprova pedido de registo do utilizador");
+        jButton2.setToolTipText("Aprova remocao de conta");
         add(jButton2);
 
         jButton1.addActionListener(this::voltarMenu2);
