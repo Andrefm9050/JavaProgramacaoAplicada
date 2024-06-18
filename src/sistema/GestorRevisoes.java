@@ -219,6 +219,26 @@ public class GestorRevisoes {
 		return result.toArray(new Revisao[0]);
 	}
 	
+	public static Revisao[] listarRevisoes(Revisor user) {
+		Revisao[] list = BDDriver.listarRevisoes();
+		ArrayList<Revisao> actualList = new ArrayList<Revisao>();
+		
+		for(var rev : list) {
+			if(rev.getRevisorResponsavel() != null && rev.getRevisorResponsavel().getIdRevisor() != user.getIdRevisor()) {
+				for(var revisorConf :rev.getRevisoresConfirmados()) {
+					if(revisorConf.getIdRevisor() == user.getIdRevisor()) {
+						actualList.add(rev);
+					}
+				}
+			}
+			else if(rev.getRevisorResponsavel() != null) {
+				actualList.add(rev);
+			}
+		}
+		
+		return actualList.toArray(new Revisao[0]);
+	}
+	
 	
 	
 }

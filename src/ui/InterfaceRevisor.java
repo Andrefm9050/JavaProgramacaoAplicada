@@ -2,13 +2,19 @@ package ui;
 
 import javax.swing.*;
 
+import sistema.BDDriver;
+import sistema.EstadoRevisao;
+import sistema.GestorRevisoes;
+import sistema.Revisao;
 import users.Gestor;
+import users.GestorContas;
 import users.Revisor;
 import users.Utilizador;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class InterfaceRevisor extends JFrame implements ActionListener,ObjectSelector{
 	Revisor userBuffer;
@@ -27,12 +33,13 @@ public class InterfaceRevisor extends JFrame implements ActionListener,ObjectSel
         jLabel.setFont(new Font("Arial", Font.BOLD, 25));
         add(jLabel);
 
-        JButton jButton1 = new JButton("Notificação de Revisão");
+        JButton jButton1 = new JButton("Aceitar/Rejeitar Revisao");
         jButton1.setBounds(245, 60, 302, 40);
         jButton1.setFont(new Font("Arial", Font.BOLD,16));
         jButton1.setForeground(new Color(255,255,255));
         jButton1.setBackground(new Color(0,0,0));
         jButton1.setToolTipText("Visualizar notificações de revisões");
+        jButton1.addActionListener(this::AceitarRevisao);
         add(jButton1);
 
         JButton jButton2 = new JButton("Revisões");
@@ -41,6 +48,7 @@ public class InterfaceRevisor extends JFrame implements ActionListener,ObjectSel
         jButton2.setForeground(new Color(255,255,255));
         jButton2.setBackground(new Color(0,0,0));
         jButton2.setToolTipText("Visualizar todas as revisões");
+        jButton2.addActionListener(this::ListarRevisoes);
         add(jButton2);
 
         JButton jButton3 = new JButton("Pedido Remover Conta");
@@ -49,15 +57,9 @@ public class InterfaceRevisor extends JFrame implements ActionListener,ObjectSel
         jButton3.setForeground(new Color(255,255,255));
         jButton3.setBackground(new Color(0,0,0));
         jButton3.setToolTipText("Realizar pedido de remoção de conta");
+        jButton3.addActionListener(this::RemoverContaPopUp);
         add(jButton3);
-
-        JButton jButton4 = new JButton("Listar meus pedidos de revisao");
-        jButton4.setBounds(245, 180, 302, 40);
-        jButton4.setFont(new Font("Arial", Font.BOLD,16));
-        jButton4.setForeground(new Color(255,255,255));
-        jButton4.setBackground(new Color(0,0,0));
-        jButton4.setToolTipText("Visualizar os pedidos feitos pela conta logada");
-        add(jButton4);
+        
 
         JButton jButton5 = new JButton("Sair");
         jButton5.setBounds(245, 220, 302, 40);
@@ -79,6 +81,14 @@ public class InterfaceRevisor extends JFrame implements ActionListener,ObjectSel
 
     }
 
+    void RemoverContaPopUp(ActionEvent e) {
+    	int option = JOptionPane.showConfirmDialog(this, "Deseja mesmo pedir a remoção da sua conta?");
+    	if(option == 0) {
+    		GestorContas.pedidoRemoverConta(userBuffer.getLogin());
+    		JOptionPane.showMessageDialog(this, "Sucesso! Ainda pode aceder ao sistema até a remoçao ser confirmada");
+    	}
+    }
+    
     private void sair(ActionEvent actionEvent) {
         getContentPane().removeAll();
         revalidate();
@@ -100,6 +110,94 @@ public class InterfaceRevisor extends JFrame implements ActionListener,ObjectSel
 
     @Override
     public void OnObjectSelected(SelectObj component, Object object) {
-
+    	if(aceitaRejeitar == component) {
+    		if(object != null) {
+    			Revisao rev = ((Revisao)object);
+    			if(JOptionPane.showConfirmDialog(this, "Deseja aceitar fazer esta revisão?") == 0) {
+    				if(rev.getRevisorResponsavel().getIdRevisor() != userBuffer.getIdRevisor()) {
+    					BDDriver.confirmarRevisorNormal(rev.getRevisaoID(),userBuffer.getIdRevisor(), true);
+    				} else {
+    					BDDriver.confirmarRevisorResponsavel(rev.getRevisaoID(), true);
+    				}
+    			}
+    			else {
+    				if(rev.getRevisorResponsavel().getIdRevisor() != userBuffer.getIdRevisor()) {
+    					BDDriver.confirmarRevisorNormal(rev.getRevisaoID(),userBuffer.getIdRevisor(), false);
+    				} else {
+    					BDDriver.confirmarRevisorResponsavel(rev.getRevisaoID(), false);
+    				}
+    			}
+    		}
+    	}
     }
+    
+    void ListarRevisoes(ActionEvent e) {
+    	Revisao[] lista = GestorRevisoes.listarRevisoes(userBuffer);
+    	if(lista.length > 0)
+    		new SelectObj(this,lista);
+    	else
+			JOptionPane.showMessageDialog(this, "Nao existe revisoes associadas a esta conta para serem revistas!");
+    }
+    
+    
+    SelectObj aceitaRejeitar;
+
+	private void AceitarRevisao(ActionEvent actionevent1) {
+		Revisor[] revisorBuffer = GestorContas.listarRevisores();
+		Revisor Revisor = null;
+		for(int i = 0; i<revisorBuffer.length; i++) {
+			if(revisorBuffer[i].getLogin().contentEquals(userBuffer.getLogin())) {
+				Revisor = revisorBuffer[i];
+			}
+				
+		}
+		if(Revisor == null) return;
+		
+		int tamanhoArray;
+			
+			tamanhoArray = BDDriver.listarRevisoes().length;
+			Revisao[] revisaoBuffer = new Revisao[tamanhoArray];
+			revisaoBuffer = BDDriver.listarRevisoes();
+			ArrayList<Revisao> revisoes = new ArrayList<Revisao>();
+			
+			for(int i = 0; i<tamanhoArray; i++) {
+				boolean added = false;
+				if(revisaoBuffer[i].getEstado()==EstadoRevisao.aceite) {
+					if(revisaoBuffer[i].getRevisoresRecusados().length!=0) {
+						
+						for(int j=0; j<revisaoBuffer[i].getRevisoresRecusados().length;j++) {
+							if(revisaoBuffer[i].getRevisoresRecusados()[j].getIdRevisor() != Revisor.getIdRevisor()) {
+								revisoes.add(revisaoBuffer[i]);	
+								added = true;
+							}
+						}
+					}
+					
+					if(added) continue;
+					
+					if(revisaoBuffer[i].getRevisorResponsavel() != null && revisaoBuffer[i].getRevisorResponsavel().getIdRevisor() == Revisor.getIdRevisor()) {
+						revisoes.add(revisaoBuffer[i]);
+					}
+					else {
+						Revisor[] revsnaoconfirm = revisaoBuffer[i].getRevisoresNaoConfirmados();
+						boolean ishere = false;
+						for(int j = 0; j<revsnaoconfirm.length;j++) {
+							if(revsnaoconfirm[j].getIdRevisor() == Revisor.getIdRevisor()) {
+								ishere = true;
+							}
+						}
+						if(ishere) {
+							revisoes.add(revisaoBuffer[i]);
+						}
+					}
+					
+					
+				}
+			}
+			
+			if(revisoes.size() > 0)
+				aceitaRejeitar = new SelectObj(this,revisoes.toArray(new Revisao[0]));
+			else
+				JOptionPane.showMessageDialog(this, "Nao existe revisoes associadas a esta conta para serem revistas!");
+	}
 }

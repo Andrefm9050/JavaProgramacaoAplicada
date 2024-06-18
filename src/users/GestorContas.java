@@ -179,20 +179,6 @@ public class GestorContas {
 	
 public static void pedidoRemoverConta(String login1) {
 		
-		
-		while(true) {
- 			String resposta = lerDados("Deseja fazer um pedido de remoção de conta(s/n): ");
- 			if(resposta.contentEquals("s")) {
- 				String respostaConfirm = lerDados("Tem mesmo a certeza que pretende fazer o pedido de remoção de conta(s/n): ");
- 				if(respostaConfirm.contentEquals("s")) {
- 					break;
- 				}
- 			}else if(resposta.contentEquals("n")) {
- 				break;
- 			}else {
- 				System.out.println("Resposta inválida! Insira s ou n como resposta. (s-sim, n-nao)");
- 			}
- 		}
 		Utilizador novoUti = GestorContas.pesquisarUtilizadoresUserName(login1);
 		
 		BDDriver.setUtilizadorEstado(novoUti.getIdUser(), 2);
