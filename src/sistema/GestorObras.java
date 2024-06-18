@@ -3,19 +3,31 @@ package sistema;
 import java.sql.Date;
 import java.util.ArrayList;
 
+import users.Autor;
+
 public class GestorObras {
 	
 	
 	
-	public boolean adicionarObra(Obra obra) {
+	public static boolean adicionarObra(Obra obra) {
 		return BDDriver.adicionarObra(obra);
 	}
-	
-	public Obra[] listarObras() {
+	public static Obra[] listarObras(Autor autor) {
+		Obra[] lista = listarObras();
+		
+		ArrayList<Obra> result = new ArrayList<Obra>();
+		for(var obra : lista) {
+			if(obra.getAutorID() == autor.getIdAutor()) {
+				result.add(obra);
+			}
+		}
+		return result.toArray(new Obra[0]);
+	}
+	public static Obra[] listarObras() {
 		return BDDriver.listarObras();
 	}
 	
-	public Obra[] pesquisarObrasCriacao(Date data) {
+	public static Obra[] pesquisarObrasCriacao(Date data) {
 		Obra[] lista = listarObras();
 		
 		ArrayList<Obra> result = new ArrayList<Obra>();
