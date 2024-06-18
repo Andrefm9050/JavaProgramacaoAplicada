@@ -1,28 +1,15 @@
 package ui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GridLayout;
+import sistema.BDDriver;
+import users.EstadoConta;
+import users.Utilizador;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-
-import sistema.BDDriver;
-import users.EstadoConta;
-import users.Utilizador;
 
 public class ConfigurarBD extends JFrame implements ActionListener,ObjectSelector{
 
@@ -159,6 +146,7 @@ public class ConfigurarBD extends JFrame implements ActionListener,ObjectSelecto
 			
 			new SelectObj(this,list);
 			dispose();
+			new InterfaceGrafica();
 		}
 		else {
 			error.setText("Erro, não foi possivel realizar uma conexão á BD configurada");

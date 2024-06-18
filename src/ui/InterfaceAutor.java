@@ -77,8 +77,18 @@ public class InterfaceAutor extends JFrame implements ActionListener,ObjectSelec
         jButton7.setToolTipText("Volta para a página principal");
         add(jButton7);
 
+        jButton7.addActionListener(this::sair);
 
 
+
+    }
+
+    private void sair(ActionEvent actionEvent) {
+        getContentPane().removeAll();
+        revalidate();
+        repaint();
+        this.dispose();
+        new InterfaceGrafica();
     }
 
     @Override

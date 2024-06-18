@@ -61,7 +61,17 @@ public class InterfaceRevisor extends JFrame implements ActionListener,ObjectSel
         jButton5.setToolTipText("Voltar para a página principal");
         add(jButton5);
 
+        jButton5.addActionListener(this::sair);
 
+
+    }
+
+    private void sair(ActionEvent actionEvent) {
+        getContentPane().removeAll();
+        revalidate();
+        repaint();
+        this.dispose();
+        new InterfaceGrafica();
     }
 
     @Override

@@ -164,8 +164,6 @@ public class InterfaceGrafica extends JFrame implements ActionListener,ObjectSel
 		jButton2.addActionListener(this::voltarPaginaInicial);
 
 
-
-
 		//Main.registo(text.getText(), false, text1.getText(), text2.getText(), text3.getText(), text4.getText());
 
 	}
@@ -570,7 +568,7 @@ public class InterfaceGrafica extends JFrame implements ActionListener,ObjectSel
 	}
 
 
-	private void voltarPaginaInicial(ActionEvent actionEvent){
+	public void voltarPaginaInicial(ActionEvent actionEvent){
 		getContentPane().removeAll();
 		revalidate();
 		repaint();

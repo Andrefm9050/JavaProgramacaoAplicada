@@ -6,12 +6,15 @@ import sistema.EstadoRevisao;
 import sistema.Obra;
 import sistema.Revisao;
 import ui.InterfaceGestor;
+import ui.ObjectSelector;
+import ui.SelectObj;
 
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Gestor extends Utilizador{
-	
+
 	private int idGestor;
 
 	public Gestor(int idGestor,int idUser,String login, String password, String nome, EstadoConta estado, String email, String tipo) {
@@ -25,9 +28,9 @@ public class Gestor extends Utilizador{
 	public int getGestorID() {
 		return idGestor;
 	}
-	public static void menuGestor(Gestor user) {
+	public static ActionListener menuGestor(Gestor user) {
 
-		new InterfaceGestor();
+		new InterfaceGestor(user);
 
 		//while(true) {
 		//System.out.println("1-Aprovar/Rejeitar Pedidos de Registo \n2-Criar conta Gestor \n3-Ativar/Inativar Conta \n4-Pedido Remover Conta "
@@ -42,9 +45,10 @@ public class Gestor extends Utilizador{
 		//executaOpcao(opcao, user);
 		
 	//}
-}
+		return null;
+	}
 	
-	public static void executaOpcao(int aOpcao, Gestor user){
+	public  void executaOpcao(int aOpcao, Gestor user){
 		
 		
 		switch(aOpcao) {
@@ -112,14 +116,16 @@ public class Gestor extends Utilizador{
 	}
 	
 	
-	
-	private static void aprovarRejeitarPedidosRegisto() {
+	//new selectObj(
+	public void aprovarRejeitarPedidosRegisto() {
 		int tamanhoArray;
  		
  		tamanhoArray = BDDriver.listarUtilizadores().length;
  		Utilizador[] utilizadorBuffer = new Utilizador[tamanhoArray];
  		utilizadorBuffer = BDDriver.listarUtilizadores();
- 		
+
+
+		new SelectObj((ObjectSelector) this,utilizadorBuffer);
  		for(int i=0; i<tamanhoArray; i++) {
  	    	if(utilizadorBuffer[i].getEstado() == EstadoConta.por_registar) {
  	    		System.out.println("ID:" + utilizadorBuffer[i].getIdUser() + " Username:" + utilizadorBuffer[i].getLogin() 
