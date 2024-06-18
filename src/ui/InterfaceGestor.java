@@ -1,14 +1,18 @@
 package ui;
 
 import javax.swing.*;
+
+import users.Gestor;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class InterfaceGestor extends JFrame implements ActionListener,ObjectSelector{
 
-    public InterfaceGestor(){
-
+	Gestor userBuffer;
+    public InterfaceGestor(Gestor u){
+    	userBuffer = u;
         setVisible(true);
         setSize(800, 600);
         setTitle("Menu Gestor");
@@ -113,6 +117,18 @@ public class InterfaceGestor extends JFrame implements ActionListener,ObjectSele
         jButton11.setBackground(new Color(0,0,0));
         jButton11.setToolTipText("Volta para a pagina principal");
         add(jButton11);
+        
+        JButton perfil = new JButton("Perfil");
+        perfil.setBounds(800-150,0,150,150);
+        perfil.addActionListener(this::VerPerfil);
+        add(perfil);
+        
+        
+    }
+    
+    void VerPerfil(ActionEvent e) {
+    	new PaginaPerfil(userBuffer);
+    	dispose();
     }
 
 

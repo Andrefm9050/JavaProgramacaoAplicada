@@ -1,13 +1,18 @@
 package ui;
 
 import javax.swing.*;
+
+import users.Autor;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class InterfaceAutor extends JFrame implements ActionListener,ObjectSelector{
-
-    public InterfaceAutor(){
+	
+	Autor userBuffer;
+    public InterfaceAutor(Autor user){
+    	userBuffer = user;
         setVisible(true);
         setSize(800, 600);
         setTitle("Menu Autor");
@@ -76,10 +81,19 @@ public class InterfaceAutor extends JFrame implements ActionListener,ObjectSelec
         jButton7.setBackground(new Color(0,0,0));
         jButton7.setToolTipText("Volta para a página principal");
         add(jButton7);
-
-
-
+        JButton perfil = new JButton("Perfil");
+        perfil.setBounds(800-150,0,150,150);
+        perfil.addActionListener(this::VerPerfil);
+        add(perfil);
+        
+        
     }
+    
+    void VerPerfil(ActionEvent e) {
+    	new PaginaPerfil(userBuffer);
+    	dispose();
+    }
+
 
     @Override
     public void actionPerformed(ActionEvent e) {

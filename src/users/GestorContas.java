@@ -165,6 +165,16 @@ public class GestorContas {
 		}
 	}
 	
+	public static boolean definirPasswordUtilizador(int userID, String password) {
+		return BDDriver.setUtilizadorPassword(userID, password);
+	}
+	
+	public static boolean definirNomeUtilizador(int userID, String nome) {
+		return BDDriver.setUtilizadorNome(userID, nome);
+	}
+	public static boolean definirImagemUtilizador(int userID, byte[] imagem) {
+		return BDDriver.setUtilizadorImagem(userID, imagem);
+	}
 	
 	
 public static void pedidoRemoverConta(String login1) {

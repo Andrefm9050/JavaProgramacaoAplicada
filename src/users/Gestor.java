@@ -27,7 +27,7 @@ public class Gestor extends Utilizador{
 	}
 	public static void menuGestor(Gestor user) {
 
-		new InterfaceGestor();
+		new InterfaceGestor(user);
 
 		//while(true) {
 		//System.out.println("1-Aprovar/Rejeitar Pedidos de Registo \n2-Criar conta Gestor \n3-Ativar/Inativar Conta \n4-Pedido Remover Conta "
